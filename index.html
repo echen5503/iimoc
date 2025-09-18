@@ -3,332 +3,449 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>IIMOC — The International Invitational Math Optimization Challenge</title>
-<meta name="description" content="IIMOC — The Premier High School Optimization Challenge" />
-<style>
-  :root{
-    --bg:#0b0c10; --bg-900:#0e0f13; --bg-800:#12141a; --bg-700:#1a1c22;
-    --text:#e9edf3; --muted:#c9d2e3; --muted-2:#a7b2c7; --border:#1c1f27;
-    --purple:#7c3aed; --purple-600:#7c3aed; --purple-700:#6d28d9;
-    --pink-500:#ec4899; --yellow:#facc15; --green:#22c55e; --blue:#38bdf8;
-    --badge:#3b3f4a;
-  }
-  /* Center CTA buttons ("Register Your Club Now" and "Sign Up Your Club") */
-.btn-wrap{
-  display:flex;
-  width:100%;
-  justify-content:center;   /* center in modern browsers */
-}
-.btn-wrap > a{
-  display:inline-flex;      /* keep icon + text inline */
-  margin:0 auto;            /* fallback centering (Safari quirks) */
-}
+<title>International Math Optimization Challenge</title>
+<meta name="description" content="IIMOC - The High School Optimization Challenge" />
 
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    background:var(--bg-900); color:var(--text);
+<style>
+  body {
+    background: #181818;
+    color: #f0f0f0;
+    font-family: Consolas, 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
   }
-  a{color:inherit; text-decoration:none}
-  .container{max-width:1100px; margin:0 auto; padding:0 24px}
-  /* Header */
-  header{
-    position:fixed; top:0; left:0; right:0; z-index:50;
-    backdrop-filter: blur(8px);
-    background: rgba(14,15,19,.8);
-    border-bottom:1px solid var(--border);
+  .container {
+    max-width: 740px;
+    margin: 56px auto 40px auto;
+    padding: 38px 32px 28px 32px;
+    background: #222;
+    border-radius: 8px;
+    border: 1px solid #444;
+    box-sizing: border-box;
   }
-  nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
-  .brand{display:flex; align-items:center; gap:10px}
-  .brand-title{font-weight:800; letter-spacing:-.01em; font-size:24px; color:#fff}
-  .btn{
-    display:inline-flex; align-items:center; gap:8px;
-    background:var(--purple-600); color:#fff; font-weight:700;
-    padding:10px 16px; border-radius:10px; transition: transform .15s ease, background .15s ease;
+  header {
+    width: 100%;
+    background: #181818;
+    border-bottom: 1px solid #333;
   }
-  .btn:hover{background:var(--purple-700); transform:scale(1.03)}
-  /* Layout blocks */
-  main{padding-top:72px}
-  section{padding:80px 0}
-  .center{text-align:center}
-  /* Hero */
-  .hero{
-    position:relative; min-height:calc(100vh - 72px);
-    display:flex; align-items:center; justify-content:center; text-align:center;
-    overflow:hidden; background:var(--bg-900);
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 16px 20px 8px 20px;
   }
-  .grid-mask{
-    position:absolute; inset:0; pointer-events:none;
-    background: radial-gradient(ellipse at center, transparent 20%, black 70%);
-    mix-blend-mode: multiply; opacity:.85;
+  .brand-title {
+    font-size: 1.5rem;
+    color: #fafafa;
+    letter-spacing: 2px;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
   }
-  .grid-bg{
-    position:absolute; inset:0; opacity:.25;
-    background-image:
-      linear-gradient(to right, rgba(55,65,81,.2) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(55,65,81,.2) 1px, transparent 1px);
-    background-size:40px 40px;
+  .brand-title svg {
+    vertical-align: middle;
+    height: 38px;
+    width: 38px;
+    color: #b89bfa;
+    stroke-width: 2.2;
+    flex-shrink: 0;
   }
-  .hero h1{
-    font-size: clamp(42px, 6vw, 80px);
-    font-weight:900; letter-spacing:-.03em; margin:0 0 12px;
-    background: linear-gradient(90deg, #a78bfa, #ec4899);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
+  #scrambleText {
+    color: #fff;
+    letter-spacing: 0.02em;
+    font-weight: bold;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
   }
-  .hero p.lead{font-size: clamp(18px, 2.6vw, 24px); color:#d1d5db; margin:8px auto 6px; max-width:800px}
-  .hero p.sub{font-size:18px; color:#aab1bf; margin:6px auto 22px; max-width:680px}
-  /* Sections */
-  .section-dark{background:var(--bg-900)}
-  .section-dim{background:rgba(18,20,26,.7); backdrop-filter: blur(6px)}
-  .h2{font-size: clamp(28px, 3.5vw, 40px); font-weight:800; margin:0 0 10px}
-  .muted{color:#c9d2e3}
-  .muted-2{color:var(--muted-2)}
-  /* Feature cards */
-  .features{display:grid; gap:20px; grid-template-columns:repeat(1, minmax(0,1fr))}
-  @media (min-width: 768px){ .features{grid-template-columns:repeat(2, minmax(0,1fr))} }
-  .card{
-    background:rgba(32,35,42,.55); border:1px solid var(--border);
-    padding:18px; border-radius:14px; transition:border-color .15s ease, background .15s ease;
+  .brand-title .scramble-char {
+    display: inline-block;
+    min-width: 1ch;
+    transition: color 0.17s;
+    color: inherit;
+    font-family: inherit;
   }
-  .card:hover{border-color: rgba(124,58,237,.5); background: rgba(32,35,42,.8)}
-  .card-head{display:flex; align-items:center; gap:12px}
-  .pill{
-    display:inline-grid; place-items:center; width:38px; height:38px; border-radius:10px; background:#2a2e39;
+  .nav-links {
+    display: flex;
+    gap: 18px;
   }
-  .card h3{margin:0; font-size:20px; font-weight:800}
-  .card p{margin:12px 0 0; color:#b7c0d3; line-height:1.5}
-  /* Badges */
-  .badges{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:24px}
-  .badge{
-    padding:8px 14px; border-radius:10px; border:1px solid #4b5563;
-    background:rgba(55, 65, 81, .5); color:#d1d5db; font-weight:600; font-size:16px;
+  .btn, .btn-lg, .nav-link {
+    background: #282828;
+    color: #f0f0f0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 1.09rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background .13s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
-  /* CTA button large */
-  .btn-lg{
-    padding:16px 22px; border-radius:12px; font-size:18px; font-weight:800;
-    background: linear-gradient(90deg, var(--purple-600), #ec4899);
+  .btn-lg { font-size: 1.13rem; padding: 14px 26px; margin-top: 12px;}
+  .btn:hover, .btn-lg:hover, .nav-link:hover { background: #333; }
+  main { width: 100%; }
+  h1, h2, h3 {
+    color: #fafafa;
+    font-family: inherit;
+    margin-top: 0;
+    letter-spacing: 2px;
+    font-weight: normal;
   }
-  .btn-lg:hover{filter:brightness(1.05); transform: translateY(-1px)}
-  .arrow{display:inline-block; transition: transform .15s ease}
-  .btn-lg:hover .arrow{transform:translateX(4px)}
-  /* Footer */
-  footer{background:var(--bg-900); border-top:1px solid #1f2430}
-  footer p{margin:6px 0; color:#96a1b7}
-  /* Utility */
-  .sr{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0}
-  .mt-6{margin-top:24px} .mt-8{margin-top:32px} .mt-12{margin-top:48px}
-  .space-y-6 > * + *{margin-top:24px}
-  .text-center{text-align:center}
-  .btn-wrap{display:flex; justify-content:center}
-  .fixed-top-space{height:72px}
-  /* Simple fade-in (optional) */
-  .fade-in{opacity:0; transform:translateY(16px); animation:fade .6s ease forwards}
-  .fade-in.delay-1{animation-delay:.1s} .fade-in.delay-2{animation-delay:.2s}
-  .fade-in.delay-3{animation-delay:.3s} .fade-in.delay-4{animation-delay:.4s}
-  @keyframes fade{to{opacity:1; transform:none}}
-  /* Icons */
-  .icon{width:24px; height:24px}
-  .icon-lg{width:32px; height:32px}
-  .purple{color:#a78bfa} .green{color:#22c55e} .blue{color:#38bdf8} .yellow{color:#facc15}
+  h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 14px;
+    margin-top: 0;
+  }
+  .iimoc-full {
+    display: block;
+    text-align: center;
+    font-size: 1.32rem;
+    font-weight: bold;
+    margin-bottom: 22px;
+    letter-spacing: 1px;
+    color: #dedede;
+  }
+  .about-section {
+    background: #19191c;
+    border: 1px solid #333;
+    border-radius: 6px;
+    margin-bottom: 28px;
+    margin-top: 0;
+    padding: 20px 22px 16px 22px;
+    font-size: 1.04rem;
+    color: #e0e0e0;
+    line-height: 1.6;
+    text-align: center;
+  }
+  .lead {
+    text-align: center;
+    font-size: 1.12rem;
+    color: #dedede;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .sub {
+    text-align: center;
+    color: #bdbdbd;
+    font-size: 1.02rem;
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+  .cta-wrap {
+    margin: 32px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .section { margin-top: 38px; margin-bottom: 38px; }
+  .how-it-works-title {
+    font-size: 1.32rem;
+    font-weight: bold;
+    margin-bottom: 14px;
+    letter-spacing: 1.2px;
+  }
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .card {
+    background: #181818;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 20px 18px 16px 18px;
+    margin-bottom: 0;
+    flex: 1 1 260px;
+    min-width: 220px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 7px;
+  }
+  .card-header svg {
+    display: inline-block;
+    vertical-align: middle;
+    height: 22px;
+    width: 22px;
+    position: relative;
+    top: 1px;
+  }
+  .card h3 {
+    font-size: 1.01rem;
+    color: #f0e7ff;
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: inline;
+    vertical-align: middle;
+    line-height: 1;
+    padding: 0;
+  }
+  .card p {
+    margin: 0;
+    color: #cfcfcf;
+    font-size: 0.97rem;
+    font-family: inherit;
+    line-height: 1.45;
+  }
+  .badges-wrap {
+    max-width: 330px;
+    margin: 0 auto 0 auto;
+  }
+  .badges {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    justify-content: center;
+  }
+  .badge {
+    background: #181818;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #c5e1a5;
+    font-size: 0.97rem;
+    padding: 5px 13px;
+    font-family: inherit;
+    letter-spacing: 1px;
+  }
+  .icon { height: 22px; width: 22px; color: #b89bfa; stroke-width: 2.2; }
+  .icon-yellow { color: #facc15; }
+  .icon-green { color: #7ee787; }
+  .icon-blue  { color: #38bdf8; }
+  .icon-purple { color: #b89bfa; }
+  .icon-lg { height: 28px; width: 28px; }
+  .footer {
+    background: #181818;
+    border-top: 1px solid #333;
+    text-align: center;
+    color: #888;
+    font-size: 1rem;
+    padding: 26px 0 13px 0;
+    margin-top: 44px;
+  }
+  .footer p { margin: 6px 0; color: #757575; }
+  .muted { color: #dedede; font-size: 1.01rem; }
+  .muted-2 { color: #ababab; font-size: 0.93rem; }
+  @media (max-width: 900px) {
+    .container, .nav { max-width: 99vw; padding-left: 5vw; padding-right: 5vw; }
+    .features { flex-direction: column; gap: 18px; }
+    .card { max-width: none; }
+    .badges-wrap { max-width: 99vw; }
+  }
 </style>
 </head>
 <body>
-
 <header>
-  <div class="container">
-    <nav>
-      <a class="brand" href="index.html" aria-label="IIMOC Home">
-        <!-- Sigma icon (lucide-like) -->
-        <svg class="icon-lg purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M18 4H6l7 8-7 8h12"/>
-        </svg>
-        <span class="brand-title">IIMOC</span>
+  <nav class="nav">
+    <span class="brand-title" id="brandTitle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 4H6l7 8-7 8h12"/>
+      </svg>
+      <span id="scrambleText">
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">M</span>
+        <span class="scramble-char">O</span>
+        <span class="scramble-char">C</span>
+      </span>
+    </span>
+    <div class="nav-links">
+      <a class="nav-link" href="contact.html">Contact</a>
+      <a class="btn" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
+        Sign Up
       </a>
-
-      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdVCbV4amzLnxQxPtcZSn8mKVOzGfbFJBoIfYD7zFo-vM0rmg/viewform" target="_blank" rel="noopener noreferrer">
-        Register Your Club
-      </a>
-    </nav>
-  </div>
+    </div>
+  </nav>
 </header>
 
 <main>
-  <!-- Hero -->
-  <section class="hero">
-    <div class="grid-bg" aria-hidden="true"></div>
-    <div class="grid-mask" aria-hidden="true"></div>
-    <div class="container">
-      <div class="space-y-6">
-        <h1 class="fade-in">IIMOC</h1>
-        <p class="lead fade-in delay-1">The International Invitational Math Optimization Challenge</p>
-        <p class="sub fade-in delay-2">One problem. One submission per club. One chance to find the optimal solution.</p>
-        <div class="btn-wrap fade-in delay-3">
-          <a class="btn-lg" href="https://docs.google.com/forms/d/e/1FAIpQLSdVCbV4amzLnxQxPtcZSn8mKVOzGfbFJBoIfYD7zFo-vM0rmg/viewform" target="_blank" rel="noopener noreferrer">
-            Register Your Club Now
-            <!-- ArrowRight -->
-            <svg class="icon arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+  <div class="container">
+    <h1>IIMOC</h1>
+    <span class="iimoc-full">International Math Optimization Challenge</span>
+    <div class="sub">One tough problem. One shot per club.</div>
+
+    <div class="section">
+      <div class="how-it-works-title">How It Works</div>
+      <div class="about-section">
+        IIMOC is a global competition for high school STEM clubs. Each team gets an approachable but unsolvable optimization problem and four weeks to submit their best solution. The club with the lowest loss wins. Special awards for creativity and best approach are also given.
+      </div>
+      <div class="features">
+        <div class="card">
+          <div class="card-header">
+            <svg class="icon icon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
-          </a>
+            <h3>Teamwork</h3>
+          </div>
+          <p>Solve together as a club. Collaboration is key.</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <svg class="icon icon-green" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 12h-4"></path><path d="M2 12h4"></path>
+              <path d="M12 2v4"></path><path d="M12 18v4"></path>
+              <circle cx="12" cy="12" r="7"></circle>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <h3>One Submission</h3>
+          </div>
+          <p>Pick your club's best answer. No second chances.</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <svg class="icon icon-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M15 9V4a3 3 0 0 0-6 0v5"></path>
+              <rect x="3" y="9" width="18" height="12" rx="4"></rect>
+              <path d="M7 13h.01M12 13h.01M17 13h.01M7 17h10"></path>
+            </svg>
+            <h3>Optimization</h3>
+          </div>
+          <p>Minimize loss or maximize gain in a real-world scenario.</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <svg class="icon icon-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M8 21h8"></path>
+              <path d="M12 17v4"></path>
+              <path d="M7 4h10v4a5 5 0 0 1-10 0V4Z"></path>
+              <path d="M5 8A2 2 0 0 1 3 6V4h2"></path>
+              <path d="M19 8a2 2 0 0 0 2-2V4h-2"></path>
+            </svg>
+            <h3>Global Rankings</h3>
+          </div>
+          <p>See how you stack up against clubs worldwide.</p>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- About -->
-  <section class="section-dark">
-    <div class="container center">
-      <h2 class="h2 fade-in">A New Kind of Math Competition</h2>
-      <p class="muted fade-in delay-1" style="max-width:800px; margin:12px auto 0;">
-        IIMOC is not about speed or quantity. It's a test of depth, collaboration, and strategic thinking.
-        We present a single, complex optimization problem to high school clubs around the world. Your club's mission
-        is to work together to find the best possible solution and make a single, unified submission.
-      </p>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="section-dim">
-    <div class="container">
-      <div class="features">
-        <!-- Club vs. Club -->
-        <article class="card fade-in">
-          <div class="card-head">
-            <span class="pill">
-              <!-- Users icon -->
-              <svg class="icon blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-            </span>
-            <h3>Club vs. Club</h3>
-          </div>
-          <p>The challenge is designed to foster collaboration and communication within your school's math club.</p>
-        </article>
-
-        <!-- Single Submission -->
-        <article class="card fade-in delay-1">
-          <div class="card-head">
-            <span class="pill">
-              <!-- Target icon -->
-              <svg class="icon green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M22 12h-4"></path><path d="M2 12h4"></path>
-                <path d="M12 2v4"></path><path d="M12 18v4"></path>
-                <circle cx="12" cy="12" r="7"></circle>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </span>
-            <h3>Single Submission</h3>
-          </div>
-          <p>Each club gets one shot. Decide on a final answer that represents your collective best effort.</p>
-        </article>
-
-        <!-- Optimization Focus -->
-        <article class="card fade-in delay-2">
-          <div class="card-head">
-            <span class="pill">
-              <!-- BrainCircuit icon -->
-              <svg class="icon purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M15 9V4a3 3 0 0 0-6 0v5"></path>
-                <rect x="3" y="9" width="18" height="12" rx="4"></rect>
-                <path d="M7 13h.01M12 13h.01M17 13h.01M7 17h10"></path>
-              </svg>
-            </span>
-            <h3>Optimization Focus</h3>
-          </div>
-          <p>Problems center on minimizing loss or maximizing gain in realistic scenarios.</p>
-        </article>
-
-        <!-- Global Leaderboard -->
-        <article class="card fade-in delay-3">
-          <div class="card-head">
-            <span class="pill">
-              <!-- Trophy icon -->
-              <svg class="icon yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M8 21h8"></path>
-                <path d="M12 17v4"></path>
-                <path d="M7 4h10v4a5 5 0 0 1-10 0V4Z"></path>
-                <path d="M5 8A2 2 0 0 1 3 6V4h2"></path>
-                <path d="M19 8a2 2 0 0 0 2-2V4h-2"></path>
-              </svg>
-            </span>
-            <h3>Global Leaderboard</h3>
-          </div>
-          <p>Compete with the brightest high school minds worldwide and see where your club ranks.</p>
-        </article>
+    <div class="section">
+      <h2 style="text-align:center;">Where Clubs Compete</h2>
+      <div class="muted" style="text-align:center;">
+        Join students from:
+      </div>
+      <div class="badges-wrap">
+        <div class="badges">
+          <span class="badge">Oregon</span>
+          <span class="badge">Massachusetts</span>
+          <span class="badge">Japan</span>
+          <span class="badge">Korea</span>
+          <span class="badge">Taiwan</span>
+          <span class="badge">Morocco</span>
+          <span class="badge">Canada</span>
+        </div>
       </div>
     </div>
-  </section>
 
-  <!-- Global Community -->
-  <section class="section-dark">
-    <div class="container center">
-      <div style="display:inline-block;background:#1f2430;padding:10px;border-radius:999px;margin-bottom:12px">
-        <!-- Globe icon -->
-        <svg class="icon-lg purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M2 12h20"></path>
-          <path d="M12 2a15.3 15.3 0 0 1 0 20"></path>
-          <path d="M12 2a15.3 15.3 0 0 0 0 20"></path>
-        </svg>
+    <div class="section" style="margin-top:48px">
+      <h2 style="text-align:center;">Ready?</h2>
+      <div class="muted" style="text-align:center;">
       </div>
-      <h2 class="h2 fade-in">A Growing Global Community</h2>
-      <p class="muted fade-in delay-1" style="max-width:760px; margin:10px auto 0;">
-        Join clubs from around the world in this unique intellectual showdown. Our community includes talented members from:
-      </p>
-      <div class="badges fade-in delay-2">
-        <span class="badge">Oregon</span>
-        <span class="badge">Massachusetts</span>
-        <span class="badge">Japan</span>
-        <span class="badge">Korea</span>
-        <span class="badge">Taiwan</span>
-        <span class="badge">Morocco</span>
-        <span class="badge">Canada</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section-dark">
-    <div class="container center">
-      <h2 class="h2 fade-in">Ready for the Challenge?</h2>
-      <p class="muted fade-in delay-1" style="max-width:760px; margin:10px auto 0;">
-        Gather your team, sharpen your minds, and prepare to tackle a unique mathematical problem.
-      </p>
-      <div class="btn-wrap mt-12 fade-in delay-2">
-        <a class="btn-lg" href="https://docs.google.com/forms/d/e/1FAIpQLSdVCbV4amzLnxQxPtcZSn8mKVOzGfbFJBoIfYD7zFo-vM0rmg/viewform" target="_blank" rel="noopener noreferrer">
-          Sign Up Your Club
-          <svg class="icon arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <div class="cta-wrap" style="margin-top:19px;">
+        <a class="btn-lg" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
+          Sign Up
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      <div class="cta-wrap" style="margin-top:0px;">
+        <a class="btn-lg" href="https://docs.google.com/forms/d/1E7kXtMzvZXbWVKKjzRLuNRWvt2ijXqbP_KkjVW-TF0Q/edit#responses" target="_blank" rel="noopener noreferrer">
+          Apply to be a problemsetter
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
           </svg>
         </a>
       </div>
     </div>
-  </section>
+  </div>
 </main>
 
-<footer>
-  <div class="container center" style="padding:32px 0">
-    <p>&copy; <span id="year"></span> IIMOC. All rights reserved.</p>
-    <p class="muted-2">The Premier High School Optimization Challenge</p>
-  </div>
+<footer class="footer">
+  <p>&copy; <span id="year"></span> IIMOC. All rights reserved. Made with ❤️ by sirbread</p>
 </footer>
-
 <script>
-  // set current year
   document.getElementById('year').textContent = new Date().getFullYear();
-</script>
 
+  (function() {
+    const symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&?@*";
+    const original = ["I", "I", "M", "O", "C"];
+    const scrambleDuration = 350; // ms
+
+    const scrambleText = document.getElementById('scrambleText');
+    if (!scrambleText) return;
+
+    const chars = Array.from(scrambleText.querySelectorAll('.scramble-char'));
+
+    let scrambleTimer = null;
+    let running = false;
+
+    function randomSymbol() {
+      return symbols[Math.floor(Math.random() * symbols.length)];
+    }
+
+    function scrambleFrame(progress) {
+      chars.forEach((span, i) => {
+        if (progress < 0.8 || Math.random() > progress) {
+          span.textContent = randomSymbol();
+        } else {
+          span.textContent = original[i];
+        }
+      });
+    }
+
+    function endScramble() {
+      chars.forEach((span, i) => {
+        span.textContent = original[i];
+      });
+      running = false;
+    }
+
+    function startScramble() {
+      if (running) return;
+      running = true;
+      const start = performance.now();
+
+      function animate(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / scrambleDuration, 1);
+        scrambleFrame(progress);
+        if (elapsed < scrambleDuration) {
+          scrambleTimer = requestAnimationFrame(animate);
+        } else {
+          endScramble();
+        }
+      }
+      scrambleTimer = requestAnimationFrame(animate);
+    }
+
+    const brandTitle = document.getElementById('brandTitle');
+    brandTitle.addEventListener('mouseenter', startScramble);
+    brandTitle.addEventListener('focus', startScramble);
+    brandTitle.addEventListener('mouseleave', endScramble);
+    brandTitle.addEventListener('blur', endScramble);
+  })();
+
+</script>
 </body>
 </html>
