@@ -73,45 +73,6 @@
   .nav-links {
     display: flex;
     gap: 18px;
-    align-items: center;
-  }
-  .google-translate {
-    display: flex;
-    align-items: center;
-  }
-  .goog-te-gadget {
-    font-family: inherit !important;
-    color: #f0f0f0 !important;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .goog-te-gadget span {
-    display: none !important;
-  }
-  .goog-te-combo {
-    background: #282828 !important;
-    color: #f0f0f0 !important;
-    border: 1px solid #444 !important;
-    border-radius: 4px !important;
-    padding: 8px 12px !important;
-    font-family: inherit !important;
-    font-size: 1rem !important;
-    cursor: pointer !important;
-  }
-  .goog-te-combo:focus {
-    outline: none !important;
-    border-color: #666 !important;
-    box-shadow: 0 0 0 2px rgba(184, 155, 250, 0.2) !important;
-  }
-  .goog-logo-link {
-    display: none !important;
-  }
-  .goog-te-banner-frame.skiptranslate {
-    display: none !important;
-  }
-  body {
-    top: 0 !important;
   }
   .nav-link {
     background: #282828;
@@ -191,10 +152,10 @@
   }
 </style>
 </head>
-<body data-page="contact">
+<body>
 <header>
   <nav class="nav">
-    <a href="/" class="brand-title" id="brandTitle">
+    <a href="index.html" class="brand-title" id="brandTitle">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 4H6l7 8-7 8h12"/>
       </svg>
@@ -206,32 +167,25 @@
         <span class="scramble-char">C</span>
       </span>
     </a>
-    <div class="nav-links">
-      <a class="nav-link" data-i18n="nav.signUp" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">Sign Up</a>
-      <div id="google_translate_element" class="google-translate" aria-label="Translate page"></div>
-    </div>
   </nav>
 </header>
 <main>
   <div class="container">
-    <h1 data-i18n="contact.heading">Contact</h1>
-    <div class="desc" data-i18n="contact.description">Contact our team below.</div>
+    <h1>Contact</h1>
+    <div class="desc">Contact our team below.</div>
     <div class="contact-list">
-
+      
       <div class="contact-card">
-        <span class="contact-name" data-i18n="contact.cards.organizer.title">Chief Organizer: Edwin Chen</span>
-        <span><span class="contact-label" data-i18n="contact.emailLabel">Email:</span> <span class="contact-item">edwin.chen@iimoc.org</span></span>
-        <span><span class="contact-label" data-i18n="contact.phoneLabel">Phone:</span> <span class="contact-item">[redacted]</span></span>
+        <span class="contact-name">Chief Organizer: Edwin Chen</span>
+        <span><span class="contact-label">Email:</span> <span class="contact-item">edwin.chen@iimoc.org</span></span>
       </div>
       <div class="contact-card">
-          <span class="contact-name" data-i18n="contact.cards.advisor.title">Advisor: Rob Kolstad</span>
-          <span><span class="contact-label" data-i18n="contact.emailLabel">Email:</span> <span class="contact-item">rob.kolstad@gmail.com</span></span>
-          <span><span class="contact-label" data-i18n="contact.phoneLabel">Phone:</span> <span class="contact-item">[redacted]</span></span>
+          <span class="contact-name">Advisor: Rob Kolstad</span>
+          <span><span class="contact-label">Email:</span> <span class="contact-item">rob.kolstad@gmail.com</span></span>
       </div>
       <div class="contact-card">
-          <span class="contact-name" data-i18n="contact.cards.dev.title">Site Dev: sirbread</span>
-          <span><span class="contact-label" data-i18n="contact.emailLabel">Email:</span> <span class="contact-item">sirbread.dev@outlook.com</span></span>
-          <span><span class="contact-label" data-i18n="contact.phoneLabel">Phone:</span> <span class="contact-item">[redacted]</span></span>
+          <span class="contact-name">Site Dev: sirbread</span>
+          <span><span class="contact-label">Email:</span> <span class="contact-item">sirbread.dev@outlook.com</span></span>
       </div>
     </div>
   </div>
@@ -241,32 +195,6 @@
 </footer>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
-
-  (function() {
-    const containerId = 'google_translate_element';
-    const container = document.getElementById(containerId);
-    if (!container) {
-      return;
-    }
-
-    window.googleTranslateElementInit = function() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, containerId);
-    };
-
-    const script = document.createElement('script');
-    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    script.defer = true;
-    script.onerror = function() {
-      container.textContent = 'Translation unavailable';
-      container.style.fontSize = '0.92rem';
-      container.style.color = '#f87171';
-    };
-    document.body.appendChild(script);
-  })();
 
   (function() {
     const symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&?@*";
