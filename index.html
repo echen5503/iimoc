@@ -72,6 +72,45 @@
   .nav-links {
     display: flex;
     gap: 18px;
+    align-items: center;
+  }
+  .google-translate {
+    display: flex;
+    align-items: center;
+  }
+  .goog-te-gadget {
+    font-family: inherit !important;
+    color: #f0f0f0 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .goog-te-gadget span {
+    display: none !important;
+  }
+  .goog-te-combo {
+    background: #282828 !important;
+    color: #f0f0f0 !important;
+    border: 1px solid #444 !important;
+    border-radius: 4px !important;
+    padding: 8px 12px !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
+  }
+  .goog-te-combo:focus {
+    outline: none !important;
+    border-color: #666 !important;
+    box-shadow: 0 0 0 2px rgba(184, 155, 250, 0.2) !important;
+  }
+  .goog-logo-link {
+    display: none !important;
+  }
+  .goog-te-banner-frame.skiptranslate {
+    display: none !important;
+  }
+  body {
+    top: 0 !important;
   }
   .btn, .btn-lg, .nav-link {
     background: #282828;
@@ -253,7 +292,7 @@
   }
 </style>
 </head>
-<body>
+<body data-page="home">
 <header>
   <nav class="nav">
     <span class="brand-title" id="brandTitle">
@@ -269,10 +308,11 @@
       </span>
     </span>
     <div class="nav-links">
-      <a class="nav-link" href="contact.html">Contact</a>
-      <a class="btn" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
+      <a class="nav-link" data-i18n="nav.contact" href="contact.html">Contact</a>
+      <a class="btn" data-i18n="nav.signUp" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
         Sign Up
       </a>
+      <div id="google_translate_element" class="google-translate" aria-label="Translate page"></div>
     </div>
   </nav>
 </header>
@@ -280,12 +320,12 @@
 <main>
   <div class="container">
     <h1>IIMOC</h1>
-    <span class="iimoc-full">International Math Optimization Challenge</span>
-    <div class="sub">One tough problem. One shot per club.</div>
+    <span class="iimoc-full" data-i18n="hero.subtitle">International Math Optimization Challenge</span>
+    <div class="sub" data-i18n="hero.tagline">One tough problem. One shot per club.</div>
 
     <div class="section">
-      <div class="how-it-works-title">How It Works</div>
-      <div class="about-section">
+      <div class="how-it-works-title" data-i18n="howItWorks.title">How It Works</div>
+      <div class="about-section" data-i18n="howItWorks.description">
         IIMOC is a global competition for high school STEM clubs. Each team gets an approachable but unsolvable optimization problem and four weeks to submit their best solution. The club with the lowest loss wins. Special awards for creativity and best approach are also given.
       </div>
       <div class="features">
@@ -297,9 +337,9 @@
               <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
               <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
-            <h3>Teamwork</h3>
+            <h3 data-i18n="features.teamwork.title">Teamwork</h3>
           </div>
-          <p>Solve together as a club. Collaboration is key.</p>
+          <p data-i18n="features.teamwork.description">Solve together as a club. Collaboration is key.</p>
         </div>
         <div class="card">
           <div class="card-header">
@@ -309,9 +349,9 @@
               <circle cx="12" cy="12" r="7"></circle>
               <circle cx="12" cy="12" r="3"></circle>
             </svg>
-            <h3>One Submission</h3>
+            <h3 data-i18n="features.oneSubmission.title">One Submission</h3>
           </div>
-          <p>Pick your club's best answer. No second chances.</p>
+          <p data-i18n="features.oneSubmission.description">Pick your club's best answer. No second chances.</p>
         </div>
         <div class="card">
           <div class="card-header">
@@ -320,9 +360,9 @@
               <rect x="3" y="9" width="18" height="12" rx="4"></rect>
               <path d="M7 13h.01M12 13h.01M17 13h.01M7 17h10"></path>
             </svg>
-            <h3>Optimization</h3>
+            <h3 data-i18n="features.optimization.title">Optimization</h3>
           </div>
-          <p>Minimize loss or maximize gain in a real-world scenario.</p>
+          <p data-i18n="features.optimization.description">Minimize loss or maximize gain in a real-world scenario.</p>
         </div>
         <div class="card">
           <div class="card-header">
@@ -333,16 +373,16 @@
               <path d="M5 8A2 2 0 0 1 3 6V4h2"></path>
               <path d="M19 8a2 2 0 0 0 2-2V4h-2"></path>
             </svg>
-            <h3>Global Rankings</h3>
+            <h3 data-i18n="features.globalRankings.title">Global Rankings</h3>
           </div>
-          <p>See how you stack up against clubs worldwide.</p>
+          <p data-i18n="features.globalRankings.description">See how you stack up against clubs worldwide.</p>
         </div>
       </div>
     </div>
 
     <div class="section">
-      <h2 style="text-align:center;">Where Clubs Compete</h2>
-      <div class="muted" style="text-align:center;">
+      <h2 style="text-align:center;" data-i18n="where.title">Where Clubs Compete</h2>
+      <div class="muted" style="text-align:center;" data-i18n="where.subtitle">
         Join students from:
       </div>
       <div class="badges-wrap">
@@ -359,30 +399,27 @@
     </div>
 
     <div class="section">
-      <h2 style="text-align:center;">Communication &amp; Accessibility</h2>
+      <h2 style="text-align:center;" data-i18n="communication.title">Communication &amp; Accessibility</h2>
       <div class="about-section">
-        <p><strong>Email updates keep the challenge moving.</strong> We share key milestones, clarifications, and resources
-        through the inbox your club registers with, so be sure to monitor it and reply promptly if we reach out.</p>
-        <p>To make the competition welcoming everywhere, each year's problem statement is translated for every participating
-        club. If your team needs another language, let us know and we will get it to you—no one should miss out because of
-        translation barriers.</p>
+        <p data-i18n="communication.emailParagraph"><strong>Email updates keep the challenge moving.</strong> We share key milestones, clarifications, and resources through the inbox your club registers with, so be sure to monitor it and reply promptly if we reach out.</p>
+        <p data-i18n="communication.translationParagraph">To make the competition welcoming everywhere, each year's problem statement is translated for every participating club. If your team needs another language, let us know and we will get it to you—no one should miss out because of translation barriers.</p>
       </div>
     </div>
 
     <div class="section" style="margin-top:48px">
-      <h2 style="text-align:center;">Ready?</h2>
+      <h2 style="text-align:center;" data-i18n="ready.title">Ready?</h2>
       <div class="muted" style="text-align:center;">
       </div>
       <div class="cta-wrap" style="margin-top:19px;">
         <a class="btn-lg" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
-          Sign Up
+          <span data-i18n="cta.signUp">Sign Up</span>
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
           </svg>
         </a>
       <div class="cta-wrap" style="margin-top:0px;">
         <a class="btn-lg" href="https://docs.google.com/forms/d/1E7kXtMzvZXbWVKKjzRLuNRWvt2ijXqbP_KkjVW-TF0Q/edit#responses" target="_blank" rel="noopener noreferrer">
-          Apply to be a problemsetter
+          <span data-i18n="cta.problemsetter">Apply to be a problemsetter</span>
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
           </svg>
@@ -397,6 +434,32 @@
 </footer>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  (function() {
+    const containerId = 'google_translate_element';
+    const container = document.getElementById(containerId);
+    if (!container) {
+      return;
+    }
+
+    window.googleTranslateElementInit = function() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, containerId);
+    };
+
+    const script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.defer = true;
+    script.onerror = function() {
+      container.textContent = 'Translation unavailable';
+      container.style.fontSize = '0.92rem';
+      container.style.color = '#f87171';
+    };
+    document.body.appendChild(script);
+  })();
 
   (function() {
     const symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&?@*";
