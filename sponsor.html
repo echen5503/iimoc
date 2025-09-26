@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IIMOC Sponsors</title>
+<meta name="description" content="Sponsors supporting IIMOC" />
+<style>
+  body {
+    background: #181818;
+    color: #f0f0f0;
+    font-family: Consolas, 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 860px;
+    margin: 56px auto 40px auto;
+    padding: 38px 32px 34px 32px;
+    background: #222;
+    border-radius: 8px;
+    border: 1px solid #444;
+    box-sizing: border-box;
+  }
+  header {
+    width: 100%;
+    background: #181818;
+    border-bottom: 1px solid #333;
+    margin-bottom: 32px;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 16px 20px 8px 20px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 18px;
+  }
+  .brand-title {
+    font-size: 1.5rem;
+    color: #fafafa;
+    letter-spacing: 2px;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .brand-title svg {
+    vertical-align: middle;
+    height: 38px;
+    width: 38px;
+    color: #b89bfa;
+    stroke-width: 2.2;
+    flex-shrink: 0;
+  }
+  #scrambleText {
+    color: #fff;
+    letter-spacing: 0.02em;
+    font-weight: bold;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+  }
+  .brand-title .scramble-char {
+    display: inline-block;
+    min-width: 1ch;
+    transition: color 0.17s;
+    color: inherit;
+    font-family: inherit;
+  }
+  .nav-link, .btn {
+    background: #282828;
+    color: #f0f0f0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 1.09rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background .13s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-link:hover, .btn:hover { background: #333; }
+  .nav-link.active { background: #333; cursor: default; }
+  main { width: 100%; }
+  h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+    font-weight: normal;
+    letter-spacing: 2px;
+  }
+  .lead {
+    text-align: center;
+    color: #d5d5d5;
+    font-size: 1.08rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+  }
+  .sponsor-card {
+    background: #1c1c1c;
+    border: 1px dashed #555;
+    border-radius: 8px;
+    padding: 24px 20px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 210px;
+    transition: border-color .15s ease, background .15s ease, transform .15s ease;
+  }
+  .sponsor-card:hover {
+    border-color: #b89bfa;
+    background: #252526;
+    transform: translateY(-3px);
+  }
+  .logo-slot {
+    width: 100%;
+    aspect-ratio: 5 / 3;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+  .sponsor-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #f0f0f0;
+  }
+  .sponsor-note {
+    font-size: 0.92rem;
+    color: #a8a8a8;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .footer {
+    background: #181818;
+    border-top: 1px solid #333;
+    text-align: center;
+    color: #888;
+    font-size: 1rem;
+    padding: 26px 0 13px 0;
+    margin-top: 44px;
+  }
+  .footer p { margin: 6px 0; color: #757575; }
+  @media (max-width: 900px) {
+    .container, .nav { max-width: 99vw; padding-left: 5vw; padding-right: 5vw; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="brand-title" id="brandTitle" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 4H6l7 8-7 8h12"/>
+      </svg>
+      <span id="scrambleText">
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">M</span>
+        <span class="scramble-char">O</span>
+        <span class="scramble-char">C</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <span class="nav-link active">Sponsors</span>
+      <a class="nav-link" href="contact.html">Contact</a>
+      <a class="btn" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
+        Sign Up
+      </a>
+    </div>
+  </nav>
+</header>
+<main>
+  <div class="container">
+    <h1>Our Sponsors</h1>
+    <div class="lead">
+      These partners help make the International Math Optimization Challenge possible. Replace each slot with your sponsor's
+      logo and update the link to point to their site.
+    </div>
+    <div class="sponsor-grid">
+      <a class="sponsor-card" href="https://example.com" target="_blank" rel="noopener noreferrer">
+        <div class="logo-slot">Add Logo Image</div>
+        <span class="sponsor-name">Sponsor Name</span>
+        <span class="sponsor-note">Use an &lt;img&gt; tag inside this slot to display the sponsor logo.</span>
+      </a>
+      <a class="sponsor-card" href="https://example.com" target="_blank" rel="noopener noreferrer">
+        <div class="logo-slot">Add Logo Image</div>
+        <span class="sponsor-name">Sponsor Name</span>
+        <span class="sponsor-note">Duplicate this block for additional sponsors.</span>
+      </a>
+      <a class="sponsor-card" href="https://example.com" target="_blank" rel="noopener noreferrer">
+        <div class="logo-slot">Add Logo Image</div>
+        <span class="sponsor-name">Sponsor Name</span>
+        <span class="sponsor-note">Each card is clickable and opens the sponsor site in a new tab.</span>
+      </a>
+      <a class="sponsor-card" href="https://example.com" target="_blank" rel="noopener noreferrer">
+        <div class="logo-slot">Add Logo Image</div>
+        <span class="sponsor-name">Sponsor Name</span>
+        <span class="sponsor-note">Swap in high-resolution logos for best results.</span>
+      </a>
+    </div>
+  </div>
+</main>
+<footer class="footer">
+  <p>&copy; <span id="year"></span> IIMOC. All rights reserved.</p>
+</footer>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  (function() {
+    const symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&?@*";
+    const original = ["I", "I", "M", "O", "C"];
+    const scrambleDuration = 350; // ms
+
+    const scrambleText = document.getElementById('scrambleText');
+    if (!scrambleText) return;
+
+    const chars = Array.from(scrambleText.querySelectorAll('.scramble-char'));
+
+    let scrambleTimer = null;
+    let running = false;
+
+    function randomSymbol() {
+      return symbols[Math.floor(Math.random() * symbols.length)];
+    }
+
+    function scrambleFrame(progress) {
+      chars.forEach((span, i) => {
+        if (progress < 0.8 || Math.random() > progress) {
+          span.textContent = randomSymbol();
+        } else {
+          span.textContent = original[i];
+        }
+      });
+    }
+
+    function endScramble() {
+      chars.forEach((span, i) => {
+        span.textContent = original[i];
+      });
+      running = false;
+    }
+
+    function startScramble() {
+      if (running) return;
+      running = true;
+      const start = performance.now();
+
+      function animate(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / scrambleDuration, 1);
+        scrambleFrame(progress);
+        if (elapsed < scrambleDuration) {
+          scrambleTimer = requestAnimationFrame(animate);
+        } else {
+          endScramble();
+        }
+      }
+      scrambleTimer = requestAnimationFrame(animate);
+    }
+
+    const brandTitle = document.getElementById('brandTitle');
+    brandTitle.addEventListener('mouseenter', startScramble);
+    brandTitle.addEventListener('focus', startScramble);
+    brandTitle.addEventListener('mouseleave', endScramble);
+    brandTitle.addEventListener('blur', endScramble);
+  })();
+</script>
+</body>
+</html>

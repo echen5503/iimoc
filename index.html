@@ -45,6 +45,7 @@
     align-items: center;
     gap: 7px;
     cursor: pointer;
+    text-decoration: none;
   }
   .brand-title svg {
     vertical-align: middle;
@@ -92,6 +93,7 @@
   }
   .btn-lg { font-size: 1.13rem; padding: 14px 26px; margin-top: 12px;}
   .btn:hover, .btn-lg:hover, .nav-link:hover { background: #333; }
+  .nav-link.active { background: #333; cursor: default; }
   main { width: 100%; }
   h1, h2, h3 {
     color: #fafafa;
@@ -256,7 +258,7 @@
 <body>
 <header>
   <nav class="nav">
-    <span class="brand-title" id="brandTitle">
+    <a class="brand-title" id="brandTitle" href="index.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 4H6l7 8-7 8h12"/>
       </svg>
@@ -267,8 +269,9 @@
         <span class="scramble-char">O</span>
         <span class="scramble-char">C</span>
       </span>
-    </span>
+    </a>
     <div class="nav-links">
+      <a class="nav-link" href="sponsor.html">Sponsors</a>
       <a class="nav-link" href="contact.html">Contact</a>
       <a class="btn" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
         Sign Up
