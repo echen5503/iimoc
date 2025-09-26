@@ -36,6 +36,10 @@
     margin: 0 auto;
     padding: 16px 20px 8px 20px;
   }
+  .nav-links {
+    display: flex;
+    gap: 18px;
+  }
   .brand-title {
     font-size: 1.5rem;
     color: #fafafa;
@@ -89,8 +93,27 @@
     transition: background .13s;
     display: inline-flex;
     align-items: center;
+    gap: 8px;
   }
-  .nav-link:hover { background: #333; }
+  .btn {
+    background: #282828;
+    color: #f0f0f0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 1.09rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background .13s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-link:hover, .btn:hover { background: #333; }
+  .nav-link.active { background: #333; cursor: default; }
   h1 {
     text-align: center;
     font-size: 2.2rem;
@@ -167,6 +190,13 @@
         <span class="scramble-char">C</span>
       </span>
     </a>
+    <div class="nav-links">
+      <a class="nav-link" href="sponsor.html">Sponsors</a>
+      <span class="nav-link active">Contact</span>
+      <a class="btn" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
+        Sign Up
+      </a>
+    </div>
   </nav>
 </header>
 <main>
