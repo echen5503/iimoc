@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>IIMOC Sponsors</title>
-<meta name="description" content="Sponsors supporting IIMOC" />
+<title>Meet the IIMOC Team</title>
+<meta name="description" content="Organizers, developers, and outreach leaders behind IIMOC" />
 <style>
   body {
     background: #181818;
@@ -16,7 +16,7 @@
   .container {
     max-width: 860px;
     margin: 56px auto 40px auto;
-    padding: 38px 32px 34px 32px;
+    padding: 38px 32px 32px 32px;
     background: #222;
     border-radius: 8px;
     border: 1px solid #444;
@@ -93,73 +93,54 @@
   }
   .nav-link:hover, .btn:hover { background: #333; }
   .nav-link.active { background: #333; cursor: default; }
-  main { width: 100%; }
   h1 {
     text-align: center;
     font-size: 2.2rem;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     font-weight: normal;
     letter-spacing: 2px;
   }
   .lead {
     text-align: center;
     color: #d5d5d5;
-    font-size: 1.08rem;
-    margin-bottom: 28px;
+    font-size: 1.05rem;
+    margin-bottom: 30px;
     line-height: 1.6;
   }
-  .sponsor-grid {
+  .team-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 22px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
   }
-  .sponsor-card {
-    background: #1c1c1c;
-    border: 1px dashed #555;
-    border-radius: 8px;
-    padding: 24px 20px;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    min-height: 210px;
-    transition: border-color .15s ease, background .15s ease, transform .15s ease;
-  }
-  .sponsor-card:hover {
-    border-color: #b89bfa;
-    background: #252526;
-    transform: translateY(-3px);
-  }
-  .logo-slot {
-    width: 100%;
-    aspect-ratio: 5 / 3;
-    background: #111;
+  .team-card {
+    background: #19191c;
     border: 1px solid #333;
     border-radius: 6px;
+    padding: 18px 20px 16px 20px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #888;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    text-align: center;
-    padding: 12px;
-    box-sizing: border-box;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 120px;
   }
-  .sponsor-name {
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: #f0f0f0;
+  .team-name {
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: #f0e7ff;
+    letter-spacing: 0.8px;
   }
-  .sponsor-note {
-    font-size: 0.92rem;
-    color: #a8a8a8;
-    text-align: center;
-    line-height: 1.5;
+  .team-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .team-tag {
+    background: #181818;
+    border: 1px solid #444;
+    border-radius: 999px;
+    color: #9ad9ff;
+    font-size: 0.82rem;
+    letter-spacing: 0.6px;
+    padding: 4px 12px 3px 12px;
   }
   .footer {
     background: #181818;
@@ -173,6 +154,7 @@
   .footer p { margin: 6px 0; color: #757575; }
   @media (max-width: 900px) {
     .container, .nav { max-width: 99vw; padding-left: 5vw; padding-right: 5vw; }
+    .team-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   }
 </style>
 </head>
@@ -192,8 +174,8 @@
       </span>
     </a>
     <div class="nav-links">
-      <span class="nav-link active">Sponsors</span>
-      <a class="nav-link" href="team.html">Our Team</a>
+      <a class="nav-link" href="sponsor.html">Sponsors</a>
+      <span class="nav-link active">Our Team</span>
       <a class="nav-link" href="contact.html">Contact</a>
       <a class="btn" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
         Sign Up
@@ -201,28 +183,143 @@
     </div>
   </nav>
 </header>
+
 <main>
   <div class="container">
-    <h1>Our Sponsors</h1>
-    <div class="lead">
-      These partners help make the International Math Optimization Challenge possible. Thank you to our sponsors!
-    </div>
-    <div class="sponsor-grid">
-      <a class="sponsor-card" href="https://apmemory.com" target="_blank" rel="noopener noreferrer">
-        <div class="logo-slot"><img src="https://www.nxp.com/docs/connect/images/logos/AP%20Memory%20Logo%20-1.svg?imwidth=300" alt="AP Memory logo"></div>
-      </a>
-      <div class="sponsor-card">
-        <div class="logo-slot">
-          <img src="https://img.electronicdesign.com/files/base/ebm/electronicdesign/image/2022/08/CXL_Logo_web.630646c3073bb.png?auto=format%2Ccompress&w=250&width=250" alt="cascadeX CXL logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+    <h1>Our Team</h1>
+    <div class="lead">Organizers, developers, and outreach leaders working behind the scenes at IIMOC.</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-name">Brian He</div>
+        <div class="team-tags">
+          <span class="team-tag">Washington Outreach</span>
         </div>
-        <div class="sponsor-name">cascadeX</div>
       </div>
-
+      <div class="team-card">
+        <div class="team-name">Brian Wei</div>
+        <div class="team-tags">
+          <span class="team-tag">Media</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Cindy Wu</div>
+        <div class="team-tags">
+          <span class="team-tag">Media</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Dorji</div>
+        <div class="team-tags">
+          <span class="team-tag">Korea Outreach</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Edwin Chen</div>
+        <div class="team-tags">
+          <span class="team-tag">Lead Organizer</span>
+          <span class="team-tag">Dev Team</span>
+          <span class="team-tag">Problemsetter</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Isabelle van Marijnissen</div>
+        <div class="team-tags">
+          <span class="team-tag">Organizer</span>
+          <span class="team-tag">Allied Club Leader (Cascadian Coalition of Nerds)</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Joey, Oliver, August</div>
+        <div class="team-tags">
+          <span class="team-tag">Oregon Outreach</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Krishnan Ranjani</div>
+        <div class="team-tags">
+          <span class="team-tag">Advisor</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Leo Song</div>
+        <div class="team-tags">
+          <span class="team-tag">Massachusetts Outreach</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Leon M. Prigge</div>
+        <div class="team-tags">
+          <span class="team-tag">Company Outreach</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Luke Zhu</div>
+        <div class="team-tags">
+          <span class="team-tag">Taiwan Outreach</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Mana Muto</div>
+        <div class="team-tags">
+          <span class="team-tag">Japan Outreach</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Rob Kolstad (Former Head Coach of USACO)</div>
+        <div class="team-tags">
+          <span class="team-tag">Advisor</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Robert Kong</div>
+        <div class="team-tags">
+          <span class="team-tag">Hong Kong Outreach</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Sami Laayouni</div>
+        <div class="team-tags">
+          <span class="team-tag">Morocco Outreach</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Shang Zhou (PhD UCSD)</div>
+        <div class="team-tags">
+          <span class="team-tag">Problemsetter</span>
+          <span class="team-tag">Codeforces Outreach</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Shoptok Roydas</div>
+        <div class="team-tags">
+          <span class="team-tag">Organizer</span>
+          <span class="team-tag">Promoter</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">sirbread (pen name)</div>
+        <div class="team-tags">
+          <span class="team-tag">Developer</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Torin Solmer</div>
+        <div class="team-tags">
+          <span class="team-tag">Dev Team</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Winston Chen</div>
+        <div class="team-tags">
+          <span class="team-tag">Media</span>
+        </div>
+      </div>
     </div>
   </div>
 </main>
+
 <footer class="footer">
-  <p>&copy; <span id="year"></span> IIMOC. All rights reserved.</p>
+  <p>&copy; <span id="year"></span> IIMOC. All rights reserved. Made with ❤️ by sirbread</p>
 </footer>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
