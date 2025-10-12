@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IIMOC Problem - Sample Greeting</title>
+<meta name="description" content="Solve the sample greeting problem." />
+<style>
+  body {
+    background: #181818;
+    color: #f0f0f0;
+    font-family: Consolas, 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    width: 100%;
+    background: #181818;
+    border-bottom: 1px solid #333;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 16px 20px 8px 20px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 18px;
+  }
+  .nav-link, .btn {
+    background: #282828;
+    color: #f0f0f0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 1.09rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background .13s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-lg {
+    font-size: 1.13rem;
+    padding: 14px 26px;
+    margin-top: 14px;
+  }
+  .nav-link:hover, .btn:hover {
+    background: #333;
+  }
+  .nav-link.active {
+    background: #333;
+    cursor: default;
+  }
+  .brand-title {
+    font-size: 1.5rem;
+    color: #fafafa;
+    letter-spacing: 2px;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .brand-title svg {
+    vertical-align: middle;
+    height: 38px;
+    width: 38px;
+    color: #b89bfa;
+    stroke-width: 2.2;
+    flex-shrink: 0;
+  }
+  #scrambleText {
+    color: #fff;
+    letter-spacing: 0.02em;
+    font-weight: bold;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+  }
+  .brand-title .scramble-char {
+    display: inline-block;
+    min-width: 1ch;
+    transition: color 0.17s;
+    color: inherit;
+    font-family: inherit;
+  }
+  main {
+    width: 100%;
+  }
+  .container {
+    max-width: 740px;
+    margin: 56px auto 40px auto;
+    padding: 38px 32px 32px 32px;
+    background: #222;
+    border-radius: 8px;
+    border: 1px solid #444;
+    box-sizing: border-box;
+  }
+  h1, h2, h3 {
+    color: #fafafa;
+    font-weight: normal;
+    letter-spacing: 2px;
+  }
+  h1 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 2.1rem;
+    margin-bottom: 18px;
+  }
+  .problem-text {
+    background: #1b1b1e;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 22px 24px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+    color: #e0e0e0;
+    font-size: 1.04rem;
+  }
+  pre {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 18px;
+    overflow-x: auto;
+    font-size: 1rem;
+  }
+  .code-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  label {
+    font-size: 1.02rem;
+    letter-spacing: 1px;
+    color: #d6d6d6;
+  }
+  textarea {
+    min-height: 220px;
+    background: #111;
+    color: #fafafa;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 16px;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 1rem;
+    resize: vertical;
+  }
+  textarea:focus {
+    outline: 2px solid #735ac4;
+    outline-offset: 0;
+  }
+  .status-panel {
+    margin-top: 28px;
+    background: #1a1a1d;
+    border: 1px solid #34343a;
+    border-radius: 6px;
+    padding: 18px 20px;
+  }
+  .status-text {
+    color: #c0c0c0;
+    font-size: 1.02rem;
+    margin: 0 0 12px 0;
+  }
+  .cases-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+  .cases-table th, .cases-table td {
+    border: 1px solid #34343a;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 0.98rem;
+  }
+  .cases-table th {
+    background: #26262b;
+    color: #f5f5f5;
+    letter-spacing: 1px;
+  }
+  .cases-table tr:nth-child(even) {
+    background: #202024;
+  }
+  .case-status-ok {
+    color: #8adf8a;
+    font-weight: 600;
+  }
+  .case-status-fail {
+    color: #ff8a80;
+    font-weight: 600;
+  }
+  .hidden {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .container, .nav {
+      max-width: 98vw;
+      padding-left: 5vw;
+      padding-right: 5vw;
+    }
+    .cases-table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a href="/index.html" class="brand-title" id="brandTitle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 4H6l7 8-7 8h12" />
+      </svg>
+      <span id="scrambleText">
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">M</span>
+        <span class="scramble-char">O</span>
+        <span class="scramble-char">C</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/sponsor.html">Sponsors</a>
+      <a class="nav-link" href="/team.html">Our Team</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
+      <span class="nav-link active">Problem</span>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="container">
+    <h1>Sample Greeting</h1>
+    <div class="problem-text">
+      <p>Edwin is at home by himself. Please say hello.</p>
+      <h2>Sample Input</h2>
+      <pre>hi</pre>
+      <h2>Sample Output</h2>
+      <pre>hello</pre>
+    </div>
+    <form class="code-form" id="codeForm">
+      <label for="codeInput">Submit your Python solution</label>
+      <textarea id="codeInput" name="code" placeholder="print('hello')" required></textarea>
+      <button type="submit" class="btn btn-lg" id="submitBtn">Submit Solution</button>
+    </form>
+    <div class="status-panel hidden" id="statusPanel">
+      <p class="status-text" id="statusText">Waiting for submission...</p>
+      <div id="casesContainer"></div>
+    </div>
+  </section>
+</main>
+<script>
+  const form = document.getElementById('codeForm');
+  const codeInput = document.getElementById('codeInput');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusPanel = document.getElementById('statusPanel');
+  const statusText = document.getElementById('statusText');
+  const casesContainer = document.getElementById('casesContainer');
+
+  async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  function formatTime(ns) {
+    if (typeof ns !== 'number' || !Number.isFinite(ns)) {
+      return '—';
+    }
+    return (ns / 1e6).toFixed(2) + ' ms';
+  }
+
+  function formatMemory(bytes) {
+    if (typeof bytes !== 'number' || !Number.isFinite(bytes)) {
+      return '—';
+    }
+    return (bytes / 1024).toFixed(0) + ' KB';
+  }
+
+  function renderCases(cases) {
+    if (!Array.isArray(cases) || cases.length === 0) {
+      casesContainer.innerHTML = '<p class="status-text">No cases available.</p>';
+      return;
+    }
+
+    const rows = cases.map((test, index) => {
+      const statusClass = test.ok ? 'case-status-ok' : 'case-status-fail';
+      const message = (test.msg || '').replace(/\n/g, '<br />');
+      return `
+        <tr>
+          <td>Case ${index + 1}</td>
+          <td class="${statusClass}">${test.status || (test.ok ? 'Accepted' : 'Failed')}</td>
+          <td>${formatTime(test.time)}</td>
+          <td>${formatMemory(test.memory)}</td>
+          <td>${message}</td>
+        </tr>
+      `;
+    }).join('');
+
+    casesContainer.innerHTML = `
+      <table class="cases-table">
+        <thead>
+          <tr>
+            <th>Case</th>
+            <th>Status</th>
+            <th>Time</th>
+            <th>Memory</th>
+            <th>Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+    `;
+  }
+
+  async function pollForResult(sid) {
+    let attempt = 0;
+    while (true) {
+      attempt += 1;
+      try {
+        const response = await fetch(`https://approval-asian-prohibited-eastern.trycloudflare.com/result/${encodeURIComponent(sid)}`);
+        if (!response.ok) {
+          throw new Error('Result request failed with status ' + response.status);
+        }
+        const payload = await response.json();
+        if (payload && payload.status === 'done') {
+          return payload;
+        }
+        statusText.textContent = `Waiting for judge (attempt ${attempt})...`;
+      } catch (error) {
+        console.error(error);
+        statusText.textContent = 'Error while fetching results. Retrying...';
+      }
+      await sleep(1000);
+    }
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const code = codeInput.value.trim();
+    if (!code) {
+      statusPanel.classList.remove('hidden');
+      statusText.textContent = 'Please enter some code before submitting.';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+    statusPanel.classList.remove('hidden');
+    statusText.textContent = 'Submitting your solution...';
+    casesContainer.innerHTML = '';
+
+    try {
+      const payload = { pid: 'sample', lang: 'python', code };
+
+      async function sendSubmission(body, contentType) {
+        const fetchOptions = {
+          method: 'POST',
+          body
+        };
+
+        if (contentType) {
+          fetchOptions.headers = {
+            'Content-Type': contentType
+          };
+        }
+
+        const response = await fetch('https://approval-asian-prohibited-eastern.trycloudflare.com/submit', fetchOptions);
+
+        if (!response.ok) {
+          throw new Error('Submission failed with status ' + response.status);
+        }
+
+        return response.json();
+      }
+
+      let submission;
+
+      try {
+        submission = await sendSubmission(JSON.stringify(payload), 'application/json');
+      } catch (networkError) {
+        if (networkError instanceof TypeError) {
+          console.warn('Falling back to plain text submission to avoid CORS preflight.', networkError);
+          submission = await sendSubmission(JSON.stringify(payload), 'text/plain;charset=UTF-8');
+        } else {
+          throw networkError;
+        }
+      }
+
+      if (!submission || typeof submission !== 'object') {
+        throw new Error('Judge returned an invalid response.');
+      }
+
+      const { sid } = submission;
+      if (!sid) {
+        throw new Error('Judge did not return a submission id.');
+      }
+
+      statusText.textContent = 'Submission received. Fetching results...';
+      const result = await pollForResult(sid);
+      statusText.textContent = 'Results ready!';
+      renderCases(result.cases);
+    } catch (error) {
+      console.error(error);
+      statusText.textContent = 'An error occurred: ' + (error.message || 'Unknown error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Solution';
+    }
+  });
+</script>
+</body>
+</html>
