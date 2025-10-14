@@ -259,7 +259,7 @@
   </section>
 </main>
 <script>
-  const URL = "https://tony-insured-surrounded-changed.trycloudflare.com";
+  const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
   const form = document.getElementById('codeForm');
   const codeInput = document.getElementById('codeInput');
   const submitBtn = document.getElementById('submitBtn');
@@ -328,7 +328,11 @@
     while (true) {
       attempt += 1;
       try {
-        const response = await fetch(`${URL}/result/${encodeURIComponent(sid)}`);
+        const response = await fetch(`${URL}/result/${encodeURIComponent(sid)}`, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true'
+          }
+        });
         if (!response.ok) {
           throw new Error('Result request failed with status ' + response.status);
         }
@@ -372,7 +376,12 @@
 
         if (contentType) {
           fetchOptions.headers = {
-            'Content-Type': contentType
+            'Content-Type': contentType,
+            'ngrok-skip-browser-warning': 'true'
+          };
+        } else {
+          fetchOptions.headers = {
+            'ngrok-skip-browser-warning': 'true'
           };
         }
 
