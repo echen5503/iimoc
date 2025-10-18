@@ -1,62 +1,72 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>IIMOC Problem - AHC 001 Sample</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIMOC Problem - AHC 001 Sample</title>
 
-<style>
-  body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
-  header { width:100%; background:#181818; border-bottom:1px solid #333; }
-  .nav { display:flex; align-items:center; justify-content:space-between; max-width:740px; margin:0 auto; padding:16px 20px 8px; }
-  .nav-links { display:flex; gap:18px; }
-  .nav-link, .btn {
-    background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
-    padding:10px 20px; font-family:inherit; font-size:1.09rem; cursor:pointer;
-    text-decoration:none; font-weight:600; letter-spacing:1px; transition:background .13s;
-    display:inline-flex; align-items:center; gap:8px;
-  }
-  .btn-lg { font-size:1.13rem; padding:14px 26px; margin-top:14px; }
-  .nav-link:hover, .btn:hover { background:#333; }
-  .nav-link.active { background:#333; cursor:default; }
-  .brand-title { font-size:1.5rem; color:#fafafa; letter-spacing:2px; display:flex; align-items:center; gap:7px; text-decoration:none; }
-  .brand-title svg { height:38px; width:38px; color:#b89bfa; stroke-width:2.2; }
-  .container { max-width:740px; margin:56px auto 40px; padding:38px 32px; background:#222; border-radius:8px; border:1px solid #444; }
-  h1 { text-align:center; font-size:2.1rem; margin-bottom:18px; }
-  .problem-text { background:#1b1b1e; border:1px solid #333; border-radius:6px; padding:22px 24px; margin-bottom:28px; line-height:1.6; color:#e0e0e0; font-size:1.04rem; }
-  pre { background:#111; border:1px solid #333; border-radius:6px; padding:18px; overflow-x:auto; font-size:1rem; }
-  .code-form { display:flex; flex-direction:column; gap:14px; }
-  textarea { min-height:220px; background:#111; color:#fafafa; border:1px solid #444; border-radius:6px; padding:16px; font-family:Consolas,'Courier New',monospace; font-size:1rem; resize:vertical; }
-  textarea:focus { outline:2px solid #735ac4; }
-  .status-panel { margin-top:28px; background:#1a1a1d; border:1px solid #34343a; border-radius:6px; padding:18px 20px; }
-  .cases-table { width:100%; border-collapse:collapse; margin-top:12px; }
-  .cases-table th, .cases-table td { border:1px solid #34343a; padding:10px 12px; text-align:left; font-size:0.98rem; }
-  .cases-table th { background:#26262b; color:#f5f5f5; letter-spacing:1px; }
-  .cases-table tr:nth-child(even) { background:#202024; }
-  .case-status-ok { color:#8adf8a; font-weight:600; }
-  .case-status-fail { color:#ff8a80; font-weight:600; }
-  .hidden { display:none; }
-  @media (max-width:900px){ .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; } .cases-table{ display:block; overflow-x:auto; } }
-</style>
+  <style>
+    
+    body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
+    header { width:100%; background:#181818; border-bottom:1px solid #333; }
+    .nav { display:flex; align-items:center; justify-content:space-between; max-width:740px; margin:0 auto; padding:16px 20px 8px; }
+    .nav-links { display:flex; gap:18px; }
+    .nav-link, .btn {
+      background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
+      padding:10px 20px; font-family:inherit; font-size:1.09rem; cursor:pointer;
+      text-decoration:none; font-weight:600; letter-spacing:1px; transition:background .13s;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn-lg { font-size:1.13rem; padding:14px 26px; margin-top:14px; }
+    .nav-link:hover, .btn:hover { background:#333; }
+    .nav-link.active { background:#333; cursor:default; }
+    .brand-title { font-size:1.5rem; color:#fafafa; letter-spacing:2px; display:flex; align-items:center; gap:7px; text-decoration:none; }
+    .brand-title svg { height:38px; width:38px; color:#b89bfa; stroke-width:2.2; }
+    .container { max-width:740px; margin:56px auto 40px; padding:38px 32px; background:#222; border-radius:8px; border:1px solid #444; }
+    h1 { text-align:center; font-size:2.1rem; margin-bottom:18px; }
+    .problem-text { background:#1b1b1e; border:1px solid #333; border-radius:6px; padding:22px 24px; margin-bottom:28px; line-height:1.6; color:#e0e0e0; font-size:1.04rem; }
+    pre { background:#111; border:1px solid #333; border-radius:6px; padding:18px; overflow-x:auto; font-size:1rem; }
+    .code-form { display:flex; flex-direction:column; gap:14px; }
+    textarea { min-height:220px; background:#111; color:#fafafa; border:1px solid #444; border-radius:6px; padding:16px; font-family:Consolas,'Courier New',monospace; font-size:1rem; resize:vertical; }
+    textarea:focus { outline:2px solid #735ac4; }
+    .status-panel { margin-top:28px; background:#1a1a1d; border:1px solid #34343a; border-radius:6px; padding:18px 20px; }
+    .cases-table { width:100%; border-collapse:collapse; margin-top:12px; }
+    .cases-table th, .cases-table td { border:1px solid #34343a; padding:10px 12px; text-align:left; font-size:0.98rem; }
+    .cases-table th { background:#26262b; color:#f5f5f5; letter-spacing:1px; }
+    .cases-table tr:nth-child(even) { background:#202024; }
+    .case-status-ok { color:#8adf8a; font-weight:600; }
+    .case-status-fail { color:#ff8a80; font-weight:600; }
+    .hidden { display:none; }
+    a {color:cyan;}
+    @media (max-width:900px){ .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; } .cases-table{ display:block; overflow-x:auto; } }
+    code.language-python {
+      background-color: #111!important; padding: 0!important;
+    }
+  </style>
 
-<!-- ✅ MathJax configured to render inside code blocks -->
-<script>
-window.MathJax = {
-  options: {
-    skipHtmlTags: ["script","noscript","style","textarea"], // don't skip pre/code
-  },
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$','$$'], ['\\[','\\]']],
-    processEscapes: true
-  },
-  svg: { fontCache: 'global' }
-};
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <!-- MathJax (configured to process inside pre/code) -->
+  <script>
+  window.MathJax = {
+    options: { skipHtmlTags: ["script","noscript","style","textarea"] }, /* don't skip pre/code */
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true
+    },
+    svg: { fontCache: 'global' }
+  };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
-<!-- Markdown renderer -->
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- highlight.js (browser build) + theme -->
+  <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/xt256.min.css">
+
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js"></script>
+
+  <!-- marked + DOMPurify -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.5.7/dist/purify.min.js"></script>
 </head>
 
 <body>
@@ -94,8 +104,8 @@ window.MathJax = {
   </section>
 </main>
 
-<!-- ===== Judging logic (unchanged) ===== -->
 <script>
+/* ---------- Judging logic (unchanged) ---------- */
 const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
 const form = document.getElementById('codeForm');
 const codeInput = document.getElementById('codeInput');
@@ -116,6 +126,52 @@ function renderCases(cases){
     return `<tr><td>Case ${i+1}</td><td class="${s}">${t.status||(t.ok?'Accepted':'Failed')}</td><td>${formatTime(t.time)}</td><td>${formatMemory(t.memory)}</td><td>${msg}</td></tr>`;
   }).join('');
   casesContainer.innerHTML=`<table class="cases-table"><thead><tr><th>Case</th><th>Status</th><th>Time</th><th>Memory</th><th>Message</th></tr></thead><tbody>${rows}</tbody></table>`;
+
+  for (let idx=0; idx<cases.length; idx++) {
+    const test = cases[idx];
+    let msg = (test.msg || '');
+    const row = casesContainer.querySelector(`tbody tr:nth-child(${idx + 1})`);
+    if (idx === 0) {
+      casesContainer._scoreTotal = 0;
+      casesContainer._anyFail = false;
+      const prev = document.getElementById('totalScoreBadge');
+      if (prev) prev.remove();
+    }
+    if (!test.ok) casesContainer._anyFail = true;
+
+    const match = msg.match(/-?\d[\d,]*(?:\.\d+)?/);
+    if (match) {
+      const value = Number(match[0].replace(/,/g, ''));
+      test.extractedNumber = value;
+      casesContainer._scoreTotal = (casesContainer._scoreTotal || 0) + value;
+
+      if (row) {
+        const cell = row.cells[4];
+        if (cell) {
+          const badge = document.createElement('span');
+          badge.style.marginLeft = '10px';
+          badge.style.color = '#9ee6ff';
+          badge.style.fontWeight = '700';
+          badge.textContent = `Extracted: ${value}`;
+          cell.appendChild(badge);
+        }
+      }
+    }
+    if (idx === cases.length - 1) {
+      const finalScore = casesContainer._anyFail ? 0 : (casesContainer._scoreTotal || 0);
+      const totalEl = document.createElement('div');
+      totalEl.id = 'totalScoreBadge';
+      totalEl.style.marginTop = '12px';
+      totalEl.style.padding = '10px 14px';
+      totalEl.style.background = '#0b2a2f';
+      totalEl.style.color = '#9ee6ff';
+      totalEl.style.fontWeight = '700';
+      totalEl.style.border = '1px solid #07494f';
+      totalEl.style.display = 'inline-block';
+      totalEl.textContent = `Total Score: ${finalScore}`;
+      statusPanel.prepend(totalEl);
+    }
+  }
 }
 
 async function pollForResult(sid){
@@ -153,17 +209,43 @@ form.addEventListener('submit',async e=>{
 });
 </script>
 
-<!-- ===== Markdown + MathJax renderer ===== -->
+<!-- ---------- Markdown + MathJax + HLJS rendering ---------- -->
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('problemMarkdown');
+
+  // Use marked’s highlighter with hljs (already loaded globally)
+  marked.setOptions({
+    highlight: function(code, lang) {
+      try {
+        if (lang && hljs.getLanguage(lang)) {
+          return hljs.highlight(code, { language: lang, ignoreIllegals: true }).value;
+        }
+        return hljs.highlightAuto(code).value;
+      } catch {
+        const div = document.createElement('div');
+        div.textContent = code;
+        return div.innerHTML;
+      }
+    }
+  });
+
   try {
     const res = await fetch('../assets/problems/ahc001.md', { cache:'no-store' });
     if (!res.ok) throw new Error(`Markdown not found (${res.status})`);
     const md = await res.text();
-    container.innerHTML = marked.parse(md);
 
-    // Ask MathJax to typeset including inside code blocks
+    // Render → sanitize (preserving class so hljs styles apply)
+    const rawHtml = marked.parse(md);
+    const safeHtml = DOMPurify.sanitize(rawHtml, { ADD_ATTR: ['class'] });
+    container.innerHTML = safeHtml;
+
+    // (Optional safety) If anything slipped through without classes, do a final pass:
+    container.querySelectorAll('pre code').forEach(block => {
+      if (!block.classList.contains('hljs')) hljs.highlightElement(block);
+    });
+
+    // Ask MathJax to typeset (including inside code blocks, per your config)
     if (window.MathJax && MathJax.typesetPromise) {
       await MathJax.typesetPromise([container]);
     }
