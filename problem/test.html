@@ -6,7 +6,6 @@
   <title>IIMOC Problem - AHC 001 Sample</title>
 
   <style>
-    
     body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
     header { width:100%; background:#181818; border-bottom:1px solid #333; }
     .nav { display:flex; align-items:center; justify-content:space-between; max-width:740px; margin:0 auto; padding:16px 20px 8px; }
@@ -27,6 +26,7 @@
     .problem-text { background:#1b1b1e; border:1px solid #333; border-radius:6px; padding:22px 24px; margin-bottom:28px; line-height:1.6; color:#e0e0e0; font-size:1.04rem; }
     pre { background:#111; border:1px solid #333; border-radius:6px; padding:18px; overflow-x:auto; font-size:1rem; }
     .code-form { display:flex; flex-direction:column; gap:14px; }
+    label { font-weight:700; letter-spacing:.5px; }
     textarea { min-height:220px; background:#111; color:#fafafa; border:1px solid #444; border-radius:6px; padding:16px; font-family:Consolas,'Courier New',monospace; font-size:1rem; resize:vertical; }
     textarea:focus { outline:2px solid #735ac4; }
     .status-panel { margin-top:28px; background:#1a1a1d; border:1px solid #34343a; border-radius:6px; padding:18px 20px; }
@@ -39,29 +39,28 @@
     .hidden { display:none; }
     a {color:cyan;}
     @media (max-width:900px){ .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; } .cases-table{ display:block; overflow-x:auto; } }
-    code.language-python {
-      background-color: #111!important; padding: 0!important;
+    code.language-python { background-color: #111!important; padding: 0!important; }
+
+    /* New: language select styling */
+    .control-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    select.select {
+      appearance:none; background:#111; color:#fafafa; border:1px solid #444; border-radius:6px;
+      padding:10px 12px; font-family:inherit; font-size:1rem; cursor:pointer;
     }
   </style>
 
   <!-- MathJax (configured to process inside pre/code) -->
   <script>
   window.MathJax = {
-    options: { skipHtmlTags: ["script","noscript","style","textarea"] }, /* don't skip pre/code */
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$','$$'], ['\\[','\\]']],
-      processEscapes: true
-    },
+    options: { skipHtmlTags: ["script","noscript","style","textarea"] },
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'], ['\\[','\\]']], processEscapes: true },
     svg: { fontCache: 'global' }
   };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
   <!-- highlight.js (browser build) + theme -->
-  <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/xt256.min.css">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/xt256.min.css">
   <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js"></script>
 
   <!-- marked + DOMPurify -->
@@ -92,7 +91,16 @@
     <div id="problemMarkdown" class="problem-text">Loading problem statement…</div>
 
     <form class="code-form" id="codeForm">
-      <label for="codeInput">Submit your Python solution</label>
+      <div class="control-row">
+        <label for="langSelect">Language</label>
+        <select id="langSelect" class="select" name="lang" required>
+          <option value="python" selected>Python</option>
+          <option value="cpp">C++</option>
+          <option value="java">Java</option>
+        </select>
+      </div>
+
+      <label for="codeInput" id="codeLabel">Submit your solution</label>
       <textarea id="codeInput" name="code" placeholder="print('hello')" required></textarea>
       <button type="submit" class="btn btn-lg" id="submitBtn">Submit Solution</button>
     </form>
@@ -105,7 +113,7 @@
 </main>
 
 <script>
-/* ---------- Judging logic (unchanged) ---------- */
+/* ---------- Judging logic (updated to send selected lang) ---------- */
 const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
 const form = document.getElementById('codeForm');
 const codeInput = document.getElementById('codeInput');
@@ -113,6 +121,39 @@ const submitBtn = document.getElementById('submitBtn');
 const statusPanel = document.getElementById('statusPanel');
 const statusText = document.getElementById('statusText');
 const casesContainer = document.getElementById('casesContainer');
+const langSelect = document.getElementById('langSelect');
+const codeLabel = document.getElementById('codeLabel');
+
+const TEMPLATES = {
+  python: "print('hello')\n",
+  cpp:
+`#include <bits/stdc++.h>
+using namespace std;
+int main(){
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout << "hello\\n";
+  return 0;
+}
+`,
+  java:
+`import java.io.*;
+public class Main {
+  public static void main(String[] args) throws Exception {
+    System.out.println("hello");
+  }
+}
+`
+};
+
+function applyTemplateFor(lang){
+  codeInput.placeholder = TEMPLATES[lang] || '';
+}
+
+applyTemplateFor(langSelect.value);
+langSelect.addEventListener('change', () => {
+  applyTemplateFor(langSelect.value);
+});
 
 async function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 function formatTime(ns){ return (typeof ns==='number'&&Number.isFinite(ns))?(ns/1e6).toFixed(2)+' ms':'—'; }
@@ -192,11 +233,12 @@ async function pollForResult(sid){
 form.addEventListener('submit',async e=>{
   e.preventDefault();
   const code=codeInput.value.trim();
+  const lang=langSelect.value;                 // <- NEW
   if(!code){ statusPanel.classList.remove('hidden'); statusText.textContent='Please enter some code before submitting.'; return; }
   submitBtn.disabled=true; submitBtn.textContent='Submitting...';
   statusPanel.classList.remove('hidden'); statusText.textContent='Submitting your solution...'; casesContainer.innerHTML='';
   try{
-    const payload={pid:'ahc001',lang:'python',code};
+    const payload={pid:'ahc001',lang,code};   // <- NEW
     const send=async(body,ct)=>{ const opt={method:'POST',body,headers:{'ngrok-skip-browser-warning':'true'}}; if(ct) opt.headers['Content-Type']=ct; const r=await fetch(`${URL}/submit`,opt); if(!r.ok) throw new Error('Submission failed'); return r.json(); };
     let sub;
     try{ sub=await send(JSON.stringify(payload),'application/json'); }catch{ sub=await send(JSON.stringify(payload),'text/plain;charset=UTF-8'); }
@@ -214,7 +256,6 @@ form.addEventListener('submit',async e=>{
 document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('problemMarkdown');
 
-  // Use marked’s highlighter with hljs (already loaded globally)
   marked.setOptions({
     highlight: function(code, lang) {
       try {
@@ -235,17 +276,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!res.ok) throw new Error(`Markdown not found (${res.status})`);
     const md = await res.text();
 
-    // Render → sanitize (preserving class so hljs styles apply)
     const rawHtml = marked.parse(md);
     const safeHtml = DOMPurify.sanitize(rawHtml, { ADD_ATTR: ['class'] });
     container.innerHTML = safeHtml;
 
-    // (Optional safety) If anything slipped through without classes, do a final pass:
     container.querySelectorAll('pre code').forEach(block => {
       if (!block.classList.contains('hljs')) hljs.highlightElement(block);
     });
 
-    // Ask MathJax to typeset (including inside code blocks, per your config)
     if (window.MathJax && MathJax.typesetPromise) {
       await MathJax.typesetPromise([container]);
     }
