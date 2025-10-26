@@ -1,233 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>IIMOC Problem - Sample Greeting</title>
-<meta name="description" content="Solve the sample greeting problem." />
-<style>
-  body {
-    background: #181818;
-    color: #f0f0f0;
-    font-family: Consolas, 'Courier New', monospace;
-    margin: 0;
-    padding: 0;
-  }
-  header {
-    width: 100%;
-    background: #181818;
-    border-bottom: 1px solid #333;
-  }
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 740px;
-    margin: 0 auto;
-    padding: 16px 20px 8px 20px;
-  }
-  .nav-links {
-    display: flex;
-    gap: 18px;
-  }
-  .nav-link, .btn {
-    background: #282828;
-    color: #f0f0f0;
-    border: 1px solid #444;
-    border-radius: 4px;
-    padding: 10px 20px;
-    font-family: inherit;
-    font-size: 1.09rem;
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: 600;
-    letter-spacing: 1px;
-    transition: background .13s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .btn-lg {
-    font-size: 1.13rem;
-    padding: 14px 26px;
-    margin-top: 14px;
-  }
-  .nav-link:hover, .btn:hover {
-    background: #333;
-  }
-  .nav-link.active {
-    background: #333;
-    cursor: default;
-  }
-  .brand-title {
-    font-size: 1.5rem;
-    color: #fafafa;
-    letter-spacing: 2px;
-    font-family: inherit;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  .brand-title svg {
-    vertical-align: middle;
-    height: 38px;
-    width: 38px;
-    color: #b89bfa;
-    stroke-width: 2.2;
-    flex-shrink: 0;
-  }
-  #scrambleText {
-    color: #fff;
-    letter-spacing: 0.02em;
-    font-weight: bold;
-    font-size: 1.2em;
-    display: flex;
-    align-items: center;
-  }
-  .brand-title .scramble-char {
-    display: inline-block;
-    min-width: 1ch;
-    transition: color 0.17s;
-    color: inherit;
-    font-family: inherit;
-  }
-  main {
-    width: 100%;
-  }
-  .container {
-    max-width: 740px;
-    margin: 56px auto 40px auto;
-    padding: 38px 32px 32px 32px;
-    background: #222;
-    border-radius: 8px;
-    border: 1px solid #444;
-    box-sizing: border-box;
-  }
-  h1, h2, h3 {
-    color: #fafafa;
-    font-weight: normal;
-    letter-spacing: 2px;
-  }
-  h1 {
-    margin-top: 0;
-    text-align: center;
-    font-size: 2.1rem;
-    margin-bottom: 18px;
-  }
-  .problem-text {
-    background: #1b1b1e;
-    border: 1px solid #333;
-    border-radius: 6px;
-    padding: 22px 24px;
-    margin-bottom: 28px;
-    line-height: 1.6;
-    color: #e0e0e0;
-    font-size: 1.04rem;
-  }
-  pre {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 6px;
-    padding: 18px;
-    overflow-x: auto;
-    font-size: 1rem;
-  }
-  .code-form {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  label {
-    font-size: 1.02rem;
-    letter-spacing: 1px;
-    color: #d6d6d6;
-  }
-  textarea {
-    min-height: 220px;
-    background: #111;
-    color: #fafafa;
-    border: 1px solid #444;
-    border-radius: 6px;
-    padding: 16px;
-    font-family: Consolas, 'Courier New', monospace;
-    font-size: 1rem;
-    resize: vertical;
-  }
-  textarea:focus {
-    outline: 2px solid #735ac4;
-    outline-offset: 0;
-  }
-  .status-panel {
-    margin-top: 28px;
-    background: #1a1a1d;
-    border: 1px solid #34343a;
-    border-radius: 6px;
-    padding: 18px 20px;
-  }
-  .status-text {
-    color: #c0c0c0;
-    font-size: 1.02rem;
-    margin: 0 0 12px 0;
-  }
-  .cases-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 12px;
-  }
-  .cases-table th, .cases-table td {
-    border: 1px solid #34343a;
-    padding: 10px 12px;
-    text-align: left;
-    font-size: 0.98rem;
-  }
-  .cases-table th {
-    background: #26262b;
-    color: #f5f5f5;
-    letter-spacing: 1px;
-  }
-  .cases-table tr:nth-child(even) {
-    background: #202024;
-  }
-  .case-status-ok {
-    color: #8adf8a;
-    font-weight: 600;
-  }
-  .case-status-fail {
-    color: #ff8a80;
-    font-weight: 600;
-  }
-  .hidden {
-    display: none;
-  }
-  @media (max-width: 900px) {
-    .container, .nav {
-      max-width: 98vw;
-      padding-left: 5vw;
-      padding-right: 5vw;
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIMOC Problem</title>
+
+  <style>
+    body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
+    header { width:100%; background:#181818; border-bottom:1px solid #333; }
+    .nav { display:flex; align-items:center; justify-content:space-between; max-width:740px; margin:0 auto; padding:16px 20px 8px; }
+    .nav-links { display:flex; gap:18px; }
+    .nav-link, .btn {
+      background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
+      padding:10px 20px; font-family:inherit; font-size:1.09rem; cursor:pointer;
+      text-decoration:none; font-weight:600; letter-spacing:1px; transition:background .13s;
+      display:inline-flex; align-items:center; gap:8px;
     }
-    .cases-table {
-      display: block;
-      overflow-x: auto;
+    .btn-lg { font-size:1.13rem; padding:14px 26px; margin-top:14px; }
+    .nav-link:hover, .btn:hover { background:#333; }
+    .nav-link.active { background:#333; cursor:default; }
+    .brand-title { font-size:1.5rem; color:#fafafa; letter-spacing:2px; display:flex; align-items:center; gap:7px; text-decoration:none; }
+    .brand-title svg { height:38px; width:38px; color:#b89bfa; stroke-width:2.2; }
+    .container { max-width:740px; margin:56px auto 40px; padding:38px 32px; background:#222; border-radius:8px; border:1px solid #444; }
+    h1 { text-align:center; font-size:2.1rem; margin-bottom:18px; }
+    .problem-text { background:#1b1b1e; border:1px solid #333; border-radius:6px; padding:22px 24px; margin-bottom:28px; line-height:1.6; color:#e0e0e0; font-size:1.04rem; }
+    pre { background:#111; border:1px solid #333; border-radius:6px; padding:18px; overflow-x:auto; font-size:1rem; }
+    .code-form { display:flex; flex-direction:column; gap:14px; }
+    label { font-weight:700; letter-spacing:.5px; }
+    textarea { min-height:220px; background:#111; color:#fafafa; border:1px solid #444; border-radius:6px; padding:16px; font-family:Consolas,'Courier New',monospace; font-size:1rem; resize:vertical; }
+    textarea:focus { outline:2px solid #735ac4; }
+    .status-panel { margin-top:28px; background:#1a1a1d; border:1px solid #34343a; border-radius:6px; padding:18px 20px; }
+    .cases-table { width:100%; border-collapse:collapse; margin-top:12px; }
+    .cases-table th, .cases-table td { border:1px solid #34343a; padding:10px 12px; text-align:left; font-size:0.98rem; }
+    .cases-table th { background:#26262b; color:#f5f5f5; letter-spacing:1px; }
+    .cases-table tr:nth-child(even) { background:#202024; }
+    .case-status-ok { color:#8adf8a; font-weight:600; }
+    .case-status-fail { color:#ff8a80; font-weight:600; }
+    .hidden { display:none; }
+    a {color:cyan;}
+    @media (max-width:900px){ .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; } .cases-table{ display:block; overflow-x:auto; } }
+    code.language-python { background-color: #111!important; padding: 0!important; }
+
+    /* New: language select styling */
+    .control-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    select.select {
+      appearance:none; background:#111; color:#fafafa; border:1px solid #444; border-radius:6px;
+      padding:10px 12px; font-family:inherit; font-size:1rem; cursor:pointer;
     }
-  }
-</style>
+  </style>
+
+  <!-- MathJax (configured to process inside pre/code) -->
+  <script>
+  window.MathJax = {
+    options: { skipHtmlTags: ["script","noscript","style","textarea"] },
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'], ['\\[','\\]']], processEscapes: true },
+    svg: { fontCache: 'global' }
+  };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+  <!-- highlight.js (browser build) + theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/xt256.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js"></script>
+
+  <!-- marked + DOMPurify -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.5.7/dist/purify.min.js"></script>
 </head>
+
 <body>
 <header>
   <nav class="nav">
-    <a href="/index.html" class="brand-title" id="brandTitle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 4H6l7 8-7 8h12" />
-      </svg>
-      <span id="scrambleText">
-        <span class="scramble-char">I</span>
-        <span class="scramble-char">I</span>
-        <span class="scramble-char">M</span>
-        <span class="scramble-char">O</span>
-        <span class="scramble-char">C</span>
-      </span>
+    <a href="/index.html" class="brand-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4H6l7 8-7 8h12"/></svg>
+      <span id="scrambleText"><span>I</span><span>I</span><span>M</span><span>O</span><span>C</span></span>
     </a>
     <div class="nav-links">
       <a class="nav-link" href="/sponsor.html">Sponsors</a>
@@ -237,197 +83,237 @@
     </div>
   </nav>
 </header>
+
 <main>
   <section class="container">
-    <h1>Sample Greeting</h1>
-    <div class="problem-text">
-      <p>Edwin is at home by himself. Please say hello.</p>
-      <h2>Sample Input</h2>
-      <pre>hi</pre>
-      <h2>Sample Output</h2>
-      <pre>hello</pre>
-    </div>
+    
+
+    <div id="problemMarkdown" class="problem-text">Loading problem statement…</div>
+    
     <form class="code-form" id="codeForm">
-      <label for="codeInput">Submit your Python solution</label>
+      <div class="control-row">
+        <label for="langSelect">Language</label>
+        <select id="langSelect" class="select" name="lang" required>
+          <option value="python" selected>Python</option>
+          <option value="cpp">C++</option>
+          <option value="java">Java</option>
+        </select>
+      </div>
+
+      <label for="codeInput" id="codeLabel">Submit your solution</label>
       <textarea id="codeInput" name="code" placeholder="print('hello')" required></textarea>
       <button type="submit" class="btn btn-lg" id="submitBtn">Submit Solution</button>
     </form>
+
     <div class="status-panel hidden" id="statusPanel">
       <p class="status-text" id="statusText">Waiting for submission...</p>
       <div id="casesContainer"></div>
     </div>
   </section>
 </main>
+
 <script>
-  const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
-  const form = document.getElementById('codeForm');
-  const codeInput = document.getElementById('codeInput');
-  const submitBtn = document.getElementById('submitBtn');
-  const statusPanel = document.getElementById('statusPanel');
-  const statusText = document.getElementById('statusText');
-  const casesContainer = document.getElementById('casesContainer');
+/* ---------- Judging logic (updated to send selected lang) ---------- */
+const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
+const form = document.getElementById('codeForm');
+const codeInput = document.getElementById('codeInput');
+const submitBtn = document.getElementById('submitBtn');
+const statusPanel = document.getElementById('statusPanel');
+const statusText = document.getElementById('statusText');
+const casesContainer = document.getElementById('casesContainer');
+const langSelect = document.getElementById('langSelect');
+const codeLabel = document.getElementById('codeLabel');
 
-  async function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+const TEMPLATES = {
+  python: "print('hello')\n",
+  cpp:
+`#include <bits/stdc++.h>
+using namespace std;
+int main(){
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout << "hello\\n";
+  return 0;
+}
+`,
+  java:
+`import java.io.*;
+public class Main {
+  public static void main(String[] args) throws Exception {
+    System.out.println("hello");
   }
+}
+`
+};
 
-  function formatTime(ns) {
-    if (typeof ns !== 'number' || !Number.isFinite(ns)) {
-      return '—';
+function applyTemplateFor(lang){
+  codeInput.placeholder = TEMPLATES[lang] || '';
+}
+
+applyTemplateFor(langSelect.value);
+langSelect.addEventListener('change', () => {
+  applyTemplateFor(langSelect.value);
+});
+
+async function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function formatTime(ns){ return (typeof ns==='number'&&Number.isFinite(ns))?(ns/1e6).toFixed(2)+' ms':'—'; }
+function formatMemory(b){ return (typeof b==='number'&&Number.isFinite(b))?(b/1024).toFixed(0)+' KB':'—'; }
+
+function renderCases(cases){
+  if(!Array.isArray(cases)||cases.length===0){ casesContainer.innerHTML='<p>No cases available.</p>'; return; }
+  const rows=cases.map((t,i)=>{
+    const s=t.ok?'case-status-ok':'case-status-fail';
+    const msg=(t.msg||'').replace(/\n/g,'<br />');
+    return `<tr><td>Case ${i+1}</td><td class="${s}">${t.status||(t.ok?'Accepted':'Failed')}</td><td>${formatTime(t.time)}</td><td>${formatMemory(t.memory)}</td><td>${msg}</td></tr>`;
+  }).join('');
+  casesContainer.innerHTML=`<table class="cases-table"><thead><tr><th>Case</th><th>Status</th><th>Time</th><th>Memory</th><th>Message</th></tr></thead><tbody>${rows}</tbody></table>`;
+
+  for (let idx=0; idx<cases.length; idx++) {
+    const test = cases[idx];
+    let msg = (test.msg || '');
+    const row = casesContainer.querySelector(`tbody tr:nth-child(${idx + 1})`);
+    if (idx === 0) {
+      casesContainer._scoreTotal = 0;
+      casesContainer._anyFail = false;
+      const prev = document.getElementById('totalScoreBadge');
+      if (prev) prev.remove();
     }
-    return (ns / 1e6).toFixed(2) + ' ms';
-  }
+    if (!test.ok) casesContainer._anyFail = true;
 
-  function formatMemory(bytes) {
-    if (typeof bytes !== 'number' || !Number.isFinite(bytes)) {
-      return '—';
-    }
-    return (bytes / 1024).toFixed(0) + ' KB';
-  }
+    const match = msg.match(/-?\d[\d,]*(?:\.\d+)?/);
+    if (match) {
+      const value = Number(match[0].replace(/,/g, ''));
+      test.extractedNumber = value;
+      casesContainer._scoreTotal = (casesContainer._scoreTotal || 0) + value;
 
-  function renderCases(cases) {
-    if (!Array.isArray(cases) || cases.length === 0) {
-      casesContainer.innerHTML = '<p class="status-text">No cases available.</p>';
-      return;
-    }
-
-    const rows = cases.map((test, index) => {
-      const statusClass = test.ok ? 'case-status-ok' : 'case-status-fail';
-      const message = (test.msg || '').replace(/\n/g, '<br />');
-      return `
-        <tr>
-          <td>Case ${index + 1}</td>
-          <td class="${statusClass}">${test.status || (test.ok ? 'Accepted' : 'Failed')}</td>
-          <td>${formatTime(test.time)}</td>
-          <td>${formatMemory(test.memory)}</td>
-          <td>${message}</td>
-        </tr>
-      `;
-    }).join('');
-
-    casesContainer.innerHTML = `
-      <table class="cases-table">
-        <thead>
-          <tr>
-            <th>Case</th>
-            <th>Status</th>
-            <th>Time</th>
-            <th>Memory</th>
-            <th>Message</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows}
-        </tbody>
-      </table>
-    `;
-  }
-
-  async function pollForResult(sid) {
-    let attempt = 0;
-    while (true) {
-      attempt += 1;
-      try {
-        const response = await fetch(`${URL}/result/${encodeURIComponent(sid)}`, {
-          headers: {
-            'ngrok-skip-browser-warning': 'true'
-          }
-        });
-        if (!response.ok) {
-          throw new Error('Result request failed with status ' + response.status);
+      if (row) {
+        const cell = row.cells[4];
+        if (cell) {
+          const badge = document.createElement('span');
+          badge.style.marginLeft = '10px';
+          badge.style.color = '#9ee6ff';
+          badge.style.fontWeight = '700';
+          badge.textContent = `Extracted: ${value}`;
+          cell.appendChild(badge);
         }
-        const payload = await response.json();
-        if (payload && payload.status === 'done') {
-          return payload;
-        }
-        statusText.textContent = `Waiting for judge (attempt ${attempt})...`;
-      } catch (error) {
-        console.error(error);
-        statusText.textContent = 'Error while fetching results. Retrying...';
       }
-      await sleep(1000);
+    }
+    if (idx === cases.length - 1) {
+      const finalScore = casesContainer._anyFail ? 0 : (casesContainer._scoreTotal || 0);
+      const totalEl = document.createElement('div');
+      totalEl.id = 'totalScoreBadge';
+      totalEl.style.marginTop = '12px';
+      totalEl.style.padding = '10px 14px';
+      totalEl.style.background = '#0b2a2f';
+      totalEl.style.color = '#9ee6ff';
+      totalEl.style.fontWeight = '700';
+      totalEl.style.border = '1px solid #07494f';
+      totalEl.style.display = 'inline-block';
+      totalEl.textContent = `Total Score: ${finalScore}`;
+      statusPanel.prepend(totalEl);
     }
   }
+}
 
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
+async function pollForResult(sid){
+  let attempt=0;
+  while(true){
+    attempt++;
+    try{
+      const r=await fetch(`${URL}/result/${encodeURIComponent(sid)}`,{headers:{'ngrok-skip-browser-warning':'true'}});
+      if(!r.ok) throw new Error('Result request failed');
+      const payload=await r.json();
+      if(payload&&payload.status==='done') return payload;
+      statusText.textContent=`In queue (attempt ${attempt})...`;
+    }catch(e){ console.error(e); statusText.textContent='Judging...'; }
+    await sleep(1000);
+  }
+}
 
-    const code = codeInput.value.trim();
-    if (!code) {
-      statusPanel.classList.remove('hidden');
-      statusText.textContent = 'Please enter some code before submitting.';
-      return;
-    }
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const code=codeInput.value.trim();
+  const lang=langSelect.value;                 // <- NEW
+  if(!code){ statusPanel.classList.remove('hidden'); statusText.textContent='Please enter some code before submitting.'; return; }
+  submitBtn.disabled=true; submitBtn.textContent='Submitting...';
+  statusPanel.classList.remove('hidden'); statusText.textContent='Submitting your solution...'; casesContainer.innerHTML='';
+  try{
+    const payload={pid:window.problemID,lang,code};   // <- NEW
+    const send=async(body,ct)=>{ const opt={method:'POST',body,headers:{'ngrok-skip-browser-warning':'true'}}; if(ct) opt.headers['Content-Type']=ct; const r=await fetch(`${URL}/submit`,opt); if(!r.ok) throw new Error('Submission failed'); return r.json(); };
+    let sub;
+    try{ sub=await send(JSON.stringify(payload),'application/json'); }catch{ sub=await send(JSON.stringify(payload),'text/plain;charset=UTF-8'); }
+    const {sid}=sub||{}; if(!sid) throw new Error('Judge did not return a submission id.');
+    statusText.textContent='Submission received. Fetching results...';
+    const result=await pollForResult(sid);
+    statusText.textContent=''; renderCases(result.cases);
+  }catch(e){ console.error(e); statusText.textContent='Error: '+(e.message||'Unknown error'); }
+  finally{ submitBtn.disabled=false; submitBtn.textContent='Submit Solution'; }
+});
+</script>
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
-    statusPanel.classList.remove('hidden');
-    statusText.textContent = 'Submitting your solution...';
-    casesContainer.innerHTML = '';
+<!-- ---------- Markdown + MathJax + HLJS rendering ---------- -->
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const container = document.getElementById('problemMarkdown');
 
+  // Prompt the user for a problem ID and save it globally as `problemID`.
+  // This uses prompt so the user can input a value; if they cancel or leave blank,
+  // we fall back to 'ahc001'. The value is stored on window for global access.
+  (function askProblemId() {
     try {
-      const payload = { pid: 'sample', lang: 'python', code };
-
-      async function sendSubmission(body, contentType) {
-        const fetchOptions = {
-          method: 'POST',
-          body
-        };
-
-        if (contentType) {
-          fetchOptions.headers = {
-            'Content-Type': contentType,
-            'ngrok-skip-browser-warning': 'true'
-          };
-        } else {
-          fetchOptions.headers = {
-            'ngrok-skip-browser-warning': 'true'
-          };
-        }
-
-        const response = await fetch(`${URL}/submit`, fetchOptions);
-
-        if (!response.ok) {
-          throw new Error('Submission failed with status ' + response.status);
-        }
-
-        return response.json();
+      var p = window.problemID || null;
+      if (!p) {
+        // show a simple prompt to collect an identifier from the user
+        p = prompt('Please enter the problem ID (for example: ahc001):', 'ahc001');
+        if (!p) p = 'ahc001';
+        p = String(p).trim();
+        if (!p) p = 'ahc001';
+        window.problemID = p;
       }
+    } catch (e) {
+      // if anything goes wrong, ensure a sensible default
+      window.problemID = window.problemID || 'ahc001';
+    }
+  })();
 
-      let submission;
-
+  marked.setOptions({
+    highlight: function(code, lang) {
       try {
-        submission = await sendSubmission(JSON.stringify(payload), 'application/json');
-      } catch (networkError) {
-        if (networkError instanceof TypeError) {
-          console.warn('Falling back to plain text submission to avoid CORS preflight.', networkError);
-          submission = await sendSubmission(JSON.stringify(payload), 'text/plain;charset=UTF-8');
-        } else {
-          throw networkError;
+        if (lang && hljs.getLanguage(lang)) {
+          return hljs.highlight(code, { language: lang, ignoreIllegals: true }).value;
         }
+        return hljs.highlightAuto(code).value;
+      } catch {
+        const div = document.createElement('div');
+        div.textContent = code;
+        return div.innerHTML;
       }
-
-      if (!submission || typeof submission !== 'object') {
-        throw new Error('Judge returned an invalid response.');
-      }
-
-      const { sid } = submission;
-      if (!sid) {
-        throw new Error('Judge did not return a submission id.');
-      }
-
-      statusText.textContent = 'Submission received. Fetching results...';
-      const result = await pollForResult(sid);
-      statusText.textContent = 'Results ready!';
-      renderCases(result.cases);
-    } catch (error) {
-      console.error(error);
-      statusText.textContent = 'An error occurred: ' + (error.message || 'Unknown error');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Solution';
     }
   });
+
+  try {
+  const pid = window.problemID || 'ahc001';
+  const res = await fetch(`${URL}/problem/${window.problemID}/statement`, {headers:{'ngrok-skip-browser-warning':'true'}});
+    if (!res.ok) throw new Error(`Markdown not found (${res.status})`);
+    const md = await res.text();
+
+    const rawHtml = marked.parse(md);
+    const safeHtml = DOMPurify.sanitize(rawHtml, { ADD_ATTR: ['class'] });
+    container.innerHTML = safeHtml;
+
+    container.querySelectorAll('pre code').forEach(block => {
+      if (!block.classList.contains('hljs')) hljs.highlightElement(block);
+    });
+
+    if (window.MathJax && MathJax.typesetPromise) {
+      await MathJax.typesetPromise([container]);
+    }
+  } catch (err) {
+    console.error(err);
+    container.textContent = '⚠️ Could not load problem statement.';
+  }
+});
 </script>
+
 </body>
 </html>
