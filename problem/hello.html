@@ -224,6 +224,10 @@ async function pollForResult(sid){
       if(!r.ok) throw new Error('Result request failed');
       const payload=await r.json();
       if(payload&&payload.status==='done') return payload;
+      if(payload&&payload.status==='error') {
+        alert(payload['error']);
+        return;
+      }
       statusText.textContent=`In queue (attempt ${attempt})...`;
     }catch(e){ console.error(e); statusText.textContent='Judging...'; }
     await sleep(1000);
@@ -245,6 +249,7 @@ form.addEventListener('submit',async e=>{
     const {sid}=sub||{}; if(!sid) throw new Error('Judge did not return a submission id.');
     statusText.textContent='Submission received. Fetching results...';
     const result=await pollForResult(sid);
+    if(result==undefined) return;
     statusText.textContent=''; renderCases(result.cases);
   }catch(e){ console.error(e); statusText.textContent='Error: '+(e.message||'Unknown error'); }
   finally{ submitBtn.disabled=false; submitBtn.textContent='Submit Solution'; }
