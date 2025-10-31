@@ -225,7 +225,7 @@ async function pollForResult(sid){
       const payload=await r.json();
       if(payload&&payload.status==='done') return payload;
       if(payload&&payload.status==='error') {
-        alert(payload['error']);
+        statusText.textContent=payload['error'];
         return;
       }
       statusText.textContent=`In queue (attempt ${attempt})...`;
