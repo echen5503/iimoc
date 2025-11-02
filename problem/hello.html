@@ -41,16 +41,15 @@
     @media (max-width:900px){ .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; } .cases-table{ display:block; overflow-x:auto; } }
     code.language-python { background-color: #111!important; padding: 0!important; }
 
-    /* New: language select styling */
     .control-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
     select.select {
       appearance:none; background:#111; color:#fafafa; border:1px solid #444; border-radius:6px;
       padding:10px 12px; font-family:inherit; font-size:1rem; cursor:pointer;
     }
-    #statusText {
-      white-space: pre-line;
-    }
+    #statusText { white-space: pre-line; }
 
+    /* Optional: little emphasis for leaderboard header */
+    #leaderboardPanel h2 { font-weight: 800; }
   </style>
 
   <!-- MathJax (configured to process inside pre/code) -->
@@ -90,8 +89,6 @@
 
 <main>
   <section class="container">
-    
-
     <div id="problemMarkdown" class="problem-text">Loading problem statement…</div>
     
     <form class="code-form" id="codeForm">
@@ -103,7 +100,8 @@
           <option value="java">Java</option>
         </select>
       </div>
-
+      <label for="team">Team Name</label>
+      <input name="team" placeholder="your team">
       <label for="codeInput" id="codeLabel">Submit your solution</label>
       <textarea id="codeInput" name="code" placeholder="print('hello')" required></textarea>
       <button type="submit" class="btn btn-lg" id="submitBtn">Submit Solution</button>
@@ -113,12 +111,28 @@
       <p class="status-text" id="statusText">Waiting for submission...</p>
       <div id="casesContainer"></div>
     </div>
+
+    <!-- Leaderboard -->
+    <section class="status-panel" id="leaderboardPanel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+        <h2 style="margin:0;font-size:1.25rem;letter-spacing:.5px;">Leaderboard</h2>
+        <button type="button" class="btn" id="refreshLeaderboardBtn">Refresh</button>
+      </div>
+      <div id="leaderboardContainer" style="margin-top:12px;"></div>
+    </section>
   </section>
 </main>
 
 <script>
-/* ---------- Judging logic (updated to send selected lang) ---------- */
+/* ---------- Config & helpers ---------- */
 const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
+
+function getPidFromQuery(){
+  const p = new URLSearchParams(location.search);
+  return (p.get('pid') || '').trim();
+}
+
+/* ---------- Judging logic (updated to send selected lang) ---------- */
 const form = document.getElementById('codeForm');
 const codeInput = document.getElementById('codeInput');
 const submitBtn = document.getElementById('submitBtn');
@@ -127,6 +141,9 @@ const statusText = document.getElementById('statusText');
 const casesContainer = document.getElementById('casesContainer');
 const langSelect = document.getElementById('langSelect');
 const codeLabel = document.getElementById('codeLabel');
+
+const leaderboardContainer = document.getElementById('leaderboardContainer');
+const refreshLeaderboardBtn = document.getElementById('refreshLeaderboardBtn');
 
 const TEMPLATES = {
   python: "print('hello')\n",
@@ -153,7 +170,6 @@ public class Main {
 function applyTemplateFor(lang){
   codeInput.placeholder = TEMPLATES[lang] || '';
 }
-
 applyTemplateFor(langSelect.value);
 langSelect.addEventListener('change', () => {
   applyTemplateFor(langSelect.value);
@@ -238,15 +254,101 @@ async function pollForResult(sid){
   }
 }
 
+/* ---------- Leaderboard logic ---------- */
+function fmtTs(ts){
+  try{
+    if(!Number.isFinite(ts)) return '—';
+    const d = new Date(ts);
+    return d.toLocaleString(undefined, {hour12:false});
+  }catch{ return '—'; }
+}
+
+// Render Team / Score for all submissions (sorted: score desc, then newest)
+// Each SID links to /render?submissionID=<sid>
+function renderLeaderboard(payload){
+  if(!payload || !Array.isArray(payload.submissions) || payload.submissions.length===0){
+    leaderboardContainer.innerHTML = '<p>No submissions yet.</p>';
+    return;
+  }
+
+  const subs = [...payload.submissions].sort((a,b)=>{
+    const sa = Number(a.score||0), sb = Number(b.score||0);
+    if(sb!==sa) return sb-sa;
+    const ta = (a.metadata && a.metadata.ts) ? Number(a.metadata.ts) : 0;
+    const tb = (b.metadata && b.metadata.ts) ? Number(b.metadata.ts) : 0;
+    return tb - ta;
+  });
+
+  const rows = subs.map((s, i)=>{
+    const team = (s.metadata && s.metadata.team) ? s.metadata.team : '—';
+    const score = (typeof s.score === 'number') ? s.score : Number(s.score||0);
+    const sid = s.sid ?? (s.metadata && s.metadata.sid) ?? '—';
+    const when = (s.metadata && s.metadata.ts) ? fmtTs(Number(s.metadata.ts)) : '—';
+    const sidHtml = sid !== '—'
+      ? `<a href="/render.html?submissionID=${encodeURIComponent(sid)}">${sid}</a>`
+      : '—';
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${team}</td>
+      <td>${score}</td>
+      <td>${sidHtml}</td>
+      <td>${when}</td>
+    </tr>`;
+  }).join('');
+
+  leaderboardContainer.innerHTML = `
+    <table class="cases-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Team</th>
+          <th>Score</th>
+          <th>Submission ID</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+async function loadLeaderboard(){
+  try{
+    leaderboardContainer.innerHTML = '<p>Leaderboard Loading...</p>';
+    const pid = getPidFromQuery();
+    if(!pid){ leaderboardContainer.innerHTML = '<p>⚠️ Missing ?pid= in URL.</p>'; return; }
+    const res = await fetch(`${URL}/getProblemSubmissions/${encodeURIComponent(pid)}`, {
+      headers: {'ngrok-skip-browser-warning':'true'}
+    });
+    if(!res.ok) throw new Error('Failed to fetch leaderboard');
+    const data = await res.json();
+    renderLeaderboard(data);
+  }catch(e){
+    console.error(e);
+    leaderboardContainer.innerHTML = '<p>⚠️ Could not load leaderboard.</p>';
+  }
+}
+if (refreshLeaderboardBtn){
+  refreshLeaderboardBtn.addEventListener('click', loadLeaderboard);
+}
+
+/* ---------- Submission handler ---------- */
 form.addEventListener('submit',async e=>{
   e.preventDefault();
   const code=codeInput.value.trim();
-  const lang=langSelect.value;                 // <- NEW
+  const team = document.querySelector('input[name="team"]').value.trim();
+  const lang=langSelect.value;
+  const pid = getPidFromQuery();
+  if(!pid){
+    statusPanel.classList.remove('hidden');
+    statusText.textContent='Missing ?pid= in URL.';
+    return;
+  }
   if(!code){ statusPanel.classList.remove('hidden'); statusText.textContent='Please enter some code before submitting.'; return; }
   submitBtn.disabled=true; submitBtn.textContent='Submitting...';
   statusPanel.classList.remove('hidden'); statusText.textContent='Submitting your solution...'; casesContainer.innerHTML='';
   try{
-    const payload={pid:window.problemID,lang,code};   // <- NEW
+    const payload={pid,lang,code, team};
     const send=async(body,ct)=>{ const opt={method:'POST',body,headers:{'ngrok-skip-browser-warning':'true'}}; if(ct) opt.headers['Content-Type']=ct; const r=await fetch(`${URL}/submit`,opt); if(!r.ok) throw new Error('Submission failed'); return r.json(); };
     let sub;
     try{ sub=await send(JSON.stringify(payload),'application/json'); }catch{ sub=await send(JSON.stringify(payload),'text/plain;charset=UTF-8'); }
@@ -255,6 +357,9 @@ form.addEventListener('submit',async e=>{
     const result=await pollForResult(sid);
     if(result==undefined) return;
     statusText.textContent=''; renderCases(result.cases);
+
+    // Refresh leaderboard after this submission
+    loadLeaderboard();
   }catch(e){ console.error(e); statusText.textContent='Error: '+(e.message||'Unknown error'); }
   finally{ submitBtn.disabled=false; submitBtn.textContent='Submit Solution'; }
 });
@@ -264,26 +369,6 @@ form.addEventListener('submit',async e=>{
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('problemMarkdown');
-
-  // Prompt the user for a problem ID and save it globally as `problemID`.
-  // This uses prompt so the user can input a value; if they cancel or leave blank,
-  // we fall back to 'ahc001'. The value is stored on window for global access.
-  (function askProblemId() {
-    try {
-      var p = window.problemID || null;
-      if (!p) {
-        // show a simple prompt to collect an identifier from the user
-        p = prompt('Please enter the problem ID (for example: ahc001):', 'ahc001');
-        if (!p) p = 'ahc001';
-        p = String(p).trim();
-        if (!p) p = 'ahc001';
-        window.problemID = p;
-      }
-    } catch (e) {
-      // if anything goes wrong, ensure a sensible default
-      window.problemID = window.problemID || 'ahc001';
-    }
-  })();
 
   marked.setOptions({
     highlight: function(code, lang) {
@@ -301,26 +386,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   try {
-  const pid = window.problemID || 'ahc001';
-  const res = await fetch(`${URL}/problem/${window.problemID}/statement`, {headers:{'ngrok-skip-browser-warning':'true'}});
-    if (!res.ok) throw new Error(`Markdown not found (${res.status})`);
-    const md = await res.text();
+    const pid = (new URLSearchParams(location.search)).get('pid');
+    if(!pid){ container.textContent = '⚠️ Missing ?pid= in URL.'; }
+    else {
+      const res = await fetch(`${URL}/problem/${encodeURIComponent(pid)}/statement`, {headers:{'ngrok-skip-browser-warning':'true'}});
+      if (!res.ok) throw new Error(`Markdown not found (${res.status})`);
+      const md = await res.text();
 
-    const rawHtml = marked.parse(md);
-    const safeHtml = DOMPurify.sanitize(rawHtml, { ADD_ATTR: ['class'] });
-    container.innerHTML = safeHtml;
+      const rawHtml = marked.parse(md);
+      const safeHtml = DOMPurify.sanitize(rawHtml, { ADD_ATTR: ['class'] });
+      container.innerHTML = safeHtml;
 
-    container.querySelectorAll('pre code').forEach(block => {
-      if (!block.classList.contains('hljs')) hljs.highlightElement(block);
-    });
+      container.querySelectorAll('pre code').forEach(block => {
+        if (!block.classList.contains('hljs')) hljs.highlightElement(block);
+      });
 
-    if (window.MathJax && MathJax.typesetPromise) {
-      await MathJax.typesetPromise([container]);
+      if (window.MathJax && MathJax.typesetPromise) {
+        await MathJax.typesetPromise([container]);
+      }
     }
   } catch (err) {
     console.error(err);
     container.textContent = '⚠️ Could not load problem statement.';
   }
+
+  // Initial leaderboard load
+  loadLeaderboard();
 });
 </script>
 
