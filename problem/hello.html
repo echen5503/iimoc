@@ -6,6 +6,41 @@
   <title>IIMOC Problem</title>
 
   <style>
+    /* ---------- Input Styling ---------- */
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    input:not([type]) {
+      background:#111;
+      color:#fafafa;
+      border:1px solid #444;
+      border-radius:6px;
+      padding:12px 14px;
+      font-family:Consolas,'Courier New',monospace;
+      font-size:1rem;
+      transition:border-color .2s, box-shadow .2s;
+      width:100%;
+      box-sizing:border-box;
+    }
+
+    input:focus {
+      outline:none;
+      border-color:#735ac4;
+      box-shadow:0 0 0 2px rgba(115,90,196,0.35);
+    }
+
+    input::placeholder {
+      color:#888;
+      opacity:0.7;
+    }
+
+    input:disabled {
+      background:#1a1a1a;
+      color:#777;
+      border-color:#333;
+      cursor:not-allowed;
+    }
     body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
     header { width:100%; background:#181818; border-bottom:1px solid #333; }
     .nav { display:flex; align-items:center; justify-content:space-between; max-width:740px; margin:0 auto; padding:16px 20px 8px; }
