@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIMOC — Team Submissions</title>
+  <style>
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    input:not([type]) {
+      background:#111; color:#fafafa; border:1px solid #444; border-radius:6px;
+      padding:12px 14px; font-family:Consolas,'Courier New',monospace; font-size:1rem;
+      transition:border-color .2s, box-shadow .2s; width:100%; box-sizing:border-box;
+    }
+    input:focus { outline:none; border-color:#735ac4; box-shadow:0 0 0 2px rgba(115,90,196,.35); }
+    input::placeholder { color:#888; opacity:.7; }
+    input:disabled { background:#1a1a1a; color:#777; border-color:#333; cursor:not-allowed; }
+
+    body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
+    header { width:100%; background:#181818; border-bottom:1px solid #333; }
+    .nav { display:flex; align-items:center; justify-content:space-between; max-width:740px; margin:0 auto; padding:16px 20px 8px; }
+    .nav-links { display:flex; gap:18px; }
+    .nav-link, .btn {
+      background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
+      padding:10px 20px; font-family:inherit; font-size:1.09rem; cursor:pointer;
+      text-decoration:none; font-weight:600; letter-spacing:1px; transition:background .13s;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn-lg { font-size:1.13rem; padding:14px 26px; margin-top:14px; }
+    .nav-link:hover, .btn:hover { background:#333; }
+    .nav-link.active { background:#333; cursor:default; }
+    .brand-title { font-size:1.5rem; color:#fafafa; letter-spacing:2px; display:flex; align-items:center; gap:7px; text-decoration:none; }
+    .brand-title svg { height:38px; width:38px; color:#b89bfa; stroke-width:2.2; }
+    .container { max-width:740px; margin:56px auto 40px; padding:38px 32px; background:#222; border-radius:8px; border:1px solid #444; }
+    h1 { text-align:center; font-size:2rem; margin:0 0 10px; }
+    .muted { color:#bbb; text-align:center; margin:0 0 18px; }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:18px 0 24px; }
+    .stat { background:#1a1a1d; border:1px solid #34343a; border-radius:6px; padding:14px; }
+    .stat .label { color:#aaa; font-size:.9rem; }
+    .stat .value { font-size:1.3rem; font-weight:800; margin-top:6px; }
+
+    .panel { background:#1a1a1d; border:1px solid #34343a; border-radius:6px; padding:18px 20px; }
+    .cases-table { width:100%; border-collapse:collapse; margin-top:12px; }
+    .cases-table th, .cases-table td { border:1px solid #34343a; padding:10px 12px; text-align:left; font-size:0.98rem; }
+    .cases-table th { background:#26262b; color:#f5f5f5; letter-spacing:1px; }
+    .cases-table tr:nth-child(even) { background:#202024; }
+    a { color: cyan; }
+
+    @media (max-width:900px){
+      .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; }
+      .stats{ grid-template-columns:1fr; }
+      .cases-table{ display:block; overflow-x:auto; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a href="/index.html" class="brand-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4H6l7 8-7 8h12"/></svg>
+      <span>IIMOC</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/sponsor.html">Sponsors</a>
+      <a class="nav-link" href="/team.html">Our Team</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
+      <span class="nav-link active">Team</span>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="container">
+    <h1 id="teamTitle">Team —</h1>
+    <p class="muted" id="teamSub">Viewing all submissions by this team</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="label">Total Submissions</div>
+        <div class="value" id="statCount">—</div>
+      </div>
+      <div class="stat">
+        <div class="label">Best Score (this page)</div>
+        <div class="value" id="statBest">—</div>
+      </div>
+      <div class="stat">
+        <div class="label">Most Recent (this page)</div>
+        <div class="value" id="statRecent">—</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+        <h2 style="margin:0;font-size:1.25rem;letter-spacing:.5px;">Submissions</h2>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <label for="pageSizeSel" style="font-weight:700;">Page size</label>
+          <select id="pageSizeSel" class="select" style="width:auto;">
+            <option>20</option>
+            <option>50</option>
+            <option selected>100</option>
+          </select>
+          <button class="btn" id="prevBtn">Prev</button>
+          <span id="pageInfo" style="min-width:180px;text-align:center;">—</span>
+          <button class="btn" id="nextBtn">Next</button>
+          <button class="btn" id="refreshBtn">Refresh</button>
+        </div>
+      </div>
+      <div id="tableWrap" style="margin-top:12px;">
+        <p>Loading…</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
+
+  function qs(name){
+    const p = new URLSearchParams(location.search);
+    return (p.get(name) || '').trim();
+  }
+  function fmtTs(ts){
+    try {
+      if(!Number.isFinite(ts)) return '—';
+      const d = new Date(ts);
+      return d.toLocaleString(undefined, {hour12:false});
+    } catch { return '—'; }
+  }
+
+  const teamTitle = document.getElementById('teamTitle');
+  const teamSub   = document.getElementById('teamSub');
+  const statCount = document.getElementById('statCount');
+  const statBest  = document.getElementById('statBest');
+  const statRecent= document.getElementById('statRecent');
+  const tableWrap = document.getElementById('tableWrap');
+
+  const refreshBtn= document.getElementById('refreshBtn');
+  const prevBtn   = document.getElementById('prevBtn');
+  const nextBtn   = document.getElementById('nextBtn');
+  const pageInfo  = document.getElementById('pageInfo');
+  const pageSizeSel = document.getElementById('pageSizeSel');
+
+  const team = qs('team');
+  teamTitle.textContent = team ? `Team ${team}` : 'Team —';
+  teamSub.textContent   = team ? `Viewing all submissions by “${team}”` : 'Missing ?team= in URL.';
+
+  const state = {
+    team,
+    page: 1,
+    pageSize: Number(pageSizeSel.value) || 100,
+    totalPages: 1,
+    total: 0,
+  };
+
+  function renderTable(results, page, pageSize){
+    if(!Array.isArray(results) || results.length===0){
+      tableWrap.innerHTML = '<p>No submissions found on this page.</p>';
+      return;
+    }
+
+    const subs = results;/*[...results].sort((a,b)=>{
+      const sa = Number(a.score||0), sb = Number(b.score||0);
+      if(sb!==sa) return sb-sa;
+      const ta = (a.metadata && a.metadata.ts) ? Number(a.metadata.ts) : 0;
+      const tb = (b.metadata && b.metadata.ts) ? Number(b.metadata.ts) : 0;
+      return tb - ta;
+    });*/
+
+    const rows = subs.map((s, i)=>{
+      const sid = s.sid ?? (s.metadata && s.metadata.sid) ?? '—';
+      const sidHtml = sid !== '—'
+        ? `<a href="/render.html?submissionID=${encodeURIComponent(sid)}">${sid}</a>`
+        : '—';
+
+      const score = (typeof s.score === 'number') ? s.score : Number(s.score||0);
+      const when  = (s.metadata && Number.isFinite(Number(s.metadata.ts))) ? fmtTs(Number(s.metadata.ts)) : '—';
+      const pid   = (s.metadata && s.metadata.pid) ? s.metadata.pid : (s.pid ?? '—');
+      const lang  = s.lang || (s.metadata && s.metadata.lang) || '—';
+      const rank  = (page-1)*pageSize + (i+1);
+
+      return `<tr>
+        <td>${rank}</td>
+        <td>${pid || '—'}</td>
+        <td>${score}</td>
+        <td>${lang}</td>
+        <td>${sidHtml}</td>
+        <td>${when}</td>
+      </tr>`;
+    }).join('');
+
+    tableWrap.innerHTML = `
+      <table class="cases-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Problem</th>
+            <th>Score</th>
+            <th>Lang</th>
+            <th>Submission ID</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
+
+  function renderStatsFromPage(results){
+    // These are for the current page; total count is shown separately
+    if(!Array.isArray(results) || results.length===0){
+      statBest.textContent = '—';
+      statRecent.textContent = '—';
+      return;
+    }
+    let best = null, recentTs = null;
+    for(const s of results){
+      const sc = Number(s.score || 0);
+      if(best===null || sc>best) best = sc;
+      const ts = (s.metadata && s.metadata.ts) ? Number(s.metadata.ts) : NaN;
+      if(Number.isFinite(ts) && (!Number.isFinite(recentTs) || ts>recentTs)) recentTs = ts;
+    }
+    statBest.textContent = (best===null) ? '—' : String(best);
+    statRecent.textContent = Number.isFinite(recentTs) ? fmtTs(recentTs) : '—';
+  }
+
+  async function loadTeam(page = state.page){
+    if(!state.team){
+      tableWrap.innerHTML = '<p>⚠️ Missing ?team= in URL.</p>';
+      statCount.textContent='—'; statBest.textContent='—'; statRecent.textContent='—';
+      pageInfo.textContent='—'; prevBtn.disabled = nextBtn.disabled = true;
+      return;
+    }
+    try {
+      tableWrap.innerHTML = '<p>Loading…</p>';
+
+      // NEW API: /getTeamSubmissions/:team/:page?pageSize=...
+      const url = `${URL}/getTeamSubmissions/${encodeURIComponent(state.team)}/${encodeURIComponent(page)}?pageSize=${encodeURIComponent(state.pageSize)}`;
+      const res = await fetch(url, { headers: {'ngrok-skip-browser-warning':'true'} });
+      if(!res.ok){
+        tableWrap.innerHTML = `<p>⚠️ Failed to fetch team submissions (${res.status})</p>`;
+        pageInfo.textContent='—'; prevBtn.disabled = nextBtn.disabled = true;
+        return;
+      }
+      const data = await res.json();
+      // Expected: { total, page, pageSize, totalPages, results: [...] }
+      const total = Number(data.total||0);
+      const curPage = Number(data.page||page);
+      const pageSize = Number(data.pageSize||state.pageSize);
+      const totalPages = Math.max(1, Number(data.totalPages||Math.ceil(total / Math.max(1,pageSize))));
+      const results = Array.isArray(data.results) ? data.results : (data.submissions || []); // backward compat
+
+      // update state
+      state.page = curPage;
+      state.pageSize = pageSize;
+      state.totalPages = totalPages;
+      state.total = total;
+
+      // stats + table
+      statCount.textContent = String(total);
+      renderStatsFromPage(results);
+      renderTable(results, curPage, pageSize);
+
+      // pagination UI
+      pageInfo.textContent = `Page ${curPage} / ${totalPages} • Total ${total}`;
+      prevBtn.disabled = (curPage <= 1);
+      nextBtn.disabled = (curPage >= totalPages);
+    } catch (e){
+      console.error(e);
+      tableWrap.innerHTML = '<p>⚠️ Could not load team submissions.</p>';
+      pageInfo.textContent='—'; prevBtn.disabled = nextBtn.disabled = true;
+    }
+  }
+
+  refreshBtn.addEventListener('click', () => loadTeam(1));
+  prevBtn.addEventListener('click', () => { if(state.page>1) loadTeam(state.page - 1); });
+  nextBtn.addEventListener('click', () => { if(state.page<state.totalPages) loadTeam(state.page + 1); });
+  pageSizeSel.addEventListener('change', () => {
+    state.pageSize = Math.max(1, Number(pageSizeSel.value) || 20);
+    loadTeam(1);
+  });
+
+  // initial
+  loadTeam(1);
+</script>
+</body>
+</html>

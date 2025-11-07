@@ -9,7 +9,7 @@
     .wrap { max-width:860px; margin:40px auto; padding:0 16px; }
     .panel { background:#222; border:1px solid #444; border-radius:8px; padding:22px 20px; margin-bottom:18px; }
     h1 { margin:0 0 10px; font-size:1.6rem; }
-    .row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .row { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
     .meta-grid { display:grid; grid-template-columns: repeat(2,minmax(180px,1fr)); gap:10px 18px; margin-top:8px; }
     .key { color:#bdbdbd; }
     .value { color:#fff; font-weight:700; }
@@ -18,6 +18,7 @@
       padding:8px 16px; font-weight:700; cursor:pointer; transition:background .15s;
     }
     .btn:hover { background:#333; }
+    .btn[disabled] { opacity:.6; cursor:not-allowed; }
     .cases-table { width:100%; border-collapse:collapse; margin-top:12px; }
     .cases-table th, .cases-table td { border:1px solid #34343a; padding:10px 12px; text-align:left; font-size:0.96rem; }
     .cases-table th { background:#26262b; letter-spacing:.5px; }
@@ -25,10 +26,25 @@
     .case-status-ok { color:#8adf8a; font-weight:700; }
     .case-status-fail { color:#ff8a80; font-weight:700; }
     #statusText { white-space: pre-line; }
+    .field { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    input[type="password"] {
+      background:#111; color:#fafafa; border:1px solid #444; border-radius:6px; padding:10px 12px;
+      font-family:inherit; font-size:1rem; min-width:220px;
+    }
+    pre.codebox {
+      background:#111; border:1px solid #333; border-radius:6px; padding:14px;
+      overflow:auto; max-height:60vh; margin-top:12px; font-size:.95rem;
+    }
+    .muted { color:#bdbdbd; }
   </style>
+
+  <!-- Optional: highlight.js for nicer code display -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/xt256.min.css">
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js"></script>
 </head>
 <body>
   <div class="wrap">
+    <!-- Header / Meta -->
     <div class="panel">
       <div class="row">
         <h1>Submission Details</h1>
@@ -45,9 +61,24 @@
       </div>
     </div>
 
+    <!-- Cases -->
     <div class="panel" id="statusPanel">
       <p id="statusText">Loading…</p>
       <div id="casesContainer"></div>
+    </div>
+
+    <!-- Source Code (password-gated) -->
+    <div class="panel" id="codePanel">
+      <div class="row" style="margin-bottom:8px;">
+        <h2 style="margin:0;font-size:1.25rem;">Source Code</h2>
+        <div class="field">
+          <input id="codePassword" type="password" placeholder="enter admin password"/>
+          <button id="showCodeBtn" class="btn">Show Code</button>
+          <button id="copyCodeBtn" class="btn" disabled>Copy</button>
+        </div>
+      </div>
+      <p id="codeStatus" class="muted">Code is hidden. Enter the password to view.</p>
+      <pre id="codePre" class="codebox" style="display:none;"><code id="codeBlock"></code></pre>
     </div>
   </div>
 
@@ -60,17 +91,26 @@ function getSidFromQuery(){
   const p = new URLSearchParams(location.search);
   return p.get('submissionID');
 }
-
 async function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 function formatTime(ns){ return (typeof ns==='number'&&Number.isFinite(ns))?(ns/1e6).toFixed(2)+' ms':'—'; }
 function formatMemory(b){ return (typeof b==='number'&&Number.isFinite(b))?(b/1024).toFixed(0)+' KB':'—'; }
 
-/* ---------- DOM handles used by reused functions ---------- */
+/* ---------- DOM ---------- */
 const statusPanel = document.getElementById('statusPanel');
 const statusText  = document.getElementById('statusText');
 const casesContainer = document.getElementById('casesContainer');
+const refreshBtn = document.getElementById('refreshBtn');
 
-/* ---------- Reused renderCases (unchanged) ---------- */
+/* Code panel DOM */
+const codePanel   = document.getElementById('codePanel');
+const codeStatus  = document.getElementById('codeStatus');
+const codePre     = document.getElementById('codePre');
+const codeBlock   = document.getElementById('codeBlock');
+const codePwd     = document.getElementById('codePassword');
+const showCodeBtn = document.getElementById('showCodeBtn');
+const copyCodeBtn = document.getElementById('copyCodeBtn');
+
+/* ---------- Render cases ---------- */
 function renderCases(cases){
   if(!Array.isArray(cases)||cases.length===0){ casesContainer.innerHTML='<p>No cases available.</p>'; return; }
   const rows=cases.map((t,i)=>{
@@ -127,7 +167,7 @@ function renderCases(cases){
   }
 }
 
-/* ---------- Reused pollForResult (unchanged) ---------- */
+/* ---------- Poll for result ---------- */
 async function pollForResult(sid){
   let attempt=0;
   while(true){
@@ -137,17 +177,14 @@ async function pollForResult(sid){
       if(!r.ok) throw new Error('Result request failed');
       const payload=await r.json();
       if(payload&&payload.status==='done') return payload;
-      if(payload&&payload.status==='error') {
-        statusText.textContent=payload['error'];
-        return;
-      }
+      if(payload&&payload.status==='error') { statusText.textContent=payload['error']; return; }
       statusText.textContent=`In queue (attempt ${attempt})...`;
     }catch(e){ console.error(e); statusText.textContent='Judging...'; }
     await sleep(1000);
   }
 }
 
-/* ---------- Render meta from the /result response ---------- */
+/* ---------- Meta ---------- */
 function renderMeta(sid, resultPayload){
   const metaSid    = document.getElementById('metaSid');
   const metaStatus = document.getElementById('metaStatus');
@@ -160,7 +197,7 @@ function renderMeta(sid, resultPayload){
   metaCases.textContent = Array.isArray(resultPayload?.cases) ? resultPayload.cases.length : 0;
 }
 
-/* ---------- Page flow ---------- */
+/* ---------- Load submission ---------- */
 async function loadSubmission(){
   const sid = getSidFromQuery();
   if(!sid){
@@ -168,15 +205,87 @@ async function loadSubmission(){
     return;
   }
   statusText.textContent = 'Fetching submission…';
-  const data = await pollForResult(sid);         // waits until done (or first done payload)
+  const data = await pollForResult(sid);
   if(!data){ return; }
   renderMeta(sid, data);
-  statusText.textContent = '';                   // clear status text
+  statusText.textContent = '';
   renderCases(data.cases || []);
 }
 
-/* ---------- Wire up refresh ---------- */
-document.getElementById('refreshBtn').addEventListener('click', loadSubmission);
+/* ---------- Show Source Code (password input) ---------- */
+async function fetchAndShowCode(){
+  const sid = getSidFromQuery();
+  if(!sid){ codeStatus.textContent = '❌ Missing submissionID.'; return; }
+
+  const password = (codePwd.value || '').trim();
+  if(!password){
+    codeStatus.textContent = '⚠️ Please enter a password.'; 
+    codePre.style.display='none';
+    copyCodeBtn.disabled = true;
+    return;
+  }
+
+  try {
+    showCodeBtn.disabled = true;
+    codeStatus.textContent = 'Loading code…';
+    const url = `${URL}/getSubmissionCode/${encodeURIComponent(sid)}?password=${encodeURIComponent(password)}`;
+    const res = await fetch(url, { headers: {'ngrok-skip-browser-warning':'true'} });
+    if(!res.ok){
+      const err = await res.json().catch(()=>({error:'Request failed'}));
+      codeStatus.textContent = `❌ ${err.error || 'Failed to fetch code'}`;
+      codePre.style.display='none';
+      copyCodeBtn.disabled = true;
+      return;
+    }
+    const data = await res.json();
+    const code = data.code ?? '';
+
+    codeBlock.textContent = code;
+    codePre.style.display = 'block';
+    codeStatus.textContent = `Showing code for sid ${data.sid}`;
+    copyCodeBtn.disabled = !code;
+
+    // Try to auto-highlight if hljs is present
+    try {
+      if (window.hljs) hljs.highlightElement(codeBlock);
+    } catch {}
+
+    // Cache password for this tab (optional)
+    sessionStorage.setItem('iimoc_admin_pw', password);
+  } catch (e){
+    console.error(e);
+    codeStatus.textContent = '❌ Could not load code.';
+    codePre.style.display='none';
+    copyCodeBtn.disabled = true;
+  } finally {
+    showCodeBtn.disabled = false;
+  }
+}
+
+/* ---------- Copy code ---------- */
+async function copyCodeToClipboard(){
+  const text = codeBlock.textContent || '';
+  try {
+    await navigator.clipboard.writeText(text);
+    const old = copyCodeBtn.textContent;
+    copyCodeBtn.textContent = 'Copied!';
+    setTimeout(()=>copyCodeBtn.textContent=old, 900);
+  } catch {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  }
+}
+
+/* ---------- Wire up ---------- */
+refreshBtn.addEventListener('click', loadSubmission);
+showCodeBtn.addEventListener('click', fetchAndShowCode);
+copyCodeBtn.addEventListener('click', copyCodeToClipboard);
+
+// Prefill password from this tab session if present
+const cached = sessionStorage.getItem('iimoc_admin_pw');
+if (cached) codePwd.value = cached;
 
 /* ---------- Kick off ---------- */
 loadSubmission();

@@ -23,24 +23,10 @@
       width:100%;
       box-sizing:border-box;
     }
+    input:focus { outline:none; border-color:#735ac4; box-shadow:0 0 0 2px rgba(115,90,196,0.35); }
+    input::placeholder { color:#888; opacity:0.7; }
+    input:disabled { background:#1a1a1a; color:#777; border-color:#333; cursor:not-allowed; }
 
-    input:focus {
-      outline:none;
-      border-color:#735ac4;
-      box-shadow:0 0 0 2px rgba(115,90,196,0.35);
-    }
-
-    input::placeholder {
-      color:#888;
-      opacity:0.7;
-    }
-
-    input:disabled {
-      background:#1a1a1a;
-      color:#777;
-      border-color:#333;
-      cursor:not-allowed;
-    }
     body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
     header { width:100%; background:#181818; border-bottom:1px solid #333; }
     .nav { display:flex; align-items:center; justify-content:space-between; max-width:740px; margin:0 auto; padding:16px 20px 8px; }
@@ -83,7 +69,7 @@
     }
     #statusText { white-space: pre-line; }
 
-    /* Optional: little emphasis for leaderboard header */
+    /* Leaderboard header emphasis */
     #leaderboardPanel h2 { font-weight: 800; }
   </style>
 
@@ -151,7 +137,19 @@
     <section class="status-panel" id="leaderboardPanel">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
         <h2 style="margin:0;font-size:1.25rem;letter-spacing:.5px;">Leaderboard</h2>
-        <button type="button" class="btn" id="refreshLeaderboardBtn">Refresh</button>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+
+          <label for="lbPageSize" style="font-weight:700;">Page size</label>
+          <select id="lbPageSize" class="select" style="width:auto;">
+            <option>20</option>
+            <option>50</option>
+            <option selected>100</option>
+          </select>
+          <button type="button" class="btn" id="lbPrevBtn">Prev</button>
+          <span id="lbPageInfo" style="min-width:180px;text-align:center;">—</span>
+          <button type="button" class="btn" id="lbNextBtn">Next</button>
+          <button type="button" class="btn" id="refreshLeaderboardBtn">Refresh</button>
+        </div>
       </div>
       <div id="leaderboardContainer" style="margin-top:12px;"></div>
     </section>
@@ -167,7 +165,7 @@ function getPidFromQuery(){
   return (p.get('pid') || '').trim();
 }
 
-/* ---------- Judging logic (updated to send selected lang) ---------- */
+/* ---------- Judging logic (send selected lang) ---------- */
 const form = document.getElementById('codeForm');
 const codeInput = document.getElementById('codeInput');
 const submitBtn = document.getElementById('submitBtn');
@@ -289,7 +287,19 @@ async function pollForResult(sid){
   }
 }
 
-/* ---------- Leaderboard logic ---------- */
+/* ---------- Leaderboard logic (paginated) ---------- */
+const lbPageInfo = document.getElementById('lbPageInfo');
+const lbPrevBtn = document.getElementById('lbPrevBtn');
+const lbNextBtn = document.getElementById('lbNextBtn');
+const lbPageSizeSel = document.getElementById('lbPageSize');
+
+const lbState = {
+  page: 1,
+  pageSize: Number(lbPageSizeSel ? lbPageSizeSel.value : 100) || 100,
+  totalPages: 1,
+  pid: null,
+};
+
 function fmtTs(ts){
   try{
     if(!Number.isFinite(ts)) return '—';
@@ -298,73 +308,100 @@ function fmtTs(ts){
   }catch{ return '—'; }
 }
 
-// Render Team / Score for all submissions (sorted: score desc, then newest)
-// Each SID links to /render?submissionID=<sid>
-function renderLeaderboard(payload){
-  if(!payload || !Array.isArray(payload.submissions) || payload.submissions.length===0){
-    leaderboardContainer.innerHTML = '<p>No submissions yet.</p>';
+function renderLeaderboardPayload(payload){
+  if(!payload){
+    leaderboardContainer.innerHTML = '<p>⚠️ No data.</p>';
+    lbPageInfo.textContent = '—';
     return;
   }
 
-  const subs = [...payload.submissions].sort((a,b)=>{
-    const sa = Number(a.score||0), sb = Number(b.score||0);
-    if(sb!==sa) return sb-sa;
-    const ta = (a.metadata && a.metadata.ts) ? Number(a.metadata.ts) : 0;
-    const tb = (b.metadata && b.metadata.ts) ? Number(b.metadata.ts) : 0;
-    return tb - ta;
-  });
+  const { submissions=[], total=0, page=1, pageSize=lbState.pageSize, totalPages=1 } = payload;
 
-  const rows = subs.map((s, i)=>{
-    const team = (s.metadata && s.metadata.team) ? s.metadata.team : '—';
+  const rows = submissions.map((s, i)=>{
+    const teamRaw = (s.metadata && s.metadata.team) ? s.metadata.team : '—';
+    const teamHtml = teamRaw !== '—'
+      ? `<a href="/teams.html?team=${encodeURIComponent(teamRaw)}">${teamRaw}</a>`
+      : '—';
     const score = (typeof s.score === 'number') ? s.score : Number(s.score||0);
     const sid = s.sid ?? (s.metadata && s.metadata.sid) ?? '—';
     const when = (s.metadata && s.metadata.ts) ? fmtTs(Number(s.metadata.ts)) : '—';
     const sidHtml = sid !== '—'
       ? `<a href="/render.html?submissionID=${encodeURIComponent(sid)}">${sid}</a>`
       : '—';
+    const rank = (page-1)*pageSize + (i+1);
+
     return `<tr>
-      <td>${i+1}</td>
-      <td>${team}</td>
+      <td>${rank}</td>
+      <td>${teamHtml}</td>
       <td>${score}</td>
       <td>${sidHtml}</td>
       <td>${when}</td>
     </tr>`;
   }).join('');
 
-  leaderboardContainer.innerHTML = `
-    <table class="cases-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Team</th>
-          <th>Score</th>
-          <th>Submission ID</th>
-          <th>Time</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-  `;
+  leaderboardContainer.innerHTML = submissions.length === 0
+    ? '<p>No submissions yet.</p>'
+    : `
+      <table class="cases-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>Score</th>
+            <th>Submission ID</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+
+  lbState.totalPages = Math.max(1, Number(totalPages)||1);
+  lbState.page = Math.max(1, Math.min(page, lbState.totalPages));
+  lbPageInfo.textContent = `Page ${lbState.page} / ${lbState.totalPages} • Total ${total}`;
+  lbPrevBtn.disabled = lbState.page <= 1;
+  lbNextBtn.disabled = lbState.page >= lbState.totalPages;
 }
 
-async function loadLeaderboard(){
+async function loadLeaderboard(page = lbState.page){
   try{
     leaderboardContainer.innerHTML = '<p>Leaderboard Loading...</p>';
     const pid = getPidFromQuery();
-    if(!pid){ leaderboardContainer.innerHTML = '<p>⚠️ Missing ?pid= in URL.</p>'; return; }
-    const res = await fetch(`${URL}/getProblemSubmissions/${encodeURIComponent(pid)}`, {
-      headers: {'ngrok-skip-browser-warning':'true'}
-    });
+    lbState.pid = pid;
+    if(!pid){ leaderboardContainer.innerHTML = '<p>⚠️ Missing ?pid= in URL.</p>'; lbPageInfo.textContent='—'; return; }
+
+    // NEW API: /getProblemSubmissions/:pid/:page?pageSize=...
+    const url = `${URL}/getProblemSubmissions/${encodeURIComponent(pid)}/${encodeURIComponent(page)}?pageSize=${encodeURIComponent(lbState.pageSize)}`;
+    const res = await fetch(url, { headers: {'ngrok-skip-browser-warning':'true'} });
     if(!res.ok) throw new Error('Failed to fetch leaderboard');
     const data = await res.json();
-    renderLeaderboard(data);
+    renderLeaderboardPayload(data);
   }catch(e){
     console.error(e);
     leaderboardContainer.innerHTML = '<p>⚠️ Could not load leaderboard.</p>';
+    lbPageInfo.textContent = '—';
   }
 }
+
+/* wire up */
 if (refreshLeaderboardBtn){
-  refreshLeaderboardBtn.addEventListener('click', loadLeaderboard);
+  refreshLeaderboardBtn.addEventListener('click', ()=> loadLeaderboard(1));
+}
+if (lbPrevBtn){
+  lbPrevBtn.addEventListener('click', ()=>{
+    if (lbState.page > 1) loadLeaderboard(lbState.page - 1);
+  });
+}
+if (lbNextBtn){
+  lbNextBtn.addEventListener('click', ()=>{
+    if (lbState.page < lbState.totalPages) loadLeaderboard(lbState.page + 1);
+  });
+}
+if (lbPageSizeSel){
+  lbPageSizeSel.addEventListener('change', ()=>{
+    lbState.pageSize = Math.max(1, Number(lbPageSizeSel.value) || 20);
+    loadLeaderboard(1);
+  });
 }
 
 /* ---------- Submission handler ---------- */
@@ -379,24 +416,42 @@ form.addEventListener('submit',async e=>{
     statusText.textContent='Missing ?pid= in URL.';
     return;
   }
-  if(!code){ statusPanel.classList.remove('hidden'); statusText.textContent='Please enter some code before submitting.'; return; }
+  if(!code){
+    statusPanel.classList.remove('hidden');
+    statusText.textContent='Please enter some code before submitting.';
+    return;
+  }
   submitBtn.disabled=true; submitBtn.textContent='Submitting...';
   statusPanel.classList.remove('hidden'); statusText.textContent='Submitting your solution...'; casesContainer.innerHTML='';
   try{
-    const payload={pid,lang,code, team};
-    const send=async(body,ct)=>{ const opt={method:'POST',body,headers:{'ngrok-skip-browser-warning':'true'}}; if(ct) opt.headers['Content-Type']=ct; const r=await fetch(`${URL}/submit`,opt); if(!r.ok) throw new Error('Submission failed'); return r.json(); };
+    const payload={pid,lang,code,team};
+    const send=async(body,ct)=>{
+      const opt={method:'POST',body,headers:{'ngrok-skip-browser-warning':'true'}};
+      if(ct) opt.headers['Content-Type']=ct;
+      const r=await fetch(`${URL}/submit`,opt);
+      if(!r.ok) throw new Error('Submission failed');
+      return r.json();
+    };
     let sub;
-    try{ sub=await send(JSON.stringify(payload),'application/json'); }catch{ sub=await send(JSON.stringify(payload),'text/plain;charset=UTF-8'); }
-    const {sid}=sub||{}; if(!sid) throw new Error('Judge did not return a submission id.');
+    try{ sub=await send(JSON.stringify(payload),'application/json'); }
+    catch{ sub=await send(JSON.stringify(payload),'text/plain;charset=UTF-8'); }
+
+    const {sid}=sub||{};
+    if(!sid) throw new Error('Judge did not return a submission id.');
     statusText.textContent='Submission received. Fetching results...';
+
     const result=await pollForResult(sid);
     if(result==undefined) return;
     statusText.textContent=''; renderCases(result.cases);
 
-    // Refresh leaderboard after this submission
-    loadLeaderboard();
-  }catch(e){ console.error(e); statusText.textContent='Error: '+(e.message||'Unknown error'); }
-  finally{ submitBtn.disabled=false; submitBtn.textContent='Submit Solution'; }
+    // Refresh leaderboard after this submission; go back to page 1
+    loadLeaderboard(1);
+  }catch(e){
+    console.error(e);
+    statusText.textContent='Error: '+(e.message||'Unknown error');
+  } finally {
+    submitBtn.disabled=false; submitBtn.textContent='Submit Solution';
+  }
 });
 </script>
 
@@ -446,7 +501,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Initial leaderboard load
-  loadLeaderboard();
+  loadLeaderboard(1);
 });
 </script>
 
