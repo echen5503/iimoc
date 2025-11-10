@@ -162,6 +162,8 @@ const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
 
 function getPidFromQuery(){
   const p = new URLSearchParams(location.search);
+  return "Permutation";
+  //if(p.get('pid') == "polypack" || p.get('pid') == 'polypackmatrix') 
   return (p.get('pid') || '').trim();
 }
 
