@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Polyomino Packing — Matrix Output • Drag + Ghost Preview</title>
+<title>Polyomino Packing — Matrix Output • Drag Anywhere (Overlap + OOB Allowed)</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
   :root { --bg:#0f1220; --panel:#151933; --muted:#a9b1d6; --ink:#e5e9f0; --accent:#7aa2f7; --bad:#f7768e; --good:#9ece6a; --warn:#e0af68; }
@@ -49,11 +49,11 @@
   <!-- Left -->
   <div class="col grid">
     <div class="card">
-      <h1>Polyomino Packing — Matrix Output + Draggable Ghost</h1>
+      <h1>Polyomino Packing — Matrix Output + Drag Anywhere</h1>
       <div class="info">
         Paste <b>Input</b> (pieces) and <b>Output (Matrix)</b>, then drag pieces on the canvas.<br>
         Keys: <span class="keyboard">Q</span>=rotate CCW, <span class="keyboard">E</span>=rotate CW, <span class="keyboard">F</span>=reflect, <span class="keyboard">Esc</span>=clear, arrows=move.<br>
-        Overlap is allowed while dragging (ghost); we only check on drop.
+        <b>Drag policy:</b> Overlap <i>and</i> out-of-bounds are allowed while dragging <i>and on drop</i> (last piece wins in the matrix).
       </div>
     </div>
 
@@ -84,7 +84,7 @@
       <h2>Actions</h2>
       <div class="row">
         <button id="renderBtn" class="good">Render</button>
-        <button id="validateBtn">Validate</button>
+        <button id="validateBtn">Validate (non-blocking)</button>
         <button id="randomizeBtn">Random Colors</button>
         <button id="exportPngBtn">Export PNG</button>
         <button id="exportSvgBtn">Export SVG</button>
@@ -113,14 +113,14 @@
   <!-- Right -->
   <div class="col grid">
     <div class="card">
-      <h2>Canvas (Drag pieces)</h2>
-      <div class="info">Drag; Q/E/F to rotate/reflect. Hold Ctrl while dragging to keep preview in bounds. Overlap allowed during drag; we check on drop.</div>
+      <h2>Canvas (Drag pieces freely)</h2>
+      <div class="info">Drag anywhere; Q/E/F to rotate/reflect. <b>No constraints on overlap or bounds on drop.</b> Ctrl-drag clamps within bounds if you want.</div>
       <canvas id="canvas"></canvas>
     </div>
 
     <div class="card">
       <h2>Transforms (Selected)</h2>
-      <div class="info">Shows piece id and cell count for the selected piece. (Matrix mode doesn’t use per-piece X/Y/R/F fields.)</div>
+      <div class="info">Shows piece id and cell count for the selected piece. Dragging may move cells outside the matrix; validation will warn.</div>
       <div id="selInfo" class="info">—</div>
     </div>
   </div>
@@ -130,11 +130,7 @@
 /* ---------- Helpers & Geometry ---------- */
 const $ = s => document.querySelector(s);
 const rot90cw = (x,y,r)=>{ r&=3; return r===0?[x,y]:r===1?[y,-x]:r===2?[-x,-y]:[-y,x]; };
-const normalize = (cells)=>{
-  const minx = Math.min(...cells.map(c=>c[0]));
-  const miny = Math.min(...cells.map(c=>c[1]));
-  return cells.map(([x,y])=>[x-minx,y-miny]);
-};
+const normalize = (cells)=>{ const minx=Math.min(...cells.map(c=>c[0])); const miny=Math.min(...cells.map(c=>c[1])); return cells.map(([x,y])=>[x-minx,y-miny]); };
 const translateCells = (cells, dx, dy)=> cells.map(([x,y])=>[x+dx,y+dy]);
 const countCells = shapes => shapes.reduce((s,sh)=>s+sh.length,0);
 
@@ -148,7 +144,7 @@ function parseInputPieces(text){
     const k = parseInt(t[i++],10); if (!Number.isFinite(k)) throw new Error(`Missing k for piece ${p+1}`);
     const cells=[];
     for(let j=0;j<k;++j){
-      const x = parseInt(t[i++],10), y = parseInt(t[i++],10);
+      const x=parseInt(t[i++],10), y=parseInt(t[i++],10);
       if (!Number.isFinite(x)||!Number.isFinite(y)) throw new Error(`Bad coord for piece ${p+1}, cell ${j+1}`);
       cells.push([x,y]);
     }
@@ -191,30 +187,14 @@ function buildGroupsFromGrid(grid){
 /* ---------- Themes ---------- */
 const THEMES = {
   dark: {
-    bg:'#0e1230',
-    grid:'#252b59',
-    border:'#3944a5',
-    labelText:'#ffffff',
-    labelStroke:'rgba(0,0,0,0.45)',
-    labelStrokeWidth:3,
-    highlight:'#ffd166',
-    useHalo:true,
-    useBackdrop:false,
-    pieceShadow:null,
-    outlineAlpha:0.18
+    bg:'#0e1230', grid:'#252b59', border:'#3944a5', labelText:'#ffffff',
+    labelStroke:'rgba(0,0,0,0.45)', labelStrokeWidth:3, highlight:'#ffd166',
+    useHalo:true, pieceShadow:null, outlineAlpha:0.18
   },
   light: {
-    bg:'#fafafa',
-    grid:'#e5e7eb',
-    border:'#111827',
-    labelText:'#111827',
-    labelStroke:'rgba(255,255,255,0.9)',
-    labelStrokeWidth:3,
-    highlight:'#2563eb',
-    useHalo:true,
-    useBackdrop:false,
-    pieceShadow:{ blur:6, spread:0, color:'rgba(0,0,0,0.12)' },
-    outlineAlpha:0.22
+    bg:'#fafafa', grid:'#e5e7eb', border:'#111827', labelText:'#111827',
+    labelStroke:'rgba(255,255,255,0.9)', labelStrokeWidth:3, highlight:'#2563eb',
+    useHalo:true, pieceShadow:{ blur:6, spread:0, color:'rgba(0,0,0,0.12)' }, outlineAlpha:0.22
   }
 };
 function hslStrokeFromFill(hslStr, alpha=0.2){
@@ -228,7 +208,7 @@ function hslStrokeFromFill(hslStr, alpha=0.2){
 let shapes = [];          // input shapes (for info)
 let W=0,H=0;
 let grid = [];            // matrix output (H x W)
-let groups = new Map();   // id -> cells [[x,y],...]
+let groups = new Map();   // id -> cells [[x,y],...] (may include OOB cells)
 let selected = -1;
 let seedHue = Math.random()*360;
 
@@ -238,13 +218,8 @@ canvas.style.height = "760px";
 let ctx = canvas.getContext("2d", { alpha:false });
 let ox=24, oy=24, cell=26;
 
-/* Drag/Transform state for matrix mode */
+/* Drag/Transform state */
 let drag = null; // {id, startMouse:[gx,gy], cells0:[[x,y],...], constrain:boolean, previewCells:[[x,y]]|null}
-
-/* Output edit badge (not used for matrix sync; we always rewrite) */
-let outEditing = false;
-const outTxt = $("#outTxt");
-const editBadge = null; // no badge needed in matrix mode
 
 /* ---------- Colors (adjacency-aware) ---------- */
 const hueDist = (a,b)=>{ let d = Math.abs(a-b)%360; return d>180?360-d:d; };
@@ -304,23 +279,9 @@ function assignDistinctColorsForIds(ids, adjacency, mode="dark"){
 $("#zoom").addEventListener("input", ()=>{ cell = +$("#zoom").value; $("#zoomVal").textContent = cell; render(); });
 $("#randomizeBtn").addEventListener("click", ()=>{ seedHue = Math.random()*360; render(); });
 
-$("#exportPngBtn").addEventListener("click", ()=>{
-  if (!grid?.length) return;
-  const theme = THEMES[$("#exportTheme").value || "dark"];
-  exportPNG(theme);
-});
-$("#exportSvgBtn").addEventListener("click", ()=>{
-  if (!grid?.length){ alert("Parse input and output before exporting."); return; }
-  const theme = THEMES[$("#exportTheme").value || "dark"];
-  const svg = buildSVG(theme);
-  const blob = new Blob([svg], {type:"image/svg+xml"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = `packing_${W}x${H}_${($("#exportTheme").value||"dark")}.svg`; a.click();
-  URL.revokeObjectURL(url);
-});
+$("#exportPngBtn").addEventListener("click", ()=>{ if (!grid?.length) return; const theme = THEMES[$("#exportTheme").value || "dark"]; exportPNG(theme); });
+$("#exportSvgBtn").addEventListener("click", ()=>{ if (!grid?.length){ alert("Parse input and output before exporting."); return; } const theme = THEMES[$("#exportTheme").value || "dark"]; const svg = buildSVG(theme); const blob = new Blob([svg], {type:"image/svg+xml"}); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `packing_${W}x${H}_${($("#exportTheme").value||"dark")}.svg`; a.click(); URL.revokeObjectURL(url); });
 
-/* Parse buttons */
 $("#parseInBtn").addEventListener("click", ()=>{
   try{
     shapes = parseInputPieces($("#inTxt").value);
@@ -354,7 +315,6 @@ $("#parseOutBtn").addEventListener("click", ()=>{
 $("#renderBtn").addEventListener("click", render);
 $("#validateBtn").addEventListener("click", ()=>{ const msg = validateMatrix(); setStatus(msg.text, msg.kind); });
 
-/* Samples */
 $("#sampleInBtn").addEventListener("click", ()=>{
   $("#inTxt").value = `3
 1
@@ -493,7 +453,6 @@ function render(){
   }
   computeLayout();
 
-  // Colors based on adjacency of groups
   const adjacency = buildAdjacencyFromGroups(groups);
   const ids = [...groups.keys()];
   const colorMap = assignDistinctColorsForIds(ids, adjacency, "dark");
@@ -510,15 +469,11 @@ function render(){
     drawPiece(groups.get(selected), colorMap.get(selected), String(selected), theme);
   }
 
-  // Drag preview overlay (ghost; can overlap)
+  // Drag preview overlay (ghost; can overlap and go OOB)
   if (drag && drag.previewCells && drag.previewCells.length){
     ctx.save(); ctx.translate(ox, oy);
-    ctx.fillStyle = "rgba(255,255,255,0.25)";
+    ctx.fillStyle = "rgba(255,255,255,0.28)";
     for (const [x,y] of drag.previewCells) ctx.fillRect(x*cell+1, y*cell+1, cell-2, cell-2);
-    ctx.strokeStyle = theme.highlight; ctx.lineWidth = 2;
-    const xs = drag.previewCells.map(c=>c[0]), ys = drag.previewCells.map(c=>c[1]);
-    const minx=Math.min(...xs), maxx=Math.max(...xs), miny=Math.min(...ys), maxy=Math.max(...ys);
-    ctx.strokeRect(minx*cell+0.5, miny*cell+0.5, (maxx-minx+1)*cell, (maxy-miny+1)*cell);
     ctx.restore();
   }
 
@@ -528,39 +483,41 @@ function render(){
   $("#kpiSel").textContent = selected>0 ? selected : "None";
 }
 
-/* ---------- Matrix Validation ---------- */
+/* ---------- Matrix Validation (non-blocking; warns only) ---------- */
 function validateMatrix(){
   if (!grid?.length || !W || !H) return {text:"Awaiting input/matrix.", kind:""};
-  // basic: ids must be 0..n; counts per id vs input shapes (if available)
   const n = shapes.length;
-  let ok = true, probs = [];
-  // bounds are implicit in matrix
-  // check id range
-  for (let y=0;y<H;y++){
-    for (let x=0;x<W;x++){
-      const v = grid[y][x]|0;
-      if (v<0 || (n>0 && v>n)){ ok=false; probs.push(`Cell (${x},${y}) has id=${v} out of range.`); break; }
-    }
-    if (!ok) break;
+  // count cells per id in grid
+  const have = new Map();
+  for (let y=0;y<H;y++) for (let x=0;x<W;x++){
+    const v = grid[y][x]|0; if (v>0) have.set(v, (have.get(v)||0)+1);
   }
-  // optional: compare counts
-  if (ok && n>0){
-    const want = new Array(n+1).fill(0);
-    for (let i=1;i<=n;i++) want[i] = shapes[i-1].length;
-    const have = new Array(n+1).fill(0);
-    for (let y=0;y<H;y++) for (let x=0;x<W;x++) have[grid[y][x]|0]++;
+  // detect any piece with OOB cells (present in groups but not counted in grid area)
+  const oobPieces = [];
+  for (const [id, cells] of groups){
+    const inside = cells.filter(([x,y])=>x>=0&&y>=0&&x<W&&y<H).length;
+    const total = cells.length;
+    if (total>inside) oobPieces.push(id);
+  }
+  const warnBits = [];
+  if (oobPieces.length) warnBits.push(`OOB pieces: ${oobPieces.slice(0,6).join(',')}${oobPieces.length>6?'…':''}`);
+  // compare to input sizes if available
+  if (n>0){
+    const sizeMismatch = [];
     for (let i=1;i<=n;i++){
-      if (have[i]!==0 && have[i]!==want[i]){
-        probs.push(`Piece ${i} cell count=${have[i]} (expected ${want[i]})`);
-        ok=false; break;
-      }
+      const want = shapes[i-1].length;
+      const inside = (have.get(i)||0);
+      if (inside!==0 && inside!==want) sizeMismatch.push(`${i}(${inside}/${want})`);
     }
+    if (sizeMismatch.length) warnBits.push(`counts differ (inside vs kᵢ): ${sizeMismatch.slice(0,6).join(',')}${sizeMismatch.length>6?'…':''}`);
   }
-  if (ok) return {text:`Matrix OK ✔  |  Area=${W*H} · Cells (nonzero)=${[...groups.values()].reduce((s,g)=>s+g.length,0)} · pieces=${groups.size}`, kind:"ok"};
-  return {text:`Invalid ✖ — ${probs[0]}`, kind:"err"};
+  const nonzero = [...groups.values()].reduce((s,g)=>s+g.length,0);
+  const base = `Area=${W*H} · Groups=${groups.size} · Cells(tracked)=${nonzero}`;
+  if (warnBits.length) return {text:`OK (with warnings) — ${base} | ${warnBits.join(' | ')}`, kind:"warn"};
+  return {text:`Matrix OK ✔ — ${base}`, kind:"ok"};
 }
 
-/* ---------- Mouse & Keyboard (drag with ghost) ---------- */
+/* ---------- Mouse & Keyboard (drag anywhere) ---------- */
 function screenToGrid(ev){
   const rect = canvas.getBoundingClientRect();
   const sx = ev.clientX - rect.left - ox;
@@ -573,31 +530,24 @@ function hitTestPieceId(gx, gy){
   if (selected>0 && groups.has(selected)){
     for (const [x,y] of groups.get(selected)) if (x===gx && y===gy) return selected;
   }
-  // otherwise top-most id containing that cell (any order is fine)
   for (const [id, cells] of groups){
     for (const [x,y] of cells){ if (x===gx && y===gy) return id; }
   }
   return -1;
 }
 
-// can proposed cell-set be placed? (in-bounds, no overlap with others)
-function canPlace(id, cells){
-  for (const [x,y] of cells){
-    if (x<0||y<0||x>=W||y>=H) return false;
-    const v = grid[y][x]|0;
-    if (v!==0 && v!==id) return false;
+// Commit policy: overwrite inside-grid cells, ignore bounds for storage (keep OOB in groups)
+function commitPlacementAnywhere(id, cells){
+  // clear old id cells from grid
+  if (groups.has(id)){
+    for (const [x,y] of groups.get(id)) if (x>=0&&y>=0&&x<W&&y<H) grid[y][x] = 0;
   }
-  return true;
-}
-function commitPlacement(id, cells){
-  // clear old id cells
-  for (const [x,y] of groups.get(id)) grid[y][x] = 0;
-  // verify empty
-  for (const [x,y] of cells){ if ((grid[y][x]|0)!==0) return false; }
-  // write id
-  for (const [x,y] of cells) grid[y][x] = id;
+  // write new cells (inside only), last-writer-wins overlap
+  for (const [x,y] of cells){
+    if (x>=0&&y>=0&&x<W&&y<H) grid[y][x] = id;
+  }
+  // store full set (including OOB) for rendering/selection
   groups.set(id, cells.map(c=>[...c]));
-  // sync matrix text
   syncMatrixTextarea();
   return true;
 }
@@ -627,7 +577,7 @@ canvas.addEventListener("mousedown", (ev)=>{
       id: selected,
       startMouse: [gx,gy],
       cells0: (groups.get(selected)||[]).map(c=>[...c]),
-      constrain: ev.ctrlKey || ev.metaKey,
+      constrain: ev.ctrlKey || ev.metaKey,  // hold Ctrl to clamp within bounds while dragging
       previewCells: null
     };
     render();
@@ -643,6 +593,7 @@ window.addEventListener("mousemove", (ev)=>{
   let dy = gy - drag.startMouse[1];
 
   if (drag.constrain){
+    // Clamp preview to stay within grid bounds if Ctrl/meta held
     const xs = drag.cells0.map(c=>c[0]), ys=drag.cells0.map(c=>c[1]);
     const minx=Math.min(...xs), maxx=Math.max(...xs), miny=Math.min(...ys), maxy=Math.max(...ys);
     const minTX = -minx, maxTX = (W-1)-maxx;
@@ -651,7 +602,7 @@ window.addEventListener("mousemove", (ev)=>{
     dy = Math.max(minTY, Math.min(maxTY, dy));
   }
 
-  // Preview only; allow overlaps while dragging
+  // Preview only; allow overlaps and out-of-bounds
   drag.previewCells = translateCells(drag.cells0, dx, dy);
   render();
 });
@@ -661,7 +612,8 @@ window.addEventListener("mouseup", ()=>{
   if (drag){
     const id = drag.id;
     const proposal = drag.previewCells || drag.cells0;
-    if (canPlace(id, proposal)) commitPlacement(id, proposal); // else revert
+    // Always commit (overwrite inside cells; keep OOB in group)
+    commitPlacementAnywhere(id, proposal);
     render();
   }
   drag = null;
@@ -671,49 +623,33 @@ window.addEventListener("keydown", (ev)=>{
   if (!(selected>0 && groups.has(selected))) return;
   const cells = groups.get(selected).map(c=>[...c]);
 
-  // pivot: top-left of current piece bounding box
+  // pivot: top-left of current piece bounding box in world coords
   const xs = cells.map(c=>c[0]), ys=cells.map(c=>c[1]);
   const px = Math.min(...xs), py = Math.min(...ys);
-
   const toLocal = ([x,y])=>[x-px, y-py];
   const toWorld = ([x,y])=>[x+px, y+py];
 
   let changed = false;
   if (ev.key==='e' || ev.key==='E'){ // rotate CW
     const local = cells.map(toLocal).map(([x,y])=>rot90cw(x,y,1));
-    const world = local.map(toWorld);
-    if (canPlace(selected, world)) { commitPlacement(selected, world); changed=true; }
-    ev.preventDefault();
+    commitPlacementAnywhere(selected, local.map(toWorld)); changed=true; ev.preventDefault();
   } else if (ev.key==='q' || ev.key==='Q'){ // rotate CCW
     const local = cells.map(toLocal).map(([x,y])=>rot90cw(x,y,3));
-    const world = local.map(toWorld);
-    if (canPlace(selected, world)) { commitPlacement(selected, world); changed=true; }
-    ev.preventDefault();
+    commitPlacementAnywhere(selected, local.map(toWorld)); changed=true; ev.preventDefault();
   } else if (ev.key==='f' || ev.key==='F'){ // reflect across y-axis in local
     const local = cells.map(toLocal).map(([x,y])=>[-x, y]);
-    const world = local.map(toWorld);
-    if (canPlace(selected, world)) { commitPlacement(selected, world); changed=true; }
-    ev.preventDefault();
+    commitPlacementAnywhere(selected, local.map(toWorld)); changed=true; ev.preventDefault();
   } else if (ev.key==='ArrowLeft'){
-    const moved = translateCells(cells, -1, 0);
-    if (canPlace(selected, moved)) { commitPlacement(selected, moved); changed=true; }
-    ev.preventDefault();
+    commitPlacementAnywhere(selected, translateCells(cells, -1, 0)); changed=true; ev.preventDefault();
   } else if (ev.key==='ArrowRight'){
-    const moved = translateCells(cells, +1, 0);
-    if (canPlace(selected, moved)) { commitPlacement(selected, moved); changed=true; }
-    ev.preventDefault();
+    commitPlacementAnywhere(selected, translateCells(cells, +1, 0)); changed=true; ev.preventDefault();
   } else if (ev.key==='ArrowUp'){
-    const moved = translateCells(cells, 0, -1);
-    if (canPlace(selected, moved)) { commitPlacement(selected, moved); changed=true; }
-    ev.preventDefault();
+    commitPlacementAnywhere(selected, translateCells(cells, 0, -1)); changed=true; ev.preventDefault();
   } else if (ev.key==='ArrowDown'){
-    const moved = translateCells(cells, 0, +1);
-    if (canPlace(selected, moved)) { commitPlacement(selected, moved); changed=true; }
-    ev.preventDefault();
+    commitPlacementAnywhere(selected, translateCells(cells, 0, +1)); changed=true; ev.preventDefault();
   } else if (ev.key==='Escape'){
     selected = -1; updateSelectedInfo(); ev.preventDefault();
   }
-
   if (changed) render();
 });
 
@@ -758,10 +694,7 @@ function exportPNG(theme){
 
   tctx.fillStyle = theme.bg; tctx.fillRect(0,0,cssW,cssH);
   drawGrid(theme);
-  for (const id of ids){ if (id!==selected) drawPiece(groups.get(id), colorMap.get(id), String(id), theme); }
-  if (selected>0 && groups.has(selected)){
-    drawPiece(groups.get(selected), colorMap.get(selected), String(selected), theme);
-  }
+  for (const id of ids){ drawPiece(groups.get(id), colorMap.get(id), String(id), theme); }
 
   ctx = oldCtx; ox = oldOx; oy = oldOy;
 
@@ -849,19 +782,12 @@ function buildSVG(theme){
       }
     }
   }
-  // Drag ghost overlay doesn’t need to be in SVG export
   parts.push(`</g>`);
   parts.push(`</svg>`);
   return parts.join("");
 }
 
 /* ---------- Boot ---------- */
-function setStatus(text, kind=""){
-  const el = $("#status"); el.textContent = text;
-  el.className = "status " + (kind==="ok"?"ok":kind==="err"?"err":kind==="warn"?"warn":"");
-}
-window.addEventListener("resize", ()=>{ render(); });
-
 (function boot(){
   $("#sampleInBtn").click();
   $("#sampleOutBtn").click();
@@ -870,3 +796,4 @@ window.addEventListener("resize", ()=>{ render(); });
 </script>
 </body>
 </html>
+  
