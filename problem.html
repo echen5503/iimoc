@@ -162,7 +162,6 @@ const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
 
 function getPidFromQuery(){
   const p = new URLSearchParams(location.search);
-  return "Permutation";
   //if(p.get('pid') == "polypack" || p.get('pid') == 'polypackmatrix') 
   return (p.get('pid') || '').trim();
 }
@@ -369,6 +368,7 @@ async function loadLeaderboard(page = lbState.page){
   try{
     leaderboardContainer.innerHTML = '<p>Leaderboard Loading...</p>';
     const pid = getPidFromQuery();
+
     lbState.pid = pid;
     if(!pid){ leaderboardContainer.innerHTML = '<p>⚠️ Missing ?pid= in URL.</p>'; lbPageInfo.textContent='—'; return; }
 
@@ -477,11 +477,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  function needsPassword(pid){
+    return pid === 'polypack' || pid === 'polypackmatrix';
+  }
+
+  function getStoredPassword(pid){
+    try { return sessionStorage.getItem('iimoc_pw_' + pid) || ''; }
+    catch { return ''; }
+  }
+
+  function storePassword(pid, pw){
+    try { sessionStorage.setItem('iimoc_pw_' + pid, pw || ''); } catch {}
+  }
+
+  async function fetchStatement(pid){
+    const base = `${URL}/problem/${encodeURIComponent(pid)}/statement`;
+    let password = getStoredPassword(pid);
+
+    // Prompt if protected and we don't have one yet
+    if (needsPassword(pid) && !password) {
+      password = prompt('Enter password for this problem:') || '';
+      storePassword(pid, password);
+    }
+
+    // Build URL with optional password
+    const url = needsPassword(pid) ? `${base}?password=${encodeURIComponent(password)}` : base;
+
+    const res = await fetch(url, { headers: { 'ngrok-skip-browser-warning':'true' } });
+    if (res.status === 403 && needsPassword(pid)) {
+      // Wrong / missing password: re-prompt once
+      alert('Incorrect password. Please try again.');
+      const pw2 = prompt('Enter password for this problem:') || '';
+      storePassword(pid, pw2);
+      const url2 = `${base}?password=${encodeURIComponent(pw2)}`;
+      return fetch(url2, { headers: { 'ngrok-skip-browser-warning':'true' } });
+    }
+    return res;
+  }
+
   try {
     const pid = (new URLSearchParams(location.search)).get('pid');
-    if(!pid){ container.textContent = '⚠️ Missing ?pid= in URL.'; }
-    else {
-      const res = await fetch(`${URL}/problem/${encodeURIComponent(pid)}/statement`, {headers:{'ngrok-skip-browser-warning':'true'}});
+    if(!pid){
+      container.textContent = '⚠️ Missing ?pid= in URL.';
+    } else {
+      const res = await fetchStatement(pid);
       if (!res.ok) throw new Error(`Markdown not found (${res.status})`);
       const md = await res.text();
 
@@ -506,6 +545,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadLeaderboard(1);
 });
 </script>
+
 
 </body>
 </html>
