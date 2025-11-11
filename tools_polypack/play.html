@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Polyomino Packing — Matrix Output • Drag + Ghost Preview</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root { --bg:#0f1220; --panel:#151933; --muted:#a9b1d6; --ink:#e5e9f0; --accent:#7aa2f7; --bad:#f7768e; --good:#9ece6a; --warn:#e0af68; }
+  html, body { height: 100%; }
+  body { margin: 0; font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
+         color: var(--ink); background: linear-gradient(120deg,#0b0e1a,#0e1329 60%,#0b0f22); }
+  h1 { font-size: 20px; margin: 10px 0 8px; }
+  h2 { font-size: 16px; margin: 14px 0 8px; color: var(--accent); }
+  .app { display: grid; grid-template-columns: 420px 1fr; gap: 14px; height: 100%; }
+  .col { padding: 12px; overflow: auto; }
+  .card { background: var(--panel); border: 1px solid #2a3058; border-radius: 12px; padding: 10px 12px; box-shadow: 0 8px 24px #0005; }
+  textarea { width: 100%; box-sizing: border-box; background: #0e1230; color: var(--ink); border: 1px solid #2a3058; border-radius: 8px; padding: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; min-height: 150px; resize: vertical; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  button { background: #1b2146; color: var(--ink); border: 1px solid #2a3058; border-radius: 10px; padding: 8px 12px; cursor: pointer; transition: 150ms transform, 150ms background; }
+  button:hover { background: #222a59; transform: translateY(-1px); }
+  button.good { border-color: #3b7f2b; }
+  button.warn { border-color: #8a6d1a; }
+  .grid { display: grid; gap: 12px; }
+  .info { font-size: 12px; color: var(--muted); }
+  .status { padding: 8px 10px; border-radius: 10px; background: #121633; border: 1px dashed #2a3058; white-space: pre-wrap; min-height: 42px; }
+  .status.ok { border-color: #3b7f2b; color: var(--good); }
+  .status.warn { border-color: #8a6d1a; color: var(--warn); }
+  .status.err { border-color: #7b2a3a; color: var(--bad); }
+  canvas { background: #0e1230; border: 1px solid #2a3058; border-radius: 12px; image-rendering: pixelated; cursor: grab; display:block; }
+  canvas.dragging { cursor: grabbing; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { border-bottom: 1px solid #2a3058; padding: 6px 4px; text-align: center; }
+  th { color: var(--muted); font-weight: 600; }
+  input[type="number"] { width: 84px; background: #0e1230; color: var(--ink); border: 1px solid #2a3058; border-radius: 6px; padding: 4px 6px; }
+  select { background:#0e1230; color:var(--ink); border:1px solid #2a3058; border-radius:8px; padding:6px 8px; }
+  .pill { display: inline-flex; align-items:center; gap:8px; padding: 4px 8px; border-radius: 999px; background: #111537; border: 1px solid #2a3058; margin-right: 6px; }
+  .kpi { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .mini { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px,1fr)); gap: 8px; }
+  .mini canvas { height: 90px; width: 90px; }
+  .dim { color: var(--muted); }
+  .slider { width: 160px; }
+  .keyboard { font-size: 12px; color: var(--muted); }
+  .editingBadge { color: var(--warn); margin-left: 8px; display: none; }
+  .editingBadge.on { display: inline; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Left -->
+  <div class="col grid">
+    <div class="card">
+      <h1>Polyomino Packing — Matrix Output + Draggable Ghost</h1>
+      <div class="info">
+        Paste <b>Input</b> (pieces) and <b>Output (Matrix)</b>, then drag pieces on the canvas.<br>
+        Keys: <span class="keyboard">Q</span>=rotate CCW, <span class="keyboard">E</span>=rotate CW, <span class="keyboard">F</span>=reflect, <span class="keyboard">Esc</span>=clear, arrows=move.<br>
+        Overlap is allowed while dragging (ghost); we only check on drop.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Input (Problem format)</h2>
+      <div class="info">n, then for each piece: kᵢ and kᵢ lines of <code>x y</code>.</div>
+      <textarea id="inTxt" spellcheck="false"></textarea>
+      <div class="row">
+        <button id="parseInBtn">Parse Input</button>
+        <button id="sampleInBtn" class="warn">Load Small Sample</button>
+      </div>
+      <div class="info" id="inInfo"></div>
+      <div id="miniWrap" class="mini" title="Normalized input shape previews"></div>
+    </div>
+
+    <div class="card">
+      <h2>Output (Matrix)</h2>
+      <div class="info">First line: <code>W H</code>. Then <code>H</code> lines of <code>W</code> integers (0 for empty, <i>i</i> for piece id 1..n).</div>
+      <textarea id="outTxt" spellcheck="false"></textarea>
+      <div class="row">
+        <button id="parseOutBtn">Parse Matrix</button>
+        <button id="sampleOutBtn" class="warn">Load Matching Sample</button>
+      </div>
+      <div class="info" id="outInfo"></div>
+    </div>
+
+    <div class="card">
+      <h2>Actions</h2>
+      <div class="row">
+        <button id="renderBtn" class="good">Render</button>
+        <button id="validateBtn">Validate</button>
+        <button id="randomizeBtn">Random Colors</button>
+        <button id="exportPngBtn">Export PNG</button>
+        <button id="exportSvgBtn">Export SVG</button>
+        <span class="pill">Export theme:
+          <select id="exportTheme">
+            <option value="dark" selected>Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </span>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <span class="pill">Zoom cell size:</span>
+        <input type="range" id="zoom" min="8" max="48" step="1" value="26" class="slider" />
+        <span class="dim" id="zoomVal">26</span>
+      </div>
+      <div class="kpi" style="margin-top:8px;">
+        <span class="pill">Area: <span id="kpiArea">–</span></span>
+        <span class="pill">Total cells: <span id="kpiCells">–</span></span>
+        <span class="pill">n: <span id="kpiN">–</span></span>
+        <span class="pill">Selected: <span id="kpiSel">None</span></span>
+      </div>
+      <div id="status" class="status">Ready.</div>
+    </div>
+  </div>
+
+  <!-- Right -->
+  <div class="col grid">
+    <div class="card">
+      <h2>Canvas (Drag pieces)</h2>
+      <div class="info">Drag; Q/E/F to rotate/reflect. Hold Ctrl while dragging to keep preview in bounds. Overlap allowed during drag; we check on drop.</div>
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>Transforms (Selected)</h2>
+      <div class="info">Shows piece id and cell count for the selected piece. (Matrix mode doesn’t use per-piece X/Y/R/F fields.)</div>
+      <div id="selInfo" class="info">—</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Helpers & Geometry ---------- */
+const $ = s => document.querySelector(s);
+const rot90cw = (x,y,r)=>{ r&=3; return r===0?[x,y]:r===1?[y,-x]:r===2?[-x,-y]:[-y,x]; };
+const normalize = (cells)=>{
+  const minx = Math.min(...cells.map(c=>c[0]));
+  const miny = Math.min(...cells.map(c=>c[1]));
+  return cells.map(([x,y])=>[x-minx,y-miny]);
+};
+const translateCells = (cells, dx, dy)=> cells.map(([x,y])=>[x+dx,y+dy]);
+const countCells = shapes => shapes.reduce((s,sh)=>s+sh.length,0);
+
+/* ---------- Parsing ---------- */
+function parseInputPieces(text){
+  const t = text.trim().split(/\s+/);
+  if (!t.length) throw new Error("Empty input.");
+  let i=0; const n = parseInt(t[i++],10); if (!Number.isFinite(n)) throw new Error("Missing n.");
+  const shapes=[];
+  for(let p=0;p<n;++p){
+    const k = parseInt(t[i++],10); if (!Number.isFinite(k)) throw new Error(`Missing k for piece ${p+1}`);
+    const cells=[];
+    for(let j=0;j<k;++j){
+      const x = parseInt(t[i++],10), y = parseInt(t[i++],10);
+      if (!Number.isFinite(x)||!Number.isFinite(y)) throw new Error(`Bad coord for piece ${p+1}, cell ${j+1}`);
+      cells.push([x,y]);
+    }
+    shapes.push(cells);
+  }
+  return shapes;
+}
+
+function parseOutputMatrix(text){
+  const lines = text.trim().split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  if (lines.length < 2) throw new Error("Matrix output must have at least two lines (W H then rows).");
+  const [W,H] = lines[0].split(/\s+/).map(Number);
+  if (!Number.isFinite(W) || !Number.isFinite(H) || W<=0 || H<=0) throw new Error("Bad W H.");
+  if (lines.length-1 < H) throw new Error(`Expected ${H} rows after header.`);
+  const grid = [];
+  for (let y=0; y<H; y++){
+    const row = lines[1+y].split(/\s+/).map(Number);
+    if (row.length !== W) throw new Error(`Row ${y+1} has ${row.length} entries; expected ${W}.`);
+    grid.push(row.map(v => (Number.isFinite(v) ? v|0 : 0)));
+  }
+  return {W,H,grid};
+}
+
+/* Build groups (cells) by id from a grid */
+function buildGroupsFromGrid(grid){
+  const H = grid.length, W = grid[0].length;
+  const groups = new Map(); // id -> array of [x,y]
+  for (let y=0; y<H; y++){
+    for (let x=0; x<W; x++){
+      const id = grid[y][x]|0;
+      if (id>0){
+        if (!groups.has(id)) groups.set(id, []);
+        groups.get(id).push([x,y]);
+      }
+    }
+  }
+  return groups;
+}
+
+/* ---------- Themes ---------- */
+const THEMES = {
+  dark: {
+    bg:'#0e1230',
+    grid:'#252b59',
+    border:'#3944a5',
+    labelText:'#ffffff',
+    labelStroke:'rgba(0,0,0,0.45)',
+    labelStrokeWidth:3,
+    highlight:'#ffd166',
+    useHalo:true,
+    useBackdrop:false,
+    pieceShadow:null,
+    outlineAlpha:0.18
+  },
+  light: {
+    bg:'#fafafa',
+    grid:'#e5e7eb',
+    border:'#111827',
+    labelText:'#111827',
+    labelStroke:'rgba(255,255,255,0.9)',
+    labelStrokeWidth:3,
+    highlight:'#2563eb',
+    useHalo:true,
+    useBackdrop:false,
+    pieceShadow:{ blur:6, spread:0, color:'rgba(0,0,0,0.12)' },
+    outlineAlpha:0.22
+  }
+};
+function hslStrokeFromFill(hslStr, alpha=0.2){
+  const m = /hsl\(\s*([0-9.]+)\s*,\s*([0-9.]+)%\s*,\s*([0-9.]+)%\s*\)/i.exec(hslStr);
+  if (!m) return `rgba(0,0,0,${alpha})`;
+  const h = +m[1], s = +m[2], l = Math.max(0, Math.min(100, +m[3]-10));
+  return `hsla(${h}, ${s}%, ${l}%, ${alpha})`;
+}
+
+/* ---------- State ---------- */
+let shapes = [];          // input shapes (for info)
+let W=0,H=0;
+let grid = [];            // matrix output (H x W)
+let groups = new Map();   // id -> cells [[x,y],...]
+let selected = -1;
+let seedHue = Math.random()*360;
+
+const canvas = $("#canvas");
+canvas.style.width = "980px";
+canvas.style.height = "760px";
+let ctx = canvas.getContext("2d", { alpha:false });
+let ox=24, oy=24, cell=26;
+
+/* Drag/Transform state for matrix mode */
+let drag = null; // {id, startMouse:[gx,gy], cells0:[[x,y],...], constrain:boolean, previewCells:[[x,y]]|null}
+
+/* Output edit badge (not used for matrix sync; we always rewrite) */
+let outEditing = false;
+const outTxt = $("#outTxt");
+const editBadge = null; // no badge needed in matrix mode
+
+/* ---------- Colors (adjacency-aware) ---------- */
+const hueDist = (a,b)=>{ let d = Math.abs(a-b)%360; return d>180?360-d:d; };
+function buildAdjacencyFromGroups(grps){
+  const occ = new Map();
+  for (const [id, cells] of grps){
+    for (const [x,y] of cells) occ.set(`${x},${y}`, id);
+  }
+  const ids = [...grps.keys()];
+  const adj = new Map(ids.map(id=>[id, new Set()]));
+  for (const [key, a] of occ){
+    const [x,y] = key.split(',').map(Number);
+    const ns = [[x+1,y],[x-1,y],[x,y+1],[x,y-1]];
+    for(const [nx,ny] of ns){
+      const b = occ.get(`${nx},${ny}`);
+      if (b!=null && b!==a){ adj.get(a).add(b); adj.get(b).add(a); }
+    }
+  }
+  return adj;
+}
+function assignDistinctColorsForIds(ids, adjacency, mode="dark"){
+  const MIN_HUE_GAP = 36;
+  const golden = 137.508;
+  const LIGHTS_DARK  = [60, 52, 68];
+  const LIGHTS_LIGHT = [55, 47, 63];
+  const SAT_DARK = 70, SAT_LIGHT = 72;
+  const LIGHTS = mode==="light" ? LIGHTS_LIGHT : LIGHTS_DARK;
+  const SAT    = mode==="light" ? SAT_LIGHT    : SAT_DARK;
+
+  const colors = new Map();
+  const order = [...ids].sort((a,b)=> (adjacency.get(b)?.size||0) - (adjacency.get(a)?.size||0));
+  for (let i=0;i<order.length;i++){
+    const id = order[i];
+    let h = (seedHue + i*golden) % 360, tries = 0;
+    while (true){
+      let ok = true;
+      for (const v of (adjacency.get(id)||[])){
+        const cv = colors.get(v);
+        if (cv && hueDist(h, cv.h)<MIN_HUE_GAP){ ok=false; break; }
+      }
+      if (ok) break;
+      h = (h + golden) % 360;
+      if (++tries>720) break;
+    }
+    let L = LIGHTS[0];
+    const usedL = new Set();
+    for (const v of (adjacency.get(id)||[])) if (colors.get(v)) usedL.add(colors.get(v).l);
+    for (const cand of LIGHTS){ if (!usedL.has(cand)){ L = cand; break; } }
+    colors.set(id, { h, s: SAT, l: L, css:`hsl(${h}, ${SAT}%, ${L}%)`});
+  }
+  const out = new Map();
+  for (const id of ids) out.set(id, colors.get(id)?.css || 'hsl(0,0%,60%)');
+  return out;
+}
+
+/* ---------- UI wiring ---------- */
+$("#zoom").addEventListener("input", ()=>{ cell = +$("#zoom").value; $("#zoomVal").textContent = cell; render(); });
+$("#randomizeBtn").addEventListener("click", ()=>{ seedHue = Math.random()*360; render(); });
+
+$("#exportPngBtn").addEventListener("click", ()=>{
+  if (!grid?.length) return;
+  const theme = THEMES[$("#exportTheme").value || "dark"];
+  exportPNG(theme);
+});
+$("#exportSvgBtn").addEventListener("click", ()=>{
+  if (!grid?.length){ alert("Parse input and output before exporting."); return; }
+  const theme = THEMES[$("#exportTheme").value || "dark"];
+  const svg = buildSVG(theme);
+  const blob = new Blob([svg], {type:"image/svg+xml"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = `packing_${W}x${H}_${($("#exportTheme").value||"dark")}.svg`; a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* Parse buttons */
+$("#parseInBtn").addEventListener("click", ()=>{
+  try{
+    shapes = parseInputPieces($("#inTxt").value);
+    $("#inInfo").textContent = `Parsed n=${shapes.length}, total cells=${countCells(shapes)}.`;
+    $("#inInfo").style.color = "var(--good)";
+    buildMini();
+    $("#kpiN").textContent = shapes.length;
+    $("#kpiCells").textContent = countCells(shapes);
+    setStatus("Input parsed.", "");
+  }catch(e){
+    $("#inInfo").textContent = e.message;
+    $("#inInfo").style.color = "var(--bad)";
+  }
+});
+$("#parseOutBtn").addEventListener("click", ()=>{
+  try{
+    const o = parseOutputMatrix($("#outTxt").value);
+    W=o.W; H=o.H; grid=o.grid;
+    groups = buildGroupsFromGrid(grid);
+    selected = -1; updateSelectedInfo();
+    $("#outInfo").textContent = `Parsed matrix W=${W}, H=${H}. Pieces present: ${groups.size}`;
+    $("#outInfo").style.color = "var(--good)";
+    $("#kpiArea").textContent = W*H;
+    render();
+  }catch(e){
+    $("#outInfo").textContent = e.message;
+    $("#outInfo").style.color = "var(--bad)";
+  }
+});
+
+$("#renderBtn").addEventListener("click", render);
+$("#validateBtn").addEventListener("click", ()=>{ const msg = validateMatrix(); setStatus(msg.text, msg.kind); });
+
+/* Samples */
+$("#sampleInBtn").addEventListener("click", ()=>{
+  $("#inTxt").value = `3
+1
+0 0
+3
+0 0
+1 0
+0 1
+4
+0 0
+1 0
+0 1
+1 1`;
+  $("#parseInBtn").click();
+});
+$("#sampleOutBtn").addEventListener("click", ()=>{
+  $("#outTxt").value = `3 3
+1 2 2
+3 3 2
+3 3 0`;
+  $("#parseOutBtn").click();
+});
+
+/* ---------- Mini Previews ---------- */
+function buildMini(){
+  const wrap = $("#miniWrap"); wrap.innerHTML="";
+  shapes.forEach((cells, idx)=>{
+    const n = normalize(cells);
+    const maxx = Math.max(...n.map(c=>c[0]))+1;
+    const maxy = Math.max(...n.map(c=>c[1]))+1;
+    const s = 14;
+    const cv = document.createElement("canvas");
+    cv.width = Math.max(60, maxx*s+2);
+    cv.height = Math.max(60, maxy*s+2);
+    const c2 = cv.getContext("2d");
+    c2.fillStyle = "#0e1230"; c2.fillRect(0,0,cv.width,cv.height);
+    c2.strokeStyle = "#252b59";
+    c2.beginPath();
+    for (let x=0;x<=maxx;++x){ const X = 1+x*s+0.5; c2.moveTo(X,1); c2.lineTo(X,1+maxy*s); }
+    for (let y=0;y<=maxy;++y){ const Y = 1+y*s+0.5; c2.moveTo(1,Y); c2.lineTo(1+maxx*s,Y); }
+    c2.stroke();
+    c2.fillStyle = "#5aa2f7";
+    for (const [x,y] of n) c2.fillRect(1+x*s+1, 1+y*s+1, s-2, s-2);
+    c2.fillStyle = "#a9b1d6"; c2.font = "12px ui-monospace, monospace";
+    c2.fillText(`#${idx+1} (k=${cells.length})`, 6, 14);
+    wrap.appendChild(cv);
+  });
+}
+
+/* ---------- Layout & Rendering ---------- */
+function computeLayout(){
+  const pad = 24;
+  const needW = W*cell + pad*2;
+  const needH = H*cell + pad*2;
+  const cssW = Math.min(1600, Math.max(600, needW));
+  const cssH = Math.min(1200, Math.max(420, needH));
+  canvas.style.width = cssW + "px";
+  canvas.style.height = cssH + "px";
+
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(cssW * dpr);
+  canvas.height = Math.round(cssH * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  ox = Math.max(24, Math.floor((cssW - W*cell)/2));
+  oy = Math.max(24, Math.floor((cssH - H*cell)/2));
+}
+function drawGrid(theme){
+  ctx.save();
+  ctx.translate(ox, oy);
+  ctx.strokeStyle = theme.border; ctx.lineWidth = 2;
+  ctx.strokeRect(0.5, 0.5, W*cell, H*cell);
+  ctx.strokeStyle = theme.grid; ctx.lineWidth = 1; ctx.beginPath();
+  for (let x=0;x<=W;++x){ const X = Math.round(x*cell)+0.5; ctx.moveTo(X,0.5); ctx.lineTo(X,H*cell+0.5); }
+  for (let y=0;y<=H;++y){ const Y = Math.round(y*cell)+0.5; ctx.moveTo(0.5,Y); ctx.lineTo(W*cell+0.5,Y); }
+  ctx.stroke();
+  ctx.restore();
+}
+function pickInteriorCell(cells){
+  const set = new Set(cells.map(([x,y])=>`${x},${y}`));
+  let best = cells[0], bestScore = -1;
+  for (const [x,y] of cells){
+    const score = (set.has(`${x+1},${y}`)?1:0) + (set.has(`${x-1},${y}`)?1:0)
+                + (set.has(`${x},${y+1}`)?1:0) + (set.has(`${x},${y-1}`)?1:0);
+    if (score > bestScore){ bestScore = score; best = [x,y]; }
+  }
+  return best || cells[0];
+}
+function drawLabelInCell(label, cellX, cellY, theme){
+  const pad = Math.max(2, Math.floor(cell*0.1));
+  let fontSize = Math.floor(cell*0.6);
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  while (fontSize > 6){
+    ctx.font = `700 ${fontSize}px ui-monospace, monospace`;
+    const w = ctx.measureText(label).width;
+    if (w <= (cell - 2*pad)) break;
+    fontSize -= 1;
+  }
+  const px = (cellX+0.5)*cell, py = (cellY+0.5)*cell;
+  if (theme.useHalo){
+    ctx.lineWidth = theme.labelStrokeWidth;
+    ctx.strokeStyle = theme.labelStroke;
+    ctx.strokeText(label, px, py);
+  }
+  ctx.fillStyle = theme.labelText;
+  ctx.fillText(label, px, py);
+}
+function drawPiece(cells, color, label, theme){
+  ctx.save(); ctx.translate(ox, oy);
+  if (theme.pieceShadow){
+    ctx.shadowColor = theme.pieceShadow.color;
+    ctx.shadowBlur  = theme.pieceShadow.blur;
+    ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 1;
+  }
+  ctx.fillStyle = color;
+  for (const [x,y] of cells) ctx.fillRect(x*cell+1, y*cell+1, cell-2, cell-2);
+  ctx.shadowColor = 'transparent';
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = hslStrokeFromFill(color, theme.outlineAlpha);
+  for (const [x,y] of cells) ctx.strokeRect(x*cell+1.5, y*cell+1.5, cell-3, cell-3);
+  if (label && cells.length){
+    const [cx, cy] = pickInteriorCell(cells);
+    drawLabelInCell(label, cx, cy, theme);
+  }
+  ctx.restore();
+}
+
+function render(){
+  const cssW = parseFloat(getComputedStyle(canvas).width);
+  const cssH = parseFloat(getComputedStyle(canvas).height);
+  const theme = THEMES.dark;
+  ctx.fillStyle = theme.bg; ctx.fillRect(0,0,cssW,cssH);
+  if (!grid?.length || !W || !H){
+    setStatus("Nothing to render yet. Parse input & matrix.", "warn");
+    return;
+  }
+  computeLayout();
+
+  // Colors based on adjacency of groups
+  const adjacency = buildAdjacencyFromGroups(groups);
+  const ids = [...groups.keys()];
+  const colorMap = assignDistinctColorsForIds(ids, adjacency, "dark");
+
+  drawGrid(theme);
+
+  // Draw all pieces (except selected)
+  for (const id of ids){
+    if (id===selected) continue;
+    drawPiece(groups.get(id), colorMap.get(id), String(id), theme);
+  }
+  // Draw selected on top
+  if (selected>0 && groups.has(selected)){
+    drawPiece(groups.get(selected), colorMap.get(selected), String(selected), theme);
+  }
+
+  // Drag preview overlay (ghost; can overlap)
+  if (drag && drag.previewCells && drag.previewCells.length){
+    ctx.save(); ctx.translate(ox, oy);
+    ctx.fillStyle = "rgba(255,255,255,0.25)";
+    for (const [x,y] of drag.previewCells) ctx.fillRect(x*cell+1, y*cell+1, cell-2, cell-2);
+    ctx.strokeStyle = theme.highlight; ctx.lineWidth = 2;
+    const xs = drag.previewCells.map(c=>c[0]), ys = drag.previewCells.map(c=>c[1]);
+    const minx=Math.min(...xs), maxx=Math.max(...xs), miny=Math.min(...ys), maxy=Math.max(...ys);
+    ctx.strokeRect(minx*cell+0.5, miny*cell+0.5, (maxx-minx+1)*cell, (maxy-miny+1)*cell);
+    ctx.restore();
+  }
+
+  const msg = validateMatrix();
+  setStatus(msg.text, msg.kind);
+  $("#kpiArea").textContent = W*H;
+  $("#kpiSel").textContent = selected>0 ? selected : "None";
+}
+
+/* ---------- Matrix Validation ---------- */
+function validateMatrix(){
+  if (!grid?.length || !W || !H) return {text:"Awaiting input/matrix.", kind:""};
+  // basic: ids must be 0..n; counts per id vs input shapes (if available)
+  const n = shapes.length;
+  let ok = true, probs = [];
+  // bounds are implicit in matrix
+  // check id range
+  for (let y=0;y<H;y++){
+    for (let x=0;x<W;x++){
+      const v = grid[y][x]|0;
+      if (v<0 || (n>0 && v>n)){ ok=false; probs.push(`Cell (${x},${y}) has id=${v} out of range.`); break; }
+    }
+    if (!ok) break;
+  }
+  // optional: compare counts
+  if (ok && n>0){
+    const want = new Array(n+1).fill(0);
+    for (let i=1;i<=n;i++) want[i] = shapes[i-1].length;
+    const have = new Array(n+1).fill(0);
+    for (let y=0;y<H;y++) for (let x=0;x<W;x++) have[grid[y][x]|0]++;
+    for (let i=1;i<=n;i++){
+      if (have[i]!==0 && have[i]!==want[i]){
+        probs.push(`Piece ${i} cell count=${have[i]} (expected ${want[i]})`);
+        ok=false; break;
+      }
+    }
+  }
+  if (ok) return {text:`Matrix OK ✔  |  Area=${W*H} · Cells (nonzero)=${[...groups.values()].reduce((s,g)=>s+g.length,0)} · pieces=${groups.size}`, kind:"ok"};
+  return {text:`Invalid ✖ — ${probs[0]}`, kind:"err"};
+}
+
+/* ---------- Mouse & Keyboard (drag with ghost) ---------- */
+function screenToGrid(ev){
+  const rect = canvas.getBoundingClientRect();
+  const sx = ev.clientX - rect.left - ox;
+  const sy = ev.clientY - rect.top - oy;
+  return [Math.floor(sx/cell), Math.floor(sy/cell)];
+}
+function hitTestPieceId(gx, gy){
+  if (!groups.size) return -1;
+  // prefer selected if hit
+  if (selected>0 && groups.has(selected)){
+    for (const [x,y] of groups.get(selected)) if (x===gx && y===gy) return selected;
+  }
+  // otherwise top-most id containing that cell (any order is fine)
+  for (const [id, cells] of groups){
+    for (const [x,y] of cells){ if (x===gx && y===gy) return id; }
+  }
+  return -1;
+}
+
+// can proposed cell-set be placed? (in-bounds, no overlap with others)
+function canPlace(id, cells){
+  for (const [x,y] of cells){
+    if (x<0||y<0||x>=W||y>=H) return false;
+    const v = grid[y][x]|0;
+    if (v!==0 && v!==id) return false;
+  }
+  return true;
+}
+function commitPlacement(id, cells){
+  // clear old id cells
+  for (const [x,y] of groups.get(id)) grid[y][x] = 0;
+  // verify empty
+  for (const [x,y] of cells){ if ((grid[y][x]|0)!==0) return false; }
+  // write id
+  for (const [x,y] of cells) grid[y][x] = id;
+  groups.set(id, cells.map(c=>[...c]));
+  // sync matrix text
+  syncMatrixTextarea();
+  return true;
+}
+function syncMatrixTextarea(){
+  const lines = [`${W} ${H}`];
+  for (let y=0;y<H;y++) lines.push(grid[y].join(' '));
+  $("#outTxt").value = lines.join("\n");
+}
+
+function updateSelectedInfo(){
+  if (selected>0 && groups.has(selected)){
+    $("#selInfo").textContent = `Selected piece: ${selected} • cells=${groups.get(selected).length}`;
+  } else {
+    $("#selInfo").textContent = "—";
+  }
+}
+
+canvas.addEventListener("mousedown", (ev)=>{
+  if (!grid?.length) return;
+  canvas.classList.add("dragging");
+  const [gx,gy] = screenToGrid(ev);
+  const hit = hitTestPieceId(gx,gy);
+  if (hit>0){
+    selected = hit;
+    updateSelectedInfo();
+    drag = {
+      id: selected,
+      startMouse: [gx,gy],
+      cells0: (groups.get(selected)||[]).map(c=>[...c]),
+      constrain: ev.ctrlKey || ev.metaKey,
+      previewCells: null
+    };
+    render();
+  } else {
+    selected = -1; updateSelectedInfo(); drag = null; render();
+  }
+});
+
+window.addEventListener("mousemove", (ev)=>{
+  if (!drag) return;
+  const [gx,gy] = screenToGrid(ev);
+  let dx = gx - drag.startMouse[0];
+  let dy = gy - drag.startMouse[1];
+
+  if (drag.constrain){
+    const xs = drag.cells0.map(c=>c[0]), ys=drag.cells0.map(c=>c[1]);
+    const minx=Math.min(...xs), maxx=Math.max(...xs), miny=Math.min(...ys), maxy=Math.max(...ys);
+    const minTX = -minx, maxTX = (W-1)-maxx;
+    const minTY = -miny, maxTY = (H-1)-maxy;
+    dx = Math.max(minTX, Math.min(maxTX, dx));
+    dy = Math.max(minTY, Math.min(maxTY, dy));
+  }
+
+  // Preview only; allow overlaps while dragging
+  drag.previewCells = translateCells(drag.cells0, dx, dy);
+  render();
+});
+
+window.addEventListener("mouseup", ()=>{
+  canvas.classList.remove("dragging");
+  if (drag){
+    const id = drag.id;
+    const proposal = drag.previewCells || drag.cells0;
+    if (canPlace(id, proposal)) commitPlacement(id, proposal); // else revert
+    render();
+  }
+  drag = null;
+});
+
+window.addEventListener("keydown", (ev)=>{
+  if (!(selected>0 && groups.has(selected))) return;
+  const cells = groups.get(selected).map(c=>[...c]);
+
+  // pivot: top-left of current piece bounding box
+  const xs = cells.map(c=>c[0]), ys=cells.map(c=>c[1]);
+  const px = Math.min(...xs), py = Math.min(...ys);
+
+  const toLocal = ([x,y])=>[x-px, y-py];
+  const toWorld = ([x,y])=>[x+px, y+py];
+
+  let changed = false;
+  if (ev.key==='e' || ev.key==='E'){ // rotate CW
+    const local = cells.map(toLocal).map(([x,y])=>rot90cw(x,y,1));
+    const world = local.map(toWorld);
+    if (canPlace(selected, world)) { commitPlacement(selected, world); changed=true; }
+    ev.preventDefault();
+  } else if (ev.key==='q' || ev.key==='Q'){ // rotate CCW
+    const local = cells.map(toLocal).map(([x,y])=>rot90cw(x,y,3));
+    const world = local.map(toWorld);
+    if (canPlace(selected, world)) { commitPlacement(selected, world); changed=true; }
+    ev.preventDefault();
+  } else if (ev.key==='f' || ev.key==='F'){ // reflect across y-axis in local
+    const local = cells.map(toLocal).map(([x,y])=>[-x, y]);
+    const world = local.map(toWorld);
+    if (canPlace(selected, world)) { commitPlacement(selected, world); changed=true; }
+    ev.preventDefault();
+  } else if (ev.key==='ArrowLeft'){
+    const moved = translateCells(cells, -1, 0);
+    if (canPlace(selected, moved)) { commitPlacement(selected, moved); changed=true; }
+    ev.preventDefault();
+  } else if (ev.key==='ArrowRight'){
+    const moved = translateCells(cells, +1, 0);
+    if (canPlace(selected, moved)) { commitPlacement(selected, moved); changed=true; }
+    ev.preventDefault();
+  } else if (ev.key==='ArrowUp'){
+    const moved = translateCells(cells, 0, -1);
+    if (canPlace(selected, moved)) { commitPlacement(selected, moved); changed=true; }
+    ev.preventDefault();
+  } else if (ev.key==='ArrowDown'){
+    const moved = translateCells(cells, 0, +1);
+    if (canPlace(selected, moved)) { commitPlacement(selected, moved); changed=true; }
+    ev.preventDefault();
+  } else if (ev.key==='Escape'){
+    selected = -1; updateSelectedInfo(); ev.preventDefault();
+  }
+
+  if (changed) render();
+});
+
+/* ---------- Status & Resize ---------- */
+function setStatus(text, kind=""){
+  const el = $("#status"); el.textContent = text;
+  el.className = "status " + (kind==="ok"?"ok":kind==="err"?"err":kind==="warn"?"warn":"");
+}
+window.addEventListener("resize", ()=>{ render(); });
+
+/* ---------- PNG Export (theme-aware re-render) ---------- */
+function exportPNG(theme){
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = parseFloat(getComputedStyle(canvas).width);
+  const cssH = parseFloat(getComputedStyle(canvas).height);
+  const scale = dpr * 2;
+
+  const tmp = document.createElement("canvas");
+  tmp.width = Math.round(cssW * scale);
+  tmp.height = Math.round(cssH * scale);
+  const tctx = tmp.getContext("2d", { alpha:false });
+  tctx.setTransform(scale, 0, 0, scale, 0, 0);
+
+  // compute export layout
+  const pad = 24;
+  const needW = W*cell + pad*2;
+  const needH = H*cell + pad*2;
+  const cssW2 = Math.min(1600, Math.max(600, needW));
+  const cssH2 = Math.min(1200, Math.max(420, needH));
+  const ox2 = Math.max(pad, Math.floor((cssW2 - W*cell)/2));
+  const oy2 = Math.max(pad, Math.floor((cssH2 - H*cell)/2));
+
+  // adjacency + colors
+  const adjacency = buildAdjacencyFromGroups(groups);
+  const ids = [...groups.keys()];
+  const mode = (theme===THEMES.light) ? "light" : "dark";
+  const colorMap = assignDistinctColorsForIds(ids, adjacency, mode);
+
+  // temporarily reuse draw fns by redirecting ctx/ox/oy
+  const oldCtx = ctx, oldOx = ox, oldOy = oy;
+  ctx = tctx; ox = ox2; oy = oy2;
+
+  tctx.fillStyle = theme.bg; tctx.fillRect(0,0,cssW,cssH);
+  drawGrid(theme);
+  for (const id of ids){ if (id!==selected) drawPiece(groups.get(id), colorMap.get(id), String(id), theme); }
+  if (selected>0 && groups.has(selected)){
+    drawPiece(groups.get(selected), colorMap.get(selected), String(selected), theme);
+  }
+
+  ctx = oldCtx; ox = oldOx; oy = oldOy;
+
+  const url = tmp.toDataURL("image/png");
+  const a = document.createElement("a");
+  a.href = url; a.download = `packing_${W}x${H}_${($("#exportTheme").value||"dark")}.png`;
+  a.click();
+}
+
+/* ---------- SVG Export ---------- */
+function buildSVG(theme){
+  const pad = 24;
+  const needW = W*cell + pad*2;
+  const needH = H*cell + pad*2;
+  const cssW = Math.min(1600, Math.max(600, needW));
+  const cssH = Math.min(1200, Math.max(420, needH));
+  const svgOx = Math.max(pad, Math.floor((cssW - W*cell)/2));
+  const svgOy = Math.max(pad, Math.floor((cssH - H*cell)/2));
+
+  const adjacency = buildAdjacencyFromGroups(groups);
+  const ids = [...groups.keys()];
+  const mode = (theme===THEMES.light) ? "light" : "dark";
+  const colorMap = assignDistinctColorsForIds(ids, adjacency, mode);
+
+  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const parts = [];
+  parts.push(`<?xml version="1.0" encoding="UTF-8"?>`);
+  parts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${cssW}" height="${cssH}" viewBox="0 0 ${cssW} ${cssH}">`);
+  parts.push(`<defs>
+    <filter id="pieceShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="rgba(0,0,0,0.12)" />
+    </filter>
+    <style>
+      .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; font-weight:700; dominant-baseline:middle; text-anchor:middle; }
+      .lblHalo { paint-order: stroke fill; }
+    </style>
+  </defs>`);
+  parts.push(`<rect x="0" y="0" width="${cssW}" height="${cssH}" fill="${theme.bg}"/>`);
+  parts.push(`<rect x="${svgOx+0.5}" y="${svgOy+0.5}" width="${W*cell-1}" height="${H*cell-1}" fill="none" stroke="${theme.border}" stroke-width="2"/>`);
+  parts.push(`<g stroke="${theme.grid}" stroke-width="1" shape-rendering="crispEdges">`);
+  for (let x=0;x<=W;++x){
+    const X = Math.round(svgOx + x*cell) + 0.5;
+    parts.push(`<line x1="${X}" y1="${svgOy+0.5}" x2="${X}" y2="${svgOy + H*cell - 0.5}"/>`);
+  }
+  for (let y=0;y<=H;++y){
+    const Y = Math.round(svgOy + y*cell) + 0.5;
+    parts.push(`<line x1="${svgOx+0.5}" y1="${Y}" x2="${svgOx + W*cell - 0.5}" y2="${Y}"/>`);
+  }
+  parts.push(`</g>`);
+
+  const useShadowFilter = (theme===THEMES.light);
+  parts.push(`<g ${useShadowFilter ? 'filter="url(#pieceShadow)"' : ''}>`);
+  for (const id of ids){
+    const cells = groups.get(id);
+    const color = colorMap.get(id);
+    const stroke = hslStrokeFromFill(color, theme.outlineAlpha);
+    for (const [gx,gy] of cells){
+      const x = svgOx + gx*cell + 1;
+      const y = svgOy + gy*cell + 1;
+      const w = cell - 2, h = cell - 2;
+      parts.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${color}" stroke="${stroke}" stroke-width="1"/>`);
+    }
+    if (cells.length){
+      const [cx,cy] = (function pickInterior(cells){
+        const set = new Set(cells.map(([x,y])=>`${x},${y}`));
+        let best = cells[0], bestScore=-1;
+        for (const [x,y] of cells){
+          const sc = (set.has(`${x+1},${y}`)?1:0)+(set.has(`${x-1},${y}`)?1:0)+(set.has(`${x},${y+1}`)?1:0)+(set.has(`${x},${y-1}`)?1:0);
+          if (sc>bestScore){ best=[x,y]; bestScore=sc; }
+        }
+        return best || cells[0];
+      })(cells);
+      const x = svgOx + cx*cell + 1, y = svgOy + cy*cell + 1;
+      const w = cell - 2, h = cell - 2;
+      const label = String(id);
+      const padPx = Math.max(2, Math.floor(cell*0.1));
+      let fontSize = Math.floor(cell*0.6);
+      const estWidth = sz => 0.6*sz*label.length;
+      while (fontSize>6 && estWidth(fontSize) > (w - 2*padPx)) fontSize -= 1;
+      const cxPix = x + w/2, cyPix = y + h/2;
+      if (theme.useHalo){
+        parts.push(`<text class="lbl lblHalo" x="${cxPix}" y="${cyPix}" fill="${theme.labelText}" stroke="${theme.labelStroke}" stroke-width="${theme.labelStrokeWidth}" font-size="${fontSize}">${esc(label)}</text>`);
+      } else {
+        parts.push(`<text class="lbl" x="${cxPix}" y="${cyPix}" fill="${theme.labelText}" font-size="${fontSize}">${esc(label)}</text>`);
+      }
+    }
+  }
+  // Drag ghost overlay doesn’t need to be in SVG export
+  parts.push(`</g>`);
+  parts.push(`</svg>`);
+  return parts.join("");
+}
+
+/* ---------- Boot ---------- */
+function setStatus(text, kind=""){
+  const el = $("#status"); el.textContent = text;
+  el.className = "status " + (kind==="ok"?"ok":kind==="err"?"err":kind==="warn"?"warn":"");
+}
+window.addEventListener("resize", ()=>{ render(); });
+
+(function boot(){
+  $("#sampleInBtn").click();
+  $("#sampleOutBtn").click();
+  setTimeout(()=>render(), 0);
+})();
+</script>
+</body>
+</html>
