@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IIMOC — Rules & Code of Conduct</title>
+<meta name="description" content="Rules and Code of Conduct for the International Invitational Math Optimization Challenge" />
+
+<style>
+  body {
+    background: #181818;
+    color: #f0f0f0;
+    font-family: Consolas, 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 740px;
+    margin: 56px auto 40px auto;
+    padding: 38px 32px 28px 32px;
+    background: #222;
+    border-radius: 8px;
+    border: 1px solid #444;
+    box-sizing: border-box;
+  }
+  header {
+    width: 100%;
+    background: #181818;
+    border-bottom: 1px solid #333;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 16px 20px 8px 20px;
+  }
+  .brand-title {
+    font-size: 1.5rem;
+    color: #fafafa;
+    letter-spacing: 2px;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .brand-title svg {
+    vertical-align: middle;
+    height: 38px;
+    width: 38px;
+    color: #b89bfa;
+    stroke-width: 2.2;
+    flex-shrink: 0;
+  }
+  #scrambleText {
+    color: #fff;
+    letter-spacing: 0.02em;
+    font-weight: bold;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+  }
+  .brand-title .scramble-char {
+    display: inline-block;
+    min-width: 1ch;
+    transition: color 0.17s;
+    color: inherit;
+    font-family: inherit;
+  }
+  .nav-links {
+    display: flex;
+    gap: 18px;
+  }
+  .btn, .btn-lg, .nav-link {
+    background: #282828;
+    color: #f0f0f0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 1.09rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background .13s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-lg { font-size: 1.13rem; padding: 14px 26px; margin-top: 12px;}
+  .btn:hover, .btn-lg:hover, .nav-link:hover { background: #333; }
+  .nav-link.active { background: #333; cursor: default; }
+  main { width: 100%; }
+  h1, h2, h3 {
+    color: #fafafa;
+    font-family: inherit;
+    margin-top: 0;
+    letter-spacing: 2px;
+    font-weight: normal;
+  }
+  h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 14px;
+    margin-top: 0;
+  }
+  .lead {
+    text-align: center;
+    font-size: 1.12rem;
+    color: #dedede;
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+  .section {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  .section h2 {
+    font-size: 1.4rem;
+    margin-bottom: 14px;
+    letter-spacing: 1.5px;
+  }
+  .muted {
+    color: #dedede;
+    font-size: 1.01rem;
+  }
+  .muted-2 {
+    color: #ababab;
+    font-size: 0.95rem;
+  }
+  .rules-list {
+    margin: 10px 0 0 0;
+    padding-left: 22px;
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+  .rules-list li {
+    margin-bottom: 7px;
+  }
+  .card {
+    background: #181818;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 16px 18px 14px 18px;
+    margin-bottom: 18px;
+  }
+  .card h3 {
+    font-size: 1.02rem;
+    margin-top: 0;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    color: #f0e7ff;
+    font-weight: bold;
+  }
+  .badge {
+    display: inline-block;
+    background: #181818;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #c5e1a5;
+    font-size: 0.9rem;
+    padding: 4px 11px;
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+  .footer {
+    background: #181818;
+    border-top: 1px solid #333;
+    text-align: center;
+    color: #888;
+    font-size: 1rem;
+    padding: 26px 0 13px 0;
+    margin-top: 44px;
+  }
+  .footer p { margin: 6px 0; color: #757575; }
+
+  @media (max-width: 900px) {
+    .container, .nav { max-width: 99vw; padding-left: 5vw; padding-right: 5vw; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="brand-title" id="brandTitle" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 4H6l7 8-7 8h12"/>
+      </svg>
+      <span id="scrambleText">
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">M</span>
+        <span class="scramble-char">O</span>
+        <span class="scramble-char">C</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="sponsor.html">Sponsors</a>
+      <a class="nav-link" href="team.html">Our Team</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+      <a class="btn" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/viewform" target="_blank" rel="noopener noreferrer">
+        Sign Up
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+    <h1>Rules &amp; Code of Conduct</h1>
+
+    <div class="section">
+      <h2>1. Eligibility &amp; Teams</h2>
+      <div class="card">
+        <h3>Who can participate?</h3>
+        <ul class="rules-list">
+          <li>A team may have multiple members, but <strong>one leader</strong> should be designated for communication and submissions.</li>
+          <li>Students may only compete on <strong>one</strong> team per contest.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Team size &amp; collaboration</h3>
+        <ul class="rules-list">
+          <li>Recommended team size: 2–8 students (solo teams are allowed but not required).</li>
+          <li>Collaboration within a registered team is fully allowed and encouraged.</li>
+          <li>Collaboration or solution-sharing between <strong>different teams</strong> is not allowed.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2. Use of AI &amp; External Tools</h2>
+      <div class="card">
+        <h3><strong>AI is <u>ALLOWED</u></strong></h3>
+        <ul class="rules-list">
+          <li>You may use AI tools (e.g., coding assistants, LLMs) to help brainstorm ideas, debug code, and improve implementation.</li>
+          <li>You are still responsible for understanding the methods you submit; judges may ask for short explanations of your approach.</li>
+          <li>Blindly pasting AI-generated code without understanding it is discouraged and may hurt your performance more than it helps.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Other external resources</h3>
+        <ul class="rules-list">
+          <li>You may use standard libraries, open-source tools, textbooks, and online references for algorithms and data structures.</li>
+          <li>You may not use <strong>pre-existing full solutions</strong> to the same problem (if you somehow find one, you must not use it).</li>
+          <li>Using paid/private optimization services that directly search on the contest dataset on your behalf is not allowed.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>3. Solution Sharing &amp; Integrity</h2>
+      <div class="card">
+        <h3>No sharing solutions between teams</h3>
+        <ul class="rules-list">
+          <li><strong>No sharing of code, tuned parameters, or full approaches</strong> between different teams, schools, or clubs.</li>
+          <li>Do not publish your full solution, code, or tuned model publicly before results are officially released.</li>
+          <li>High-level discussion (e.g., “we used simulated annealing”) is okay <em>after</em> the contest, but not during the active contest window.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Academic honesty</h3>
+        <ul class="rules-list">
+          <li>All code submitted must be written or meaningfully modified by your team.</li>
+          <li>Any deliberate plagiarism or copying another team’s solution will result in disqualification.</li>
+          <li>If you are inspired by an idea (paper, blog, etc.), that’s fine — but the implementation must be your own.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>4. Submissions &amp; Leaderboard</h2>
+      <div class="card">
+        <h3>Submissions</h3>
+        <ul class="rules-list">
+          <li>Teams may submit <strong>multiple times</strong>; only the best valid score counts for final ranking.</li>
+          <li>Submissions must follow the specified format (e.g., output file format, interface, or API) described in the problem statement.</li>
+          <li>All submissions must run within the published time and memory limits on the official judging environment.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Leaderboard behavior</h3>
+        <ul class="rules-list">
+          <li>Do not intentionally spam submissions to overload the judge or probe for vulnerabilities.</li>
+          <li>Do not attempt to exploit bugs, tamper with the judging system, or attack other teams’ submissions.</li>
+          <li>The organizers reserve the right to re-run submissions, adjust scores, or fix bugs in the judging environment if needed.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>5. Data &amp; Environment</h2>
+      <div class="card">
+        <h3>Contest data</h3>
+        <ul class="rules-list">
+          <li>The official dataset, scoring function, and problem statement may not be redistributed as your own contest without permission.</li>
+          <li>You may build any additional internal tools or synthetic data you like, as long as they are created by your team.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Fair use of infrastructure</h3>
+        <ul class="rules-list">
+          <li>Do not attempt to disrupt the contest infrastructure, judging servers, or website.</li>
+          <li>Any attempt to gain unauthorized access to internal systems will result in immediate disqualification.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>6. Conduct &amp; Communication</h2>
+      <div class="card">
+        <h3>Respectful participation</h3>
+        <ul class="rules-list">
+          <li>Participants should remain respectful in all communication channels (email, forums, etc.).</li>
+          <li>No harassment, hate speech, or discriminatory behavior of any kind is tolerated.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Questions &amp; clarifications</h3>
+        <ul class="rules-list">
+          <li>Official clarifications will be posted by the organizers if a problem statement needs to be corrected or clarified.</li>
+          <li>If you believe you found a bug in the statement or judging, contact the organizers privately instead of exploiting it.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>7. Enforcement</h2>
+      <div class="card">
+        <h3>Organizer discretion</h3>
+        <ul class="rules-list">
+          <li>The organizers reserve the right to investigate suspicious submissions or behavior.</li>
+          <li>Penalties may include score adjustment, removal from the leaderboard, or disqualification.</li>
+          <li>In edge cases not covered by these rules, the organizers’ judgment is final.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <p>&copy; <span id="year"></span> IIMOC. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  (function() {
+    const symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&?@*";
+    const original = ["I", "I", "M", "O", "C"];
+    const scrambleText = document.getElementById('scrambleText');
+    if (!scrambleText) return;
+    const chars = Array.from(scrambleText.querySelectorAll('.scramble-char'));
+    const scrambleDuration = 350;
+    let running = false;
+
+    function randomSymbol() {
+      return symbols[Math.floor(Math.random() * symbols.length)];
+    }
+
+    function scrambleFrame(progress) {
+      chars.forEach((span, i) => {
+        if (progress < 0.8 || Math.random() > progress) {
+          span.textContent = randomSymbol();
+        } else {
+          span.textContent = original[i];
+        }
+      });
+    }
+
+    function endScramble() {
+      chars.forEach((span, i) => {
+        span.textContent = original[i];
+      });
+      running = false;
+    }
+
+    function startScramble() {
+      if (running) return;
+      running = true;
+      const start = performance.now();
+      function animate(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / scrambleDuration, 1);
+        scrambleFrame(progress);
+        if (elapsed < scrambleDuration) {
+          requestAnimationFrame(animate);
+        } else {
+          endScramble();
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    const brandTitle = document.getElementById('brandTitle');
+    brandTitle.addEventListener('mouseenter', startScramble);
+    brandTitle.addEventListener('focus', startScramble);
+    brandTitle.addEventListener('mouseleave', endScramble);
+    brandTitle.addEventListener('blur', endScramble);
+  })();
+</script>
+</body>
+</html>
