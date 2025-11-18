@@ -161,7 +161,6 @@ const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
 
 function getPidFromQuery(){
   const p = new URLSearchParams(location.search);
-  //if(p.get('pid') == "polypack" || p.get('pid') == 'polypackmatrix') 
   return (p.get('pid') || '').trim();
 }
 
@@ -212,77 +211,148 @@ async function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 function formatTime(ns){ return (typeof ns==='number'&&Number.isFinite(ns))?(ns/1e6).toFixed(2)+' ms':'—'; }
 function formatMemory(b){ return (typeof b==='number'&&Number.isFinite(b))?(b/1024).toFixed(0)+' KB':'—'; }
 
+/**
+ * Render all known cases so far.
+ * - Finished cases: show status, time, memory, message, extracted score.
+ * - Undefined cases: show as Pending.
+ * - If *all* cases have results, show a Total Score badge (0 if any fail).
+ */
 function renderCases(cases){
-  if(!Array.isArray(cases)||cases.length===0){ casesContainer.innerHTML='<p>No cases available.</p>'; return; }
-  const rows=cases.map((t,i)=>{
-    const s=t.ok?'case-status-ok':'case-status-fail';
-    const msg=(t.msg||'').replace(/\n/g,'<br />');
-    return `<tr><td>Case ${i+1}</td><td class="${s}">${t.status||(t.ok?'Accepted':'Failed')}</td><td>${formatTime(t.time)}</td><td>${formatMemory(t.memory)}</td><td>${msg}</td></tr>`;
-  }).join('');
-  casesContainer.innerHTML=`<table class="cases-table"><thead><tr><th>Case</th><th>Status</th><th>Time</th><th>Memory</th><th>Message</th></tr></thead><tbody>${rows}</tbody></table>`;
+  if(!Array.isArray(cases) || cases.length === 0){
+    casesContainer.innerHTML = '<p>No test cases yet or judging has not started.</p>';
+    const oldBadge = document.getElementById('totalScoreBadge');
+    if (oldBadge) oldBadge.remove();
+    return;
+  }
 
-  for (let idx=0; idx<cases.length; idx++) {
-    const test = cases[idx];
-    let msg = (test.msg || '');
-    const row = casesContainer.querySelector(`tbody tr:nth-child(${idx + 1})`);
-    if (idx === 0) {
-      casesContainer._scoreTotal = 0;
-      casesContainer._anyFail = false;
-      const prev = document.getElementById('totalScoreBadge');
-      if (prev) prev.remove();
+  let totalScore = 0;
+  let anyFail = false;
+  let allHaveResults = true;
+
+  const rows = cases.map((t, i) => {
+    const caseLabel = `Case ${i+1}`;
+
+    if (!t) {
+      allHaveResults = false;
+      return `<tr>
+        <td>${caseLabel}</td>
+        <td>Pending</td>
+        <td>—</td>
+        <td>—</td>
+        <td></td>
+      </tr>`;
     }
-    if (!test.ok) casesContainer._anyFail = true;
 
-    const match = msg.match(/-?\d[\d,]*(?:\.\d+)?/);
+    const ok = !!t.ok;
+    const sClass = ok ? 'case-status-ok' : 'case-status-fail';
+    const status = t.status || (ok ? 'Accepted' : 'Failed');
+    const msgText = (t.msg || '');
+    const msgHtml = msgText.replace(/\n/g,'<br />');
+
+    const match = msgText.match(/-?\d[\d,]*(?:\.\d+)?/);
+    let extractedHtml = '';
     if (match) {
       const value = Number(match[0].replace(/,/g, ''));
-      test.extractedNumber = value;
-      casesContainer._scoreTotal = (casesContainer._scoreTotal || 0) + value;
-
-      if (row) {
-        const cell = row.cells[4];
-        if (cell) {
-          const badge = document.createElement('span');
-          badge.style.marginLeft = '10px';
-          badge.style.color = '#9ee6ff';
-          badge.style.fontWeight = '700';
-          badge.textContent = `Extracted: ${value}`;
-          cell.appendChild(badge);
-        }
+      if (Number.isFinite(value)) {
+        totalScore += value;
+        extractedHtml = `<span style="margin-left:10px;color:#9ee6ff;font-weight:700;">Extracted: ${value}</span>`;
       }
     }
-    if (idx === cases.length - 1) {
-      const finalScore = casesContainer._anyFail ? 0 : (casesContainer._scoreTotal || 0);
-      const totalEl = document.createElement('div');
-      totalEl.id = 'totalScoreBadge';
-      totalEl.style.marginTop = '12px';
-      totalEl.style.padding = '10px 14px';
-      totalEl.style.background = '#0b2a2f';
-      totalEl.style.color = '#9ee6ff';
-      totalEl.style.fontWeight = '700';
-      totalEl.style.border = '1px solid #07494f';
-      totalEl.style.display = 'inline-block';
-      totalEl.textContent = `Total Score: ${finalScore}`;
-      statusPanel.prepend(totalEl);
-    }
+
+    if (!ok) anyFail = true;
+
+    return `<tr>
+      <td>${caseLabel}</td>
+      <td class="${sClass}">${status}</td>
+      <td>${formatTime(t.time)}</td>
+      <td>${formatMemory(t.memory)}</td>
+      <td>${msgHtml}${extractedHtml}</td>
+    </tr>`;
+  }).join('');
+
+  casesContainer.innerHTML = `
+    <table class="cases-table">
+      <thead>
+        <tr>
+          <th>Case</th>
+          <th>Status</th>
+          <th>Time</th>
+          <th>Memory</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+
+  // Remove any old badge before possibly adding a new one
+  const oldBadge = document.getElementById('totalScoreBadge');
+  if (oldBadge) oldBadge.remove();
+
+  // Only show total score when all cases are judged
+  if (allHaveResults) {
+    const finalScore = anyFail ? 0 : totalScore;
+    const totalEl = document.createElement('div');
+    totalEl.id = 'totalScoreBadge';
+    totalEl.style.marginTop = '12px';
+    totalEl.style.padding = '10px 14px';
+    totalEl.style.background = '#0b2a2f';
+    totalEl.style.color = '#9ee6ff';
+    totalEl.style.fontWeight = '700';
+    totalEl.style.border = '1px solid #07494f';
+    totalEl.style.display = 'inline-block';
+    totalEl.textContent = `Total Score: ${finalScore}`;
+    statusPanel.prepend(totalEl);
   }
 }
 
+/**
+ * Poll backend for partial results.
+ * On each response:
+ *   - Render all cases seen so far (including Pending).
+ *   - Update status line with progress.
+ * Returns final payload once judging is done or errored.
+ */
 async function pollForResult(sid){
-  let attempt=0;
-  while(true){
+  let attempt = 0;
+
+  while (true) {
     attempt++;
-    try{
-      const r=await fetch(`${URL}/result/${encodeURIComponent(sid)}`,{headers:{'ngrok-skip-browser-warning':'true'}});
-      if(!r.ok) throw new Error('Result request failed');
-      const payload=await r.json();
-      if(payload&&payload.status==='done') return payload;
-      if(payload&&payload.status==='error') {
-        statusText.textContent=payload['error'];
-        return;
+    try {
+      const r = await fetch(`${URL}/result/${encodeURIComponent(sid)}`, {
+        headers:{'ngrok-skip-browser-warning':'true'}
+      });
+      if (!r.ok) throw new Error('Result request failed');
+      const payload = await r.json();
+
+      if (payload) {
+        const cases = Array.isArray(payload.cases) ? payload.cases : [];
+        renderCases(cases);
+
+        const finished = cases.filter(c => c).length;
+        const total = cases.length;
+
+        if (payload.status === 'done') {
+          statusText.textContent = `Judging complete. ${finished}/${total} cases finished.`;
+          return payload;
+        }
+        if (payload.status === 'error') {
+          statusText.textContent = payload.error || 'Judging error.';
+          return payload;
+        }
+
+        // queued / running / etc.
+        const label = payload.status || 'running';
+        const progress = total ? `${finished}/${total}` : `${finished}/?`;
+        statusText.textContent = `Judging... ${progress} cases finished. (status=${label}, attempt ${attempt})`;
+      } else {
+        statusText.textContent = `Judging... (attempt ${attempt})`;
       }
-      statusText.textContent=`In queue (attempt ${attempt})...`;
-    }catch(e){ console.error(e); statusText.textContent='Judging...'; }
+    } catch (e) {
+      console.error(e);
+      statusText.textContent = 'Judging... (temporary error talking to judge)';
+    }
+
     await sleep(1000);
   }
 }
@@ -369,9 +439,13 @@ async function loadLeaderboard(page = lbState.page){
     const pid = getPidFromQuery();
 
     lbState.pid = pid;
-    if(!pid){ leaderboardContainer.innerHTML = '<p>⚠️ Missing ?pid= in URL.</p>'; lbPageInfo.textContent='—'; return; }
+    if(!pid){
+      leaderboardContainer.innerHTML = '<p>⚠️ Missing ?pid= in URL.</p>';
+      lbPageInfo.textContent='—';
+      return;
+    }
 
-    // NEW API: /getProblemSubmissions/:pid/:page?pageSize=...
+    // API: /getProblemSubmissions/:pid/:page?pageSize=...
     const url = `${URL}/getProblemSubmissions/${encodeURIComponent(pid)}/${encodeURIComponent(page)}?pageSize=${encodeURIComponent(lbState.pageSize)}`;
     const res = await fetch(url, { headers: {'ngrok-skip-browser-warning':'true'} });
     if(!res.ok) throw new Error('Failed to fetch leaderboard');
@@ -408,9 +482,9 @@ if (lbPageSizeSel){
 /* ---------- Submission handler ---------- */
 form.addEventListener('submit',async e=>{
   e.preventDefault();
-  const code=codeInput.value.trim();
+  const code = codeInput.value.trim();
   const team = document.querySelector('input[name="team"]').value.trim();
-  const lang=langSelect.value;
+  const lang = langSelect.value;
   const pid = getPidFromQuery();
   if(!pid){
     statusPanel.classList.remove('hidden');
@@ -424,6 +498,9 @@ form.addEventListener('submit',async e=>{
   }
   submitBtn.disabled=true; submitBtn.textContent='Submitting...';
   statusPanel.classList.remove('hidden'); statusText.textContent='Submitting your solution...'; casesContainer.innerHTML='';
+  const oldBadge = document.getElementById('totalScoreBadge');
+  if (oldBadge) oldBadge.remove();
+
   try{
     const payload={pid,lang,code,team};
     const send=async(body,ct)=>{
@@ -443,7 +520,10 @@ form.addEventListener('submit',async e=>{
 
     const result=await pollForResult(sid);
     if(result==undefined) return;
-    statusText.textContent=''; renderCases(result.cases);
+    // pollForResult already renders cases; we could re-render for safety:
+    if (Array.isArray(result.cases)) {
+      renderCases(result.cases);
+    }
 
     // Refresh leaderboard after this submission; go back to page 1
     loadLeaderboard(1);
