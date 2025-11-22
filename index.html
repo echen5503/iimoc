@@ -270,6 +270,23 @@
   .footer p { margin: 6px 0; color: #757575; }
   .muted { color: #dedede; font-size: 1.01rem; }
   .muted-2 { color: #ababab; font-size: 0.93rem; }
+
+  .notice-banner {
+    margin: 18px auto 0 auto;
+    max-width: 740px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #4b5563;
+    background: linear-gradient(90deg, #1f2933, #111827);
+    color: #e5e7eb;
+    font-size: 0.98rem;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .notice-banner strong {
+    color: #facc15;
+  }
+
   @media (max-width: 900px) {
     .container, .nav { max-width: 99vw; padding-left: 5vw; padding-right: 5vw; }
     .features { flex-direction: column; gap: 18px; }
@@ -309,6 +326,11 @@
     <h1>IIMOC</h1>
     <span class="iimoc-full">International Math Optimization Challenge</span>
     <div class="sub">One tough problem. Worldwide competition.</div>
+
+    <div class="notice-banner">
+      Official 2025 problem <strong>Polypack</strong> has been released. View the statement and start submitting at
+      <strong><a href="https://iimoc.org/problem.html?pid=polypack" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline;">https://iimoc.org/problem.html?pid=polypack</a></strong>.
+    </div>
 
     <div class="section">
       <div class="how-it-works-title">How It Works</div>
@@ -364,8 +386,8 @@
           </div>
           <p>See how you stack up against clubs worldwide.</p>
         </div>
+      </div>
     </div>
-  </div>
 
     <div class="section">
       <h2 style="text-align:center;">Where Clubs Compete</h2>
@@ -388,28 +410,42 @@
         </div>
       </div>
     </div>
-<div class="section" style="text-align: center;">
-  <h2>Next Contest's Problems</h2>
-  <div class="problem-block">
-    <h3>Permutation (Sample)</h3>
-    
-    <strong>Author:</strong> Qiuyang Mang (Sua)</li><br>
-    <strong>Edited by:</strong> Edwin Chen</li><br>
-    <strong>Editorial by:</strong> Alexander Du</li><br>
-    <strong>Prepared by:</strong> Alexander Du &amp; Edwin Chen</li>
-    
-  </div>
-  <br>
-  <div class="problem-block">
-    <h3>Official Problem <small>(Releases Nov 22)</small></h3>
-    
-    <strong>Author:</strong> Shang Zhou (Berkeley Sky Computing Lab)<br>
-    <strong>Edited by:</strong> Shang Zhou<br>
-    <strong>Editorial by:</strong> Shang Zhou<br>
-    <strong>Prepared by:</strong> Edwin Chen
-    
-  </div>
-</div>
+
+    <div class="section" style="text-align: center;">
+      <h2>2025 Problems</h2>
+
+      <!-- Official problem: Polypack -->
+      <div class="problem-block" style="margin-bottom: 28px; padding: 18px; border: 1px solid #333; background:#19191c; border-radius:6px;">
+        <h3 style="font-size:1.4rem; margin-bottom:6px;">Official 2025 Problem: Polypack</h3>
+        <div style="margin-bottom: 10px; color:#ccc;">
+          The official IIMOC 2025 optimization problem is now live.
+          Read the statement, download the data, and start optimizing.
+        </div>
+        <a class="btn-lg" href="https://iimoc.org/problem.html?pid=polypack" target="_blank" rel="noopener noreferrer">
+          View Official Problem
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Sample / reference problem -->
+      <div class="problem-block" style="margin-bottom: 18px;">
+        <h3>Permutation (Sample)</h3>
+        <strong>Author:</strong> Qiuyang Mang (Sua)<br>
+        <strong>Edited by:</strong> Edwin Chen<br>
+        <strong>Editorial by:</strong> Alexander Du<br>
+        <strong>Prepared by:</strong> Alexander Du &amp; Edwin Chen
+      </div>
+
+      <div class="problem-block">
+        <h3>Additional Official Materials</h3>
+        <strong>Author:</strong> Shang Zhou (Berkeley Sky Computing Lab)<br>
+        <strong>Edited by:</strong> Shang Zhou<br>
+        <strong>Editorial by:</strong> Shang Zhou<br>
+        <strong>Prepared by:</strong> Edwin Chen
+      </div>
+    </div>
   </div>
 
   <div class="section" style="margin-top:48px">
@@ -418,7 +454,7 @@
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-date">Nov 22, 2025</div>
-        <div class="timeline-label">Competition begins</div>
+        <div class="timeline-label">Competition begins &mdash; official problem released</div>
       </div>
       <div class="timeline-item">
         <div class="timeline-date">Dec 21, 2025</div>
@@ -435,20 +471,25 @@
     <h2 style="text-align:center;">Ready?</h2>
     <div class="muted" style="text-align:center;">
     </div>
-      <div class="cta-wrap" style="margin-top:19px;">
-        <a class="btn-lg" href="/signup.html" target="_blank" rel="noopener noreferrer">
-          Sign Up
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
-          </svg>
-        </a>
-        <a class="btn-lg" href="/problem.html?pid=Permutation" target="_blank" rel="noopener noreferrer">
-          View Sample Problem
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
-          </svg>
-        </a>
-      </div>
+    <div class="cta-wrap" style="margin-top:19px;">
+      <a class="btn-lg" href="/signup.html" target="_blank" rel="noopener noreferrer">
+        Sign Up
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </a>
+      <a class="btn-lg" href="https://iimoc.org/problem.html?pid=polypack" target="_blank" rel="noopener noreferrer">
+        Start Official Problem: Polypack
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </a>
+      <a class="btn-lg" href="/problem.html?pid=Permutation" target="_blank" rel="noopener noreferrer">
+        View Sample Problem
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </a>
     </div>
   </div>
 
@@ -519,7 +560,6 @@
     brandTitle.addEventListener('mouseleave', endScramble);
     brandTitle.addEventListener('blur', endScramble);
   })();
-
 </script>
 </body>
 </html>
