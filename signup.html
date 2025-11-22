@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIMOC Signup</title>
+
+  <style>
+    body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
+    header { width:100%; background:#181818; border-bottom:1px solid #333; }
+    .nav { display:flex; align-items:center; justify-content:space-between; max-width:740px; margin:0 auto; padding:16px 20px 8px; }
+    .nav-links { display:flex; gap:18px; }
+    .nav-link, .btn {
+      background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
+      padding:10px 20px; font-family:inherit; font-size:1.0rem; cursor:pointer;
+      text-decoration:none; font-weight:600; letter-spacing:1px; transition:background .13s;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .nav-link:hover, .btn:hover { background:#333; }
+    .nav-link.active { background:#333; cursor:default; }
+    .brand-title { font-size:1.5rem; color:#fafafa; letter-spacing:2px; display:flex; align-items:center; gap:7px; text-decoration:none; }
+    .brand-title svg { height:38px; width:38px; color:#b89bfa; stroke-width:2.2; }
+
+    .container { max-width:740px; margin:56px auto 40px; padding:38px 32px; background:#222; border-radius:8px; border:1px solid #444; }
+    h1 { text-align:center; font-size:2rem; margin-bottom:18px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input:not([type]) {
+      background:#111;
+      color:#fafafa;
+      border:1px solid #444;
+      border-radius:6px;
+      padding:12px 14px;
+      font-family:Consolas,'Courier New',monospace;
+      font-size:1rem;
+      transition:border-color .2s, box-shadow .2s;
+      width:100%;
+      box-sizing:border-box;
+    }
+    input:focus { outline:none; border-color:#735ac4; box-shadow:0 0 0 2px rgba(115,90,196,0.35); }
+    input::placeholder { color:#888; opacity:0.7; }
+
+    label { font-weight:700; letter-spacing:.5px; display:block; margin-bottom:4px; }
+    .field { margin-bottom:16px; }
+    .hint { font-size:0.9rem; color:#9ca3af; margin-top:4px; }
+
+    .btn-lg { font-size:1.05rem; padding:12px 22px; margin-top:8px; }
+
+    .status-panel {
+      margin-top:20px;
+      background:#1a1a1d;
+      border:1px solid #34343a;
+      border-radius:6px;
+      padding:14px 16px;
+      font-size:0.96rem;
+      white-space:pre-line;
+    }
+    .status-panel.success { border-color:#16a34a; color:#bbf7d0; background:#052e16; }
+    .status-panel.error   { border-color:#f97373; color:#fecaca; background:#450a0a; }
+    .hidden { display:none; }
+
+    @media (max-width:900px){
+      .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; }
+    }
+    a { color:cyan; }
+  </style>
+</head>
+
+<body>
+<header>
+  <nav class="nav">
+    <a href="/index.html" class="brand-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 4H6l7 8-7 8h12"/>
+      </svg>
+      <span><span>I</span><span>I</span><span>M</span><span>O</span><span>C</span></span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/problem.html?pid=Permutation">Problem</a>
+      <a class="nav-link" href="/sponsor.html">Sponsors</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
+      <span class="nav-link active">Signup</span>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="container">
+    <h1>Team Signup</h1>
+    <p class="hint" style="margin-bottom:18px;">
+      Create your team credentials for the IIMOC judge. Team names must be unique.
+    </p>
+
+    <form id="signupForm">
+      <div class="field">
+        <label for="team">Team Name *</label>
+        <input id="team" name="team" placeholder="e.g. Cascadian Coalition of Nerds" required />
+        <div class="hint">This is the name you’ll use on the submission page and leaderboard.</div>
+      </div>
+
+      <div class="field">
+        <label for="password">Team Password *</label>
+        <input id="password" name="password" type="password" placeholder="choose a password" required />
+        <div class="hint">
+          Keep this secret within your team. You’ll need it each time you submit code.
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password2">Confirm Password *</label>
+        <input id="password2" name="password2" type="password" placeholder="re-enter password" required />
+      </div>
+
+      <div class="field">
+        <label for="school">School / Organization *</label>
+        <input id="school" name="school" placeholder="e.g. Lincoln High School" required />
+      </div>
+
+      <div class="field">
+        <label for="country">Country / Region *</label>
+        <input id="country" name="country" placeholder="e.g. United States" required />
+      </div>
+
+      <div class="field">
+        <label for="email">Contact Email *</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" required />
+      </div>
+
+      <p class="hint">
+        If you already registered via the Google Form, your team may already have a password.
+        If you don't have one, please contact
+        <a href="mailto:edwin.chen@iimoc.org">edwin.chen@iimoc.org</a> and we will fix it within a day.
+      </p>
+
+      <button type="submit" class="btn btn-lg" id="signupBtn">Create Team</button>
+    </form>
+
+    <div id="statusBox" class="status-panel hidden"></div>
+  </section>
+</main>
+
+<script>
+  const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
+
+  const form      = document.getElementById('signupForm');
+  const statusBox = document.getElementById('statusBox');
+  const signupBtn = document.getElementById('signupBtn');
+
+  function setStatus(kind, msg) {
+    statusBox.classList.remove('hidden', 'success', 'error');
+    statusBox.classList.add(kind === 'success' ? 'success' : 'error');
+    statusBox.textContent = msg;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const team      = document.getElementById('team').value.trim();
+    const password  = document.getElementById('password').value;
+    const password2 = document.getElementById('password2').value;
+    const school    = document.getElementById('school').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const country   = document.getElementById('country').value.trim();
+
+    if (!team || !password || !school || !email || !country) {
+      setStatus('error', 'All fields are required.');
+      return;
+    }
+    if (password !== password2) {
+      setStatus('error', 'Passwords do not match.');
+      return;
+    }
+
+    signupBtn.disabled = true;
+    signupBtn.textContent = 'Creating team...';
+    setStatus('success', 'Submitting signup request…');
+
+    try {
+      const payload = { team, password, school, email, country };
+
+      const res = await fetch(`${URL}/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      let data = null;
+      try { data = await res.json(); } catch { data = null; }
+
+      if (!res.ok) {
+        const msg =
+          (data && (data.error || data.message)) ||
+          `Signup failed (HTTP ${res.status})`;
+        setStatus('error', msg);
+      } else {
+        const msg = data && data.message
+          ? data.message
+          : 'Team created successfully.';
+        setStatus('success',
+`✅ ${msg}
+Team: ${team}
+
+You can now go to the problem page and submit using this team name + password.`);
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('error', 'Network or server error during signup.');
+    } finally {
+      signupBtn.disabled = false;
+      signupBtn.textContent = 'Create Team';
+    }
+  });
+</script>
+
+</body>
+</html>

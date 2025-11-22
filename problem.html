@@ -120,8 +120,20 @@
           <option value="java">Java</option>
         </select>
       </div>
+
       <label for="team">Team Name</label>
-      <input name="team" placeholder="your team">
+      <input name="team" placeholder="your team" required />
+
+      <!-- Team password -->
+      <label for="password">Team Password</label>
+      <input type="password" name="password" placeholder="your password" required />
+
+      <!-- NEW DISCLAIMER -->
+      <p style="margin:4px 0 8px 0;font-size:0.9rem;color:#9ca3af;">
+        If you don't have a password, please contact <a href="mailto:edwin.chen@iimoc.org">edwin.chen@iimoc.org</a> and we will fix it within a day.
+        Alternatively, go to the <a href="/signup.html">Signup page</a> to create your team credentials.
+      </p>
+
       <label for="codeInput" id="codeLabel">Submit your solution</label>
       <textarea id="codeInput" name="code" placeholder="print('hello')" required></textarea>
       <button type="submit" class="btn btn-lg" id="submitBtn">Submit Solution</button>
@@ -285,11 +297,9 @@ function renderCases(cases){
     </table>
   `;
 
-  // Remove any old badge before possibly adding a new one
   const oldBadge = document.getElementById('totalScoreBadge');
   if (oldBadge) oldBadge.remove();
 
-  // Only show total score when all cases are judged
   if (allHaveResults) {
     const finalScore = anyFail ? 0 : totalScore;
     const totalEl = document.createElement('div');
@@ -341,7 +351,6 @@ async function pollForResult(sid){
           return payload;
         }
 
-        // queued / running / etc.
         const label = payload.status || 'running';
         const progress = total ? `${finished}/${total}` : `${finished}/?`;
         statusText.textContent = `Judging... ${progress} cases finished. (status=${label}, attempt ${attempt})`;
@@ -445,7 +454,6 @@ async function loadLeaderboard(page = lbState.page){
       return;
     }
 
-    // API: /getProblemSubmissions/:pid/:page?pageSize=...
     const url = `${URL}/getProblemSubmissions/${encodeURIComponent(pid)}/${encodeURIComponent(page)}?pageSize=${encodeURIComponent(lbState.pageSize)}`;
     const res = await fetch(url, { headers: {'ngrok-skip-browser-warning':'true'} });
     if(!res.ok) throw new Error('Failed to fetch leaderboard');
@@ -484,35 +492,57 @@ form.addEventListener('submit',async e=>{
   e.preventDefault();
   const code = codeInput.value.trim();
   const team = document.querySelector('input[name="team"]').value.trim();
+  const password = document.querySelector('input[name="password"]').value.trim();
   const lang = langSelect.value;
   const pid = getPidFromQuery();
+
+  statusPanel.classList.remove('hidden');
+  const oldBadge = document.getElementById('totalScoreBadge');
+  if (oldBadge) oldBadge.remove();
+
   if(!pid){
-    statusPanel.classList.remove('hidden');
     statusText.textContent='Missing ?pid= in URL.';
     return;
   }
   if(!code){
-    statusPanel.classList.remove('hidden');
     statusText.textContent='Please enter some code before submitting.';
     return;
   }
-  submitBtn.disabled=true; submitBtn.textContent='Submitting...';
-  statusPanel.classList.remove('hidden'); statusText.textContent='Submitting your solution...'; casesContainer.innerHTML='';
-  const oldBadge = document.getElementById('totalScoreBadge');
-  if (oldBadge) oldBadge.remove();
+  if(!team || !password){
+    statusText.textContent='Please enter both team name and team password.';
+    return;
+  }
+
+  submitBtn.disabled=true;
+  submitBtn.textContent='Submitting...';
+  statusText.textContent='Submitting your solution...';
+  casesContainer.innerHTML='';
 
   try{
-    const payload={pid,lang,code,team};
-    const send=async(body,ct)=>{
-      const opt={method:'POST',body,headers:{'ngrok-skip-browser-warning':'true'}};
-      if(ct) opt.headers['Content-Type']=ct;
-      const r=await fetch(`${URL}/submit`,opt);
-      if(!r.ok) throw new Error('Submission failed');
-      return r.json();
-    };
-    let sub;
-    try{ sub=await send(JSON.stringify(payload),'application/json'); }
-    catch{ sub=await send(JSON.stringify(payload),'text/plain;charset=UTF-8'); }
+    const payload = { pid, lang, code, team, password };
+    
+    const res = await fetch(`${URL}/submit`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    let sub = null;
+    try {
+      sub = await res.json();
+    } catch {
+      sub = null;
+    }
+
+    if (!res.ok) {
+      const msg =
+        (sub && (sub.error || sub.message)) ||
+        `Submission failed (HTTP ${res.status})`;
+      throw new Error(msg);
+    }
 
     const {sid}=sub||{};
     if(!sid) throw new Error('Judge did not return a submission id.');
@@ -520,18 +550,17 @@ form.addEventListener('submit',async e=>{
 
     const result=await pollForResult(sid);
     if(result==undefined) return;
-    // pollForResult already renders cases; we could re-render for safety:
     if (Array.isArray(result.cases)) {
       renderCases(result.cases);
     }
 
-    // Refresh leaderboard after this submission; go back to page 1
     loadLeaderboard(1);
   }catch(e){
     console.error(e);
     statusText.textContent='Error: '+(e.message||'Unknown error');
   } finally {
-    submitBtn.disabled=false; submitBtn.textContent='Submit Solution';
+    submitBtn.disabled=false;
+    submitBtn.textContent='Submit Solution';
   }
 });
 </script>
@@ -573,18 +602,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const base = `${URL}/problem/${encodeURIComponent(pid)}/statement`;
     let password = getStoredPassword(pid);
 
-    // Prompt if protected and we don't have one yet
     if (needsPassword(pid) && !password) {
       password = prompt('Enter password for this problem:') || '';
       storePassword(pid, password);
     }
 
-    // Build URL with optional password
     const url = needsPassword(pid) ? `${base}?password=${encodeURIComponent(password)}` : base;
 
     const res = await fetch(url, { headers: { 'ngrok-skip-browser-warning':'true' } });
     if (res.status === 403 && needsPassword(pid)) {
-      // Wrong / missing password: re-prompt once
       alert('Incorrect password. Please try again.');
       const pw2 = prompt('Enter password for this problem:') || '';
       storePassword(pid, pw2);
@@ -620,7 +646,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     container.textContent = '⚠️ Could not load problem statement.';
   }
 
-  // Initial leaderboard load
   loadLeaderboard(1);
 });
 </script>
