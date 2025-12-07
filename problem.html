@@ -169,7 +169,7 @@
 
 <script>
 /* ---------- Config & helpers ---------- */
-const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
+const URL = "https://contest.iimoc.org";
 
 function getPidFromQuery(){
   const p = new URLSearchParams(location.search);
@@ -600,6 +600,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function fetchStatement(pid){
     const base = `${URL}/problem/${encodeURIComponent(pid)}/statement`;
+    console.log(base);
     let password = getStoredPassword(pid);
 
     if (needsPassword(pid) && !password) {
