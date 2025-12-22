@@ -263,15 +263,13 @@ function renderCases(cases){
 
     const match = msgText.match(/-?\d[\d,]*(?:\.\d+)?/);
     let extractedHtml = '';
-    if (match) {
+    if (match && ok) {
       const value = Number(match[0].replace(/,/g, ''));
       if (Number.isFinite(value)) {
         totalScore += value;
         extractedHtml = `<span style="margin-left:10px;color:#9ee6ff;font-weight:700;">Extracted: ${value}</span>`;
       }
     }
-
-    if (!ok) anyFail = true;
 
     return `<tr>
       <td>${caseLabel}</td>
@@ -301,7 +299,7 @@ function renderCases(cases){
   if (oldBadge) oldBadge.remove();
 
   if (allHaveResults) {
-    const finalScore = anyFail ? 0 : totalScore;
+    const finalScore = totalScore;
     const totalEl = document.createElement('div');
     totalEl.id = 'totalScoreBadge';
     totalEl.style.marginTop = '12px';

@@ -130,10 +130,10 @@ function renderCases(cases){
       const prev = document.getElementById('totalScoreBadge');
       if (prev) prev.remove();
     }
-    if (!test.ok) casesContainer._anyFail = true;
+    //if (!test.ok) casesContainer._anyFail = true;
 
     const match = msg.match(/-?\d[\d,]*(?:\.\d+)?/);
-    if (match) {
+    if (match && test.ok) {
       const value = Number(match[0].replace(/,/g, ''));
       test.extractedNumber = value;
       casesContainer._scoreTotal = (casesContainer._scoreTotal || 0) + value;
