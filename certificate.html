@@ -383,6 +383,7 @@
           <div class="subtitle">
             International Invitational Math Optimization Challenge (IIMOC)<br />
             This document certifies the standing and distinction listed below.
+            This result can be verified at <a href="https://iimoc.org/problem.html?pid=polypacksys" style="color: cyan">https://iimoc.org/problem.html?pid=polypacksys</a>.
           </div>
         </div>
 
@@ -424,24 +425,6 @@
         </div>
       </div>
 
-      <div class="footer-row">
-        <div class="signatures">
-          <div class="sig">
-            <div class="line">Competition Director</div>
-          </div>
-          <div class="sig">
-            <div class="line">Official Representative</div>
-          </div>
-        </div>
-
-        <div class="qr">
-          <div class="qr-box" id="qrBox">QR Code Placeholder
-(optional)</div>
-          <div class="verify" id="verifyLine">
-            Verify: <a id="verifyLink" href="#" target="_blank" rel="noopener noreferrer">https://iimoc.org/verify</a>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="actions">
@@ -462,13 +445,6 @@
         </svg>
       </a>
     </div>
-
-    <div class="note">
-      Example URL (placement drives medal):<br />
-      <span style="color:#bdbdbd;">
-        certificate.html?name=Aisha%20Khan&amp;team=Newton%20HS&amp;placement=12&amp;cert=IIMOC-2025-G-001&amp;date=Dec%2030,%202025&amp;category=Overall
-      </span>
-    </div>
   </section>
 
   <footer class="site-footer">
@@ -479,7 +455,7 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Scramble effect (matches your homepage)
+  // Scramble effect (unchanged)
   (function() {
     const symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&?@*";
     const original = ["I", "I", "M", "O", "C"];
@@ -528,104 +504,123 @@
     brandTitle.addEventListener('blur', endScramble);
   })();
 
-  // Populate from query string
-  (function populateFromQuery() {
+  // Helpers
+  function percentileFromPlacement(rank, total) {
+    return (rank / total) * 100;
+  }
+
+  // Medal thresholds by percentile: Gold <= 10, Silver <= 20, Bronze <= 30
+  function medalFromPercentile(p) {
+    if (p === null || Number.isNaN(p)) return { tier: "PARTICIPANT", className: "" };
+    if (p <= 10) return { tier: "GOLD", className: "gold" };
+    if (p <= 20) return { tier: "SILVER", className: "silver" };
+    if (p <= 30) return { tier: "BRONZE", className: "bronze" };
+    return { tier: "PARTICIPANT", className: "" };
+  }
+
+  async function fetchPlacementForTeam(team) {
+    // Calls your new API: GET /placement/:team
+    const resp = await fetch(`https://contest.iimoc.org/problem/polypacksys/placement/${encodeURIComponent(team)}`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    });
+    console.log(resp);
+    if (!resp.ok) {
+      let msg = `HTTP ${resp.status}`;
+      try {
+        const j = await resp.json();
+        if (j && (j.error || j.message)) msg = `${j.error || 'Error'}: ${j.message || ''}`.trim();
+      } catch {}
+      throw new Error(msg);
+    }
+    return await resp.json(); // { rank, totalTeams }
+  }
+
+  // Populate from query string (team, name, etc.) + placement from API (team only)
+  (async function populateCertificate() {
     const params = new URLSearchParams(window.location.search);
 
-    const TOTAL_TEAMS = 237;
-
-    const name = params.get("name") || "Participant Name";
+    const name = params.get("team") || "Participant Name";
     const team = params.get("team") || "Team Name";
-    const cert = params.get("cert") || "IIMOC-2025-XXXX";
     const date = params.get("date") || "Dec 30, 2025";
     const category = params.get("category") || "Overall";
     const verify = params.get("verify") || "";
+    const cert = params.get("cert") || `IIMOC-2025-${team.toLowerCase().replace(/\s+/g, '-')}-${category}-polypacksys`.toUpperCase();
 
-    // NEW: placement (1..TOTAL_TEAMS)
-    const placementRaw = params.get("placement"); // e.g. "12"
-    let placement = placementRaw !== null ? Number(placementRaw) : null;
-
-    // Basic validation / clamping
-    if (placement === null || Number.isNaN(placement)) placement = null;
-    else placement = Math.max(1, Math.min(TOTAL_TEAMS, Math.floor(placement)));
-
-    // Convert placement -> percentile (lower is better)
-    // Percentile shown as (placement / TOTAL_TEAMS) * 100
-    function percentileFromPlacement(rank, total) {
-      return (rank / total) * 100;
-    }
-
-    // Medal thresholds by percentile: Gold <= 10, Silver <= 20, Bronze <= 30
-    function medalFromPercentile(p) {
-      if (p === null || Number.isNaN(p)) return { tier: "GOLD", className: "gold" }; // default
-      if (p <= 10) return { tier: "GOLD", className: "gold" };
-      if (p <= 20) return { tier: "SILVER", className: "silver" };
-      if (p <= 30) return { tier: "BRONZE", className: "bronze" };
-      return { tier: "PARTICIPANT", className: "" };
-    }
-
-    // Inject values
+    // Inject static values first
     document.getElementById("recipientName").textContent = name;
     document.getElementById("teamName").textContent = team;
     document.getElementById("teamInline").textContent = team;
     document.getElementById("certId").textContent = cert;
     document.getElementById("awardDate").textContent = date;
     document.getElementById("category").textContent = category;
-
-    // Placement display
-    document.getElementById("teamCount").textContent = String(TOTAL_TEAMS);
-
+    // Defaults while loading / if API fails
     const placementRankEl = document.getElementById("placementRank");
+    const teamCountEl = document.getElementById("teamCount");
     const placementPercentileEl = document.getElementById("placementPercentile");
 
-    let percentile = null;
-    if (placement !== null) {
-      placementRankEl.textContent = String(placement);
-      percentile = percentileFromPlacement(placement, TOTAL_TEAMS);
-      // show 1 decimal
-      const shown = Math.round(percentile * 10) / 10;
-      placementPercentileEl.textContent = String(shown);
-    } else {
-      placementRankEl.textContent = "—";
-      placementPercentileEl.textContent = "—";
-    }
+    placementRankEl.textContent = "—";
+    teamCountEl.textContent = "—";
+    placementPercentileEl.textContent = "—";
 
-    const medal = medalFromPercentile(percentile);
-
-    // Apply medal class for dot coloring
-    const root = document.getElementById("certRoot");
-    root.classList.remove("gold","silver","bronze");
-    if (medal.className) root.classList.add(medal.className);
-
-    // Award text in pill + inline sentence
     const awardTextEl = document.getElementById("awardText");
     const awardInlineEl = document.getElementById("awardInline");
+    awardTextEl.textContent = "CERTIFICATE";
+    awardInlineEl.textContent = "RECOGNITION";
 
-    if (medal.tier === "PARTICIPANT") {
-      awardTextEl.textContent = "CERTIFICATE";
-      awardInlineEl.textContent = "RECOGNITION";
-    } else {
-      awardTextEl.textContent = `${medal.tier} AWARD`;
-      awardInlineEl.textContent = medal.tier;
-    }
+    const root = document.getElementById("certRoot");
+    root.classList.remove("gold", "silver", "bronze");
 
-    // Verification link
-    const verifyLine = document.getElementById("verifyLine");
-    const verifyLink = document.getElementById("verifyLink");
-    if (verify) {
-      verifyLink.href = verify;
-      verifyLink.textContent = verify;
-      verifyLine.style.display = "block";
-    } else {
-      verifyLine.style.display = "none";
-    }
+    // If team is missing, stop early (keeps placeholders)
+    if (!team || team === "Team Name") return;
 
-    // QR placeholder behavior
-    const qrBox = document.getElementById("qrBox");
-    if (verify) {
-      qrBox.textContent = "QR Code\n(add image here)\nfor verification URL";
+    try {
+      const { rank, totalTeams } = await fetchPlacementForTeam(team);
+      console.log(rank);
+      // Render totals
+      teamCountEl.textContent = (totalTeams != null ? String(totalTeams) : "—");
+
+      // Render rank + percentile (if rank exists)
+      let percentile = null;
+      if (typeof rank === 'number' && typeof totalTeams === 'number' && totalTeams > 0) {
+        placementRankEl.textContent = String(rank);
+
+        percentile = percentileFromPlacement(rank, totalTeams);
+        const shown = Math.round(percentile * 10) / 10; // 1 decimal
+        placementPercentileEl.textContent = String(shown);
+      } else {
+        // No submission -> rank null
+        placementRankEl.textContent = "—";
+        placementPercentileEl.textContent = "—";
+      }
+
+      const medal = medalFromPercentile(percentile);
+
+      // Apply medal class for dot coloring
+      root.classList.remove("gold", "silver", "bronze");
+      if (medal.className) root.classList.add(medal.className);
+
+      // Award text in pill + inline sentence
+      if (medal.tier === "PARTICIPANT") {
+        awardTextEl.textContent = "CERTIFICATE";
+        awardInlineEl.textContent = "RECOGNITION";
+      } else {
+        awardTextEl.textContent = `${medal.tier} AWARD`;
+        awardInlineEl.textContent = medal.tier;
+      }
+
+      // QR placeholder behavior
+      const qrBox = document.getElementById("qrBox");
+      if (verify) {
+        qrBox.textContent = "QR Code\n(add image here)\nfor verification URL";
+      }
+
+    } catch (e) {
+      // Leave placeholders, but you may want to show a subtle message in console
+      console.warn('Placement API failed:', e);
     }
   })();
 </script>
+
 </body>
 </html>
