@@ -571,5 +571,13 @@
     brandTitle.addEventListener('blur', endScramble);
   })();
 </script>
+
+<script>
+  if (!localStorage.getItem("visitedBefore")) {
+    alert("Hi all, the winner of IIMOC 2025 High School Division is team DO NOT SNAKE ME. However, we are not able to contact them through email. If you are part of team DO NOT SNAKE ME, please reach out to edwin.chen@iimoc.org. Congratulations to all participants!");
+    localStorage.setItem("visitedBefore", "true");
+  }
+</script>
+
 </body>
 </html>
