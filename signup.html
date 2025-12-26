@@ -61,8 +61,41 @@
     .status-panel.error   { border-color:#f97373; color:#fecaca; background:#450a0a; }
     .hidden { display:none; }
 
+    /* Team members UI */
+    .members {
+      border:1px solid #34343a;
+      background:#1a1a1d;
+      border-radius:8px;
+      padding:14px 14px 10px 14px;
+      margin-bottom:16px;
+    }
+    .members-header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .members-header .title {
+      font-weight:800;
+      letter-spacing:.6px;
+    }
+    .member-row {
+      display:grid;
+      grid-template-columns: 1.1fr 1.2fr auto;
+      gap:10px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .member-row:last-child { margin-bottom: 6px; }
+    .btn-sm { padding:10px 12px; font-size:0.95rem; }
+    .danger { border-color:#7f1d1d; background:#2a0f0f; }
+    .danger:hover { background:#3a1414; }
+
     @media (max-width:900px){
       .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; }
+      .member-row { grid-template-columns: 1fr; }
+      .member-row .btn { width: 100%; justify-content:center; }
     }
     a { color:cyan; }
   </style>
@@ -90,7 +123,7 @@
   <section class="container">
     <h1>Team Signup</h1>
     <p class="hint" style="margin-bottom:18px;">
-      Create your team credentials for the IIMOC judge. Team names must be unique.
+      Create your team credentials for the IIMOC judge. If your team already exists, enter the same password to update your team members.
     </p>
 
     <form id="signupForm">
@@ -126,15 +159,33 @@
       <div class="field">
         <label for="email">Contact Email *</label>
         <input id="email" name="email" type="email" placeholder="you@example.com" required />
+        <div class="hint">Primary contact email for organizers to reach your team.</div>
+      </div>
+
+      <!-- Team members list -->
+      <div class="members" id="membersBox">
+        <div class="members-header">
+          <div class="title">Team Members</div>
+          <button type="button" class="btn btn-sm" id="addMemberBtn">+ Add member</button>
+        </div>
+
+        <div class="hint" style="margin:0 0 12px 0;">
+          Add each team member's name and (optionally) email. The contact email above remains the primary contact.
+        </div>
+
+        <div id="membersList"></div>
+
+        <div class="hint" style="margin-top:10px;">
+          Minimum 1 member required.
+        </div>
       </div>
 
       <p class="hint">
-        If you already registered via the Google Form, your team may already have a password.
-        If you don't have one, please contact
-        <a href="mailto:edwin.chen@iimoc.org">edwin.chen@iimoc.org</a> and we will fix it within a day.
+        If you forgot your team password, please contact
+        <a href="mailto:edwin.chen@iimoc.org">edwin.chen@iimoc.org</a>.
       </p>
 
-      <button type="submit" class="btn btn-lg" id="signupBtn">Create Team</button>
+      <button type="submit" class="btn btn-lg" id="signupBtn">Create / Update Team</button>
     </form>
 
     <div id="statusBox" class="status-panel hidden"></div>
@@ -148,11 +199,81 @@
   const statusBox = document.getElementById('statusBox');
   const signupBtn = document.getElementById('signupBtn');
 
+  const membersList = document.getElementById('membersList');
+  const addMemberBtn = document.getElementById('addMemberBtn');
+
   function setStatus(kind, msg) {
     statusBox.classList.remove('hidden', 'success', 'error');
     statusBox.classList.add(kind === 'success' ? 'success' : 'error');
     statusBox.textContent = msg;
   }
+
+  function escId(s){ return String(s).replace(/[^a-zA-Z0-9_-]/g, '_'); }
+
+  function addMemberRow(init = {}) {
+    const rowId = `m_${Math.random().toString(36).slice(2)}`;
+
+    const row = document.createElement('div');
+    row.className = 'member-row';
+    row.dataset.rowId = rowId;
+
+    // Note: using value attribute with basic escaping for quotes.
+    row.innerHTML = `
+      <div>
+        <label for="${escId(rowId)}_name" style="margin:0 0 4px 0;">Name *</label>
+        <input type="text" id="${escId(rowId)}_name" class="member-name" placeholder="Member name" value="${String(init.name||'').replace(/"/g,'&quot;')}" required />
+      </div>
+      <div>
+        <label for="${escId(rowId)}_email" style="margin:0 0 4px 0;">Email (optional)</label>
+        <input type="email" id="${escId(rowId)}_email" class="member-email" placeholder="member@example.com" value="${String(init.email||'').replace(/"/g,'&quot;')}" />
+      </div>
+      <div style="display:flex;align-items:flex-end;">
+        <button type="button" class="btn btn-sm danger member-remove">Remove</button>
+      </div>
+    `;
+
+    row.querySelector('.member-remove').addEventListener('click', () => {
+      row.remove();
+      enforceAtLeastOneMember();
+    });
+
+    membersList.appendChild(row);
+    enforceAtLeastOneMember();
+  }
+
+  function enforceAtLeastOneMember(){
+    const rows = Array.from(membersList.querySelectorAll('.member-row'));
+    if (rows.length === 0) addMemberRow();
+
+    const updatedRows = Array.from(membersList.querySelectorAll('.member-row'));
+    const disableRemove = updatedRows.length <= 1;
+    for (const r of updatedRows) {
+      const btn = r.querySelector('.member-remove');
+      if (btn) btn.disabled = disableRemove;
+    }
+  }
+
+  function readMembers(){
+    const rows = Array.from(membersList.querySelectorAll('.member-row'));
+    const members = [];
+
+    for (const r of rows){
+      const nameEl = r.querySelector('.member-name');
+      const emailEl = r.querySelector('.member-email');
+
+      const name = (nameEl ? nameEl.value : '').trim();
+      const email = (emailEl ? emailEl.value : '').trim();
+
+      if (!name) continue;
+      members.push(email ? { name, email } : { name });
+    }
+    return members;
+  }
+
+  addMemberBtn.addEventListener('click', () => addMemberRow());
+
+  // Start with 1 member row by default
+  addMemberRow();
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -164,6 +285,8 @@
     const email     = document.getElementById('email').value.trim();
     const country   = document.getElementById('country').value.trim();
 
+    const members = readMembers();
+
     if (!team || !password || !school || !email || !country) {
       setStatus('error', 'All fields are required.');
       return;
@@ -173,12 +296,26 @@
       return;
     }
 
+    // Validate members: every row must have a name
+    const memberRows = Array.from(membersList.querySelectorAll('.member-row'));
+    for (const r of memberRows){
+      const name = (r.querySelector('.member-name')?.value || '').trim();
+      if (!name) {
+        setStatus('error', 'Each team member must have a name.');
+        return;
+      }
+    }
+    if (members.length < 1) {
+      setStatus('error', 'At least one team member is required.');
+      return;
+    }
+
     signupBtn.disabled = true;
-    signupBtn.textContent = 'Creating team...';
-    setStatus('success', 'Submitting signup request…');
+    signupBtn.textContent = 'Submitting...';
+    setStatus('success', 'Submitting request…');
 
     try {
-      const payload = { team, password, school, email, country };
+      const payload = { team, password, school, email, country, members };
 
       const res = await fetch(`${URL}/signup`, {
         method: 'POST',
@@ -195,15 +332,24 @@
       if (!res.ok) {
         const msg =
           (data && (data.error || data.message)) ||
-          `Signup failed (HTTP ${res.status})`;
-        setStatus('error', msg);
+          `Request failed (HTTP ${res.status})`;
+
+        // Special-case wrong password (backend uses 401)
+        if (res.status === 401) {
+          setStatus('error', `Team exists, but the password is incorrect.\n\nIf you forgot the password, contact edwin.chen@iimoc.org.`);
+        } else {
+          setStatus('error', msg);
+        }
       } else {
-        const msg = data && data.message
-          ? data.message
-          : 'Team created successfully.';
+        const serverMsg = (data && data.message) ? data.message : 'Success.';
+        const createdOrUpdated =
+          res.status === 201 ? 'Created' :
+          res.status === 200 ? 'Updated' : 'Saved';
+
         setStatus('success',
-`✅ ${msg}
+`✅ ${createdOrUpdated}: ${serverMsg}
 Team: ${team}
+Members: ${members.map(m => m.name + (m.email ? ` <${m.email}>` : '')).join(', ')}
 
 You can now go to the problem page and submit using this team name + password.`);
       }
@@ -212,7 +358,7 @@ You can now go to the problem page and submit using this team name + password.`)
       setStatus('error', 'Network or server error during signup.');
     } finally {
       signupBtn.disabled = false;
-      signupBtn.textContent = 'Create Team';
+      signupBtn.textContent = 'Create / Update Team';
     }
   });
 </script>

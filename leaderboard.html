@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IIMOC Leaderboard — polypacksys</title>
+
+  <style>
+    body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
+    header { width:100%; background:#181818; border-bottom:1px solid #333; }
+    .nav { display:flex; align-items:center; justify-content:space-between; max-width:940px; margin:0 auto; padding:16px 20px 12px; }
+    .brand-title { font-size:1.35rem; color:#fafafa; letter-spacing:2px; display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .brand-title svg { height:34px; width:34px; color:#b89bfa; stroke-width:2.2; }
+    .container { max-width:940px; margin:36px auto 40px; padding:28px 24px; background:#222; border-radius:8px; border:1px solid #444; }
+    h1 { margin:0 0 12px 0; font-size:1.6rem; letter-spacing:.5px; }
+    .muted { color:#9ca3af; font-size:0.95rem; }
+
+    .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:18px 0 10px; }
+    input[type="text"]{
+      background:#111; color:#fafafa; border:1px solid #444; border-radius:6px;
+      padding:10px 12px; font-family:inherit; font-size:1rem; width:280px; box-sizing:border-box;
+    }
+    input:focus{ outline:none; border-color:#735ac4; box-shadow:0 0 0 2px rgba(115,90,196,0.35); }
+
+    select.select{
+      appearance:none; background:#111; color:#fafafa; border:1px solid #444; border-radius:6px;
+      padding:10px 12px; font-family:inherit; font-size:1rem; cursor:pointer;
+    }
+    .btn{
+      background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
+      padding:10px 14px; font-family:inherit; font-size:1rem; cursor:pointer;
+      text-decoration:none; font-weight:600; letter-spacing:0.5px; transition:background .13s;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn:hover{ background:#333; }
+
+    .panel { background:#1a1a1d; border:1px solid #34343a; border-radius:6px; padding:14px 16px; margin-top:14px; }
+    .cases-table { width:100%; border-collapse:collapse; margin-top:12px; }
+    .cases-table th, .cases-table td { border:1px solid #34343a; padding:10px 12px; text-align:left; font-size:0.98rem; }
+    .cases-table th { background:#26262b; color:#f5f5f5; letter-spacing:1px; user-select:none; cursor:pointer; }
+    .cases-table tr:nth-child(even) { background:#202024; }
+    a { color: cyan; }
+
+    @media (max-width: 980px){
+      .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; }
+      .cases-table{ display:block; overflow-x:auto; }
+      input[type="text"]{ width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <nav class="nav">
+    <a href="/index.html" class="brand-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 4H6l7 8-7 8h12"/>
+      </svg>
+      <span>IIMOC</span>
+    </a>
+    <div class="muted">Static Leaderboard</div>
+  </nav>
+</header>
+
+<main>
+  <section class="container">
+    <h1>Leaderboard — <span id="problemName">polypacksys</span></h1>
+    <div class="muted">
+      Data source: <code id="dataPath">./polypacksys.leaderboard.json</code><br/>
+      Generated: <span id="generatedAt">—</span>
+    </div>
+
+    <div class="toolbar">
+      <input id="searchInput" type="text" placeholder="Search team…" />
+      <label class="muted" for="sortSelect">Sort</label>
+      <select id="sortSelect" class="select">
+        <option value="score_desc" selected>Score (high → low)</option>
+        <option value="score_asc">Score (low → high)</option>
+        <option value="team_asc">Team (A → Z)</option>
+        <option value="team_desc">Team (Z → A)</option>
+        <option value="time_desc">Time (new → old)</option>
+        <option value="time_asc">Time (old → new)</option>
+      </select>
+
+      <button class="btn" id="refreshBtn" type="button">Refresh</button>
+      <span class="muted" id="countInfo">—</span>
+    </div>
+
+    <section class="panel" id="tablePanel">
+      <div id="statusLine" class="muted">Loading…</div>
+      <div id="leaderboardContainer"></div>
+    </section>
+  </section>
+</main>
+
+<script>
+(() => {
+  "use strict";
+  const params = new URLSearchParams(window.location.search);
+  // ------------------------------
+  // CONFIG
+  // ------------------------------
+  const DATA_URL = `./assets/${params.get("pid")}/results/leaderboard.json`; // keep in same folder for simplest deployment
+
+  // ------------------------------
+  // DOM
+  // ------------------------------
+  const problemNameEl = document.getElementById("problemName");
+  const dataPathEl = document.getElementById("dataPath");
+  const generatedAtEl = document.getElementById("generatedAt");
+  const statusLineEl = document.getElementById("statusLine");
+  const containerEl = document.getElementById("leaderboardContainer");
+  const searchInput = document.getElementById("searchInput");
+  const sortSelect = document.getElementById("sortSelect");
+  const refreshBtn = document.getElementById("refreshBtn");
+  const countInfo = document.getElementById("countInfo");
+
+  dataPathEl.textContent = DATA_URL;
+
+  // ------------------------------
+  // STATE
+  // ------------------------------
+  let raw = null;          // full payload
+  let rows = [];           // normalized list
+  let filtered = [];       // post-filter list
+
+  // ------------------------------
+  // HELPERS
+  // ------------------------------
+  function fmtTs(ts){
+    if (!Number.isFinite(ts)) return "—";
+    try {
+      const d = new Date(ts);
+      return d.toLocaleString(undefined, { hour12: false });
+    } catch {
+      return "—";
+    }
+  }
+
+  function normalize(payload){
+    const submissions = Array.isArray(payload?.submissions) ? payload.submissions : [];
+    return submissions.map(s => ({
+      team: String(s.team ?? "—"),
+      score: Number(s.score ?? 0),
+      sid: s.sid != null ? String(s.sid) : "",
+      ts: Number(s.ts ?? NaN)
+    }));
+  }
+
+  function applyFilterAndSort(){
+    const q = (searchInput.value || "").trim().toLowerCase();
+    filtered = rows.filter(r => !q || r.team.toLowerCase().includes(q));
+
+    const mode = sortSelect.value;
+    const cmp = {
+      score_desc: (a,b) => (b.score - a.score) || a.team.localeCompare(b.team),
+      score_asc:  (a,b) => (a.score - b.score) || a.team.localeCompare(b.team),
+      team_asc:   (a,b) => a.team.localeCompare(b.team),
+      team_desc:  (a,b) => b.team.localeCompare(a.team),
+      time_desc:  (a,b) => ((b.ts||0) - (a.ts||0)) || (b.score - a.score),
+      time_asc:   (a,b) => ((a.ts||0) - (b.ts||0)) || (b.score - a.score),
+    }[mode] || ((a,b) => (b.score - a.score));
+
+    filtered.sort(cmp);
+
+    countInfo.textContent = `${filtered.length} team(s)`;
+  }
+
+  function render(){
+    if (!raw){
+      containerEl.innerHTML = "";
+      statusLineEl.textContent = "No data loaded.";
+      return;
+    }
+
+    applyFilterAndSort();
+
+    if (filtered.length === 0){
+      containerEl.innerHTML = "<p class='muted'>No matching teams.</p>";
+      statusLineEl.textContent = "Loaded, but nothing matched your filter.";
+      return;
+    }
+
+    // Build table
+    const htmlRows = filtered.map((r, i) => {
+      const rank = i + 1;
+      const teamHtml = r.team !== "—"
+        ? `<a href="/verify.html?team=${encodeURIComponent(r.team)}&pid=${encodeURIComponent(params.get("pid"))}">${escapeHtml(r.team)}</a>`
+        : "—";
+
+      // Keep sid link optional (if you still have /render.html as a static artifact, remove if not)
+      const sidHtml = r.sid
+        ? `${escapeHtml(r.sid)}`
+        : "—";
+
+      return `
+        <tr>
+          <td>${rank}</td>
+          <td>${teamHtml}</td>
+          <td>${Number.isFinite(r.score) ? r.score : 0}</td>
+          <td>${sidHtml}</td>
+          <td>${fmtTs(r.ts)}</td>
+        </tr>
+      `;
+    }).join("");
+
+    containerEl.innerHTML = `
+      <table class="cases-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>Score</th>
+            <th>Submission ID</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>${htmlRows}</tbody>
+      </table>
+    `;
+
+    statusLineEl.textContent = "Loaded.";
+  }
+
+  // Minimal escaping for team/sid display.
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  async function loadData(){
+    statusLineEl.textContent = "Loading leaderboard JSON…";
+    containerEl.innerHTML = "";
+
+    try{
+      // cache-bust to avoid stale CDN/browser caching during rapid updates
+      const url = `${DATA_URL}?v=${Date.now()}`;
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`Failed to load (${res.status})`);
+      const payload = await res.json();
+
+      raw = payload;
+      rows = normalize(payload);
+
+      problemNameEl.textContent = payload?.problem || "polypacksys";
+      generatedAtEl.textContent = payload?.generatedAt ? String(payload.generatedAt) : "—";
+
+      render();
+    } catch (e){
+      raw = null;
+      rows = [];
+      filtered = [];
+      statusLineEl.textContent = `Could not load leaderboard data: ${e?.message || "unknown error"}`;
+      containerEl.innerHTML = `
+        <p class="muted">
+          Ensure <code>${escapeHtml(DATA_URL)}</code> exists and is served by your static host.
+        </p>
+      `;
+      countInfo.textContent = "—";
+    }
+  }
+
+  // ------------------------------
+  // EVENTS
+  // ------------------------------
+  searchInput.addEventListener("input", () => render());
+  sortSelect.addEventListener("change", () => render());
+  refreshBtn.addEventListener("click", () => loadData());
+
+  // ------------------------------
+  // INIT
+  // ------------------------------
+  loadData();
+})();
+</script>
+
+</body>
+</html>

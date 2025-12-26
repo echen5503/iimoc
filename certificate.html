@@ -192,6 +192,38 @@
     font-weight: 700;
   }
 
+  /* Member picker UI */
+  .picker {
+    margin-top: 12px;
+    display: none;
+    text-align: center;
+  }
+  .picker-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .picker select {
+    min-width: min(520px, 92vw);
+    justify-content: space-between;
+  }
+  .picker-hint {
+    margin-top: 10px;
+    color: #9aa0a6;
+    font-size: 0.92rem;
+    letter-spacing: 0.4px;
+    line-height: 1.4;
+  }
+  .picker-error {
+    margin-top: 10px;
+    color: #fca5a5;
+    font-size: 0.92rem;
+    letter-spacing: 0.4px;
+    line-height: 1.4;
+  }
+
   .details {
     margin-top: 16px;
     display: grid;
@@ -252,6 +284,19 @@
     justify-content: flex-end;
   }
 
+  /* Signature image area */
+  .sig-img {
+    height: 44px;
+    width: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 8px auto;
+  }
+
+  .sig-white {
+    filter: invert(1) brightness(1.15) contrast(1.15);
+  }
+
   .sig .line {
     border-top: 1px solid #444;
     margin-top: 10px;
@@ -288,7 +333,11 @@
     box-sizing: border-box;
     white-space: pre-line;
   }
-
+  .qr-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
   .verify {
     color: #e5e7eb;
     font-size: 0.92rem;
@@ -335,18 +384,68 @@
     .signatures { grid-template-columns: 1fr; }
   }
 
+  @page { margin: 0; }
+
   @media print {
-    body { background: #fff; color: #000; }
+    /* Print only the certificate */
     header, .actions, .site-footer, .note { display: none !important; }
-    .wrap { max-width: none; margin: 0; padding: 0; }
-    .cert, .cert-inner, .detail, .sig, .qr, .name-block { break-inside: avoid; }
-    .cert { border: 1px solid #000; background: #fff; }
-    .cert-inner, .detail, .sig, .qr, .name-block { border: 1px solid #000; background: #fff; }
-    .recipient { color: #000; }
-    .title { color: #000; }
-    .subtitle, .mid-text, .detail .k, .detail .v, .sig .line, .verify { color: #000; }
-    .award-pill { border: 1px solid #000; background: #fff; }
-    .cert::before { display: none; }
+
+    /* IMPORTANT: hide picker in print/PDF */
+    #memberPickerWrap { display: none !important; }
+
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body { margin: 0 !important; background: #181818 !important; }
+    .wrap { margin: 0 !important; padding: 0 !important; max-width: none !important; }
+
+    .cert {
+      width: calc(100vw - 24px) !important;
+      max-width: 940px !important;
+      margin: 12px auto !important;
+      padding: 18px 18px 14px 18px !important;
+      border-radius: 10px !important;
+    }
+
+    .cert-inner {
+      margin-top: 8px !important;
+      padding: 16px 14px 12px 14px !important;
+    }
+
+    .top-row { gap: 10px !important; }
+    .title { font-size: 1.55rem !important; }
+    .subtitle { font-size: 0.95rem !important; margin-top: 6px !important; }
+
+    .award-pill { padding: 8px 10px !important; font-size: 0.95rem !important; }
+
+    .name-block { margin-top: 14px !important; padding: 12px 10px !important; }
+    .label { font-size: 0.85rem !important; margin-bottom: 6px !important; }
+    .recipient { font-size: 1.45rem !important; }
+
+    .mid-text { margin-top: 12px !important; font-size: 0.95rem !important; }
+
+    .details { margin-top: 10px !important; gap: 8px !important; }
+    .detail { padding: 10px 10px 9px 10px !important; }
+    .detail .k { font-size: 0.82rem !important; margin-bottom: 6px !important; }
+    .detail .v { font-size: 0.92rem !important; }
+
+    .footer-row { margin-top: 12px !important; gap: 10px !important; grid-template-columns: 1fr 200px !important; }
+    .signatures { gap: 8px !important; }
+
+    .sig { min-height: 72px !important; padding: 10px 10px 9px 10px !important; }
+    .sig-img { height: 36px !important; margin-bottom: 6px !important; }
+    .sig .line { margin-top: 8px !important; padding-top: 6px !important; font-size: 0.85rem !important; }
+
+    .qr { padding: 10px !important; gap: 8px !important; }
+    .qr-box { width: 120px !important; height: 120px !important; padding: 6px !important; }
+    .verify { font-size: 0.85rem !important; }
+
+    .cert, .cert-inner, .detail, .sig, .qr, .name-block {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
   }
 </style>
 </head>
@@ -383,7 +482,7 @@
           <div class="subtitle">
             International Invitational Math Optimization Challenge (IIMOC)<br />
             This document certifies the standing and distinction listed below.
-            This result can be verified at <a href="https://iimoc.org/problem.html?pid=polypacksys" style="color: cyan">https://iimoc.org/problem.html?pid=polypacksys</a>.
+            This result can be verified at <a id="verifyTopLink" href="/leaderboard.html" style="color: cyan">iimoc.org</a>.
           </div>
         </div>
 
@@ -396,9 +495,21 @@
       <div class="name-block">
         <div class="label">THIS CERTIFICATE IS AWARDED TO</div>
         <p class="recipient" id="recipientName">Participant Name</p>
+
+        <!-- Member picker -->
+        <div class="picker" id="memberPickerWrap">
+          <div class="label" style="margin-bottom:8px;">SELECT TEAM MEMBER</div>
+          <div class="picker-row">
+            <select id="memberPicker" class="btn" aria-label="Select team member">
+              <option value="">Loading members…</option>
+            </select>
+            <a id="signupLinkInline" class="btn" href="/signup.html" style="display:none;">Go to Sign Up</a>
+          </div>
+          <div class="picker-hint" id="memberPickerHint" style="display:none;"></div>
+          <div class="picker-error" id="memberPickerError" style="display:none;"></div>
+        </div>
       </div>
 
-      <!-- Dynamic placements: Team, Placement, Medal -->
       <div class="mid-text" id="midText">
         <span id="teamInline">Team Name</span> placed
         <strong><span id="placementRank">1</span> out of <span id="teamCount">237</span> teams</strong>
@@ -425,6 +536,27 @@
         </div>
       </div>
 
+      <div class="footer-row">
+        <div class="signatures">
+          <div class="sig">
+            <img class="sig-img sig-white" src="assets/edwinchen.png" alt="Edwin Chen signature" />
+            <div class="line">Edwin Chen — Contest Director</div>
+          </div>
+          <div class="sig">
+            <img class="sig-img sig-white" src="assets/shangzhou.png" alt="Shang Zhou signature" />
+            <div class="line">Shang Zhou — Contest Problemsetter</div>
+          </div>
+        </div>
+
+        <div class="qr">
+          <div class="qr-box" id="qrBox">
+            <img id="qrImg" alt="Verification QR" />
+          </div>
+          <div class="verify">
+            Verify: <a id="verifyLink" href="/leaderboard.html">iimoc.org</a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="actions">
@@ -518,34 +650,211 @@
     return { tier: "PARTICIPANT", className: "" };
   }
 
-  async function fetchPlacementForTeam(team) {
-    // Calls your new API: GET /placement/:team
-    const resp = await fetch(`https://contest.iimoc.org/problem/polypacksys/placement/${encodeURIComponent(team)}`, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
-    });
-    console.log(resp);
-    if (!resp.ok) {
-      let msg = `HTTP ${resp.status}`;
-      try {
-        const j = await resp.json();
-        if (j && (j.error || j.message)) msg = `${j.error || 'Error'}: ${j.message || ''}`.trim();
-      } catch {}
-      throw new Error(msg);
-    }
-    return await resp.json(); // { rank, totalTeams }
+  function normalizeTeamName(s){
+    return String(s || "").trim();
   }
 
-  // Populate from query string (team, name, etc.) + placement from API (team only)
+  function getTeamFromRow(row){
+    if (!row) return "";
+    if (row.team != null) return normalizeTeamName(row.team);
+    if (row.metadata && row.metadata.team != null) return normalizeTeamName(row.metadata.team);
+    return "";
+  }
+
+  function getScoreFromRow(row){
+    const v = row && row.score != null ? Number(row.score) : 0;
+    return Number.isFinite(v) ? v : 0;
+  }
+
+  function getTsFromRow(row){
+    const metaTs = row && row.metadata && row.metadata.ts != null ? Number(row.metadata.ts) : NaN;
+    const directTs = row && row.ts != null ? Number(row.ts) : NaN;
+    const t = Number.isFinite(directTs) ? directTs : (Number.isFinite(metaTs) ? metaTs : NaN);
+    return t;
+  }
+
+  function computeRankFromLeaderboard(payload, team){
+    const teamNorm = normalizeTeamName(team).toLowerCase();
+    if (!teamNorm) return { rank: null, totalTeams: 0 };
+
+    const subs = Array.isArray(payload?.submissions) ? payload.submissions : [];
+    if (!subs.length) return { rank: null, totalTeams: 0 };
+
+    // Reduce to best per team (max score; tie-break newer ts)
+    const bestByTeam = new Map();
+    for (const row of subs){
+      const t = getTeamFromRow(row);
+      if (!t) continue;
+      const key = t.toLowerCase();
+      const score = getScoreFromRow(row);
+      const ts = getTsFromRow(row);
+
+      const prev = bestByTeam.get(key);
+      if (!prev){
+        bestByTeam.set(key, { team: t, score, ts });
+      } else {
+        if (score > prev.score) bestByTeam.set(key, { team: t, score, ts });
+        else if (score === prev.score) {
+          const prevTs = Number.isFinite(prev.ts) ? prev.ts : -Infinity;
+          const rowTs = Number.isFinite(ts) ? ts : -Infinity;
+          if (rowTs > prevTs) bestByTeam.set(key, { team: t, score, ts });
+        }
+      }
+    }
+
+    const teams = Array.from(bestByTeam.values());
+    teams.sort((a,b) => (b.score - a.score) || a.team.localeCompare(b.team));
+
+    const totalTeams = teams.length;
+    const idx = teams.findIndex(x => x.team.toLowerCase() === teamNorm);
+    const rank = idx >= 0 ? (idx + 1) : null;
+
+    return { rank, totalTeams };
+  }
+
+  async function fetchLeaderboardJson(pid){
+    const url = `assets/${encodeURIComponent(pid)}/results/leaderboard.json`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Could not load leaderboard.json (HTTP ${res.status})`);
+    return await res.json();
+  }
+
+  // --- Member picker helpers (more user-friendly) ---
+  function setQueryParam(key, value) {
+    const url = new URL(window.location.href);
+    if (value == null || String(value).trim() === "") url.searchParams.delete(key);
+    else url.searchParams.set(key, value);
+    history.replaceState({}, "", url.toString());
+  }
+
+  function normalizeNameKey(s) {
+    return String(s || "").trim().toLowerCase();
+  }
+
+  async function fetchTeamMembers(team) {
+    const url = `https://contest.iimoc.org/team/${encodeURIComponent(team)}/members`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) {
+      // surface common status codes with useful messaging
+      const msg = (res.status === 401 || res.status === 403)
+        ? "Could not load team members: invalid team or password."
+        : `Could not load team members (HTTP ${res.status}).`;
+      throw new Error(msg);
+    }
+    const payload = await res.json();
+    return Array.isArray(payload?.members) ? payload.members : [];
+  }
+
+  function showMemberPicker() {
+    const wrap = document.getElementById("memberPickerWrap");
+    if (wrap) wrap.style.display = "block";
+  }
+
+  function setPickerState({ loading=false, error="", hint="", showSignup=false }) {
+    const sel = document.getElementById("memberPicker");
+    const hintEl = document.getElementById("memberPickerHint");
+    const errEl = document.getElementById("memberPickerError");
+    const signupBtn = document.getElementById("signupLinkInline");
+
+    if (sel) sel.disabled = Boolean(loading);
+
+    if (hintEl) {
+      hintEl.style.display = hint ? "block" : "none";
+      hintEl.textContent = hint || "";
+    }
+    if (errEl) {
+      errEl.style.display = error ? "block" : "none";
+      errEl.textContent = error || "";
+    }
+    if (signupBtn) {
+      signupBtn.style.display = showSignup ? "inline-flex" : "none";
+    }
+  }
+
+  function populateMemberPicker(members, currentName) {
+    const sel = document.getElementById("memberPicker");
+    if (!sel) return;
+
+    sel.innerHTML = "";
+
+    const opts = members
+      .map(m => ({
+        name: String(m?.name || "").trim(),
+        email: String(m?.email || "").trim()
+      }))
+      .filter(m => m.name.length > 0);
+
+    if (!opts.length) {
+      // explicit empty roster case
+      sel.innerHTML = `<option value="">No members found</option>`;
+      setPickerState({
+        loading: false,
+        error: "",
+        hint: "No team members are registered for this team. Please add members on the Sign Up page, then refresh this certificate.",
+        showSignup: true
+      });
+      sel.disabled = true;
+      return;
+    }
+
+    opts.sort((a, b) => a.name.localeCompare(b.name));
+
+    // placeholder
+    const ph = document.createElement("option");
+    ph.value = "";
+    ph.textContent = "Select a team member…";
+    sel.appendChild(ph);
+
+    for (const m of opts) {
+      const o = document.createElement("option");
+      o.value = m.name;
+      o.textContent = m.email ? `${m.name} (${m.email})` : m.name;
+      sel.appendChild(o);
+    }
+
+    // preselect if currentName matches
+    const curKey = normalizeNameKey(currentName);
+    const match = opts.find(m => normalizeNameKey(m.name) === curKey);
+    if (match) sel.value = match.name;
+
+    // if nothing selected yet and we have a match, set; else leave placeholder
+    if (!sel.value && opts.length) sel.value = match ? match.name : "";
+
+    setPickerState({
+      loading: false,
+      error: "",
+      hint: "Pick which teammate this certificate is for. This only changes the recipient name.",
+      showSignup: false
+    });
+
+    sel.disabled = false;
+
+    // Ensure we only bind once
+    if (!sel.dataset.bound) {
+      sel.addEventListener("change", () => {
+        const chosen = String(sel.value || "").trim();
+        if (!chosen) return;
+        document.getElementById("recipientName").textContent = chosen;
+        setQueryParam("name", chosen);
+      });
+      sel.dataset.bound = "1";
+    }
+  }
+  // --- end member picker helpers ---
+
+  // Populate from query string (pid drives QR + verify + leaderboard JSON)
   (async function populateCertificate() {
     const params = new URLSearchParams(window.location.search);
 
-    const name = params.get("team") || "Participant Name";
+    const pid = (params.get("pid") || "polypacksys").trim();
     const team = params.get("team") || "Team Name";
+    const name = params.get("name") || "Participant Name";
     const date = params.get("date") || "Dec 30, 2025";
     const category = params.get("category") || "Overall";
-    const verify = params.get("verify") || "";
-    const cert = params.get("cert") || `IIMOC-2025-${team.toLowerCase().replace(/\s+/g, '-')}-${category}-polypacksys`.toUpperCase();
+
+    const cert = params.get("cert") || (
+      `IIMOC-2025-${team.toLowerCase().replace(/\s+/g, '-')}-${category}-${pid}`.toUpperCase()
+    );
 
     // Inject static values first
     document.getElementById("recipientName").textContent = name;
@@ -554,7 +863,65 @@
     document.getElementById("certId").textContent = cert;
     document.getElementById("awardDate").textContent = date;
     document.getElementById("category").textContent = category;
-    // Defaults while loading / if API fails
+
+    // Member picker: show only when team+password present
+    if (team && team !== "Team Name") {
+      showMemberPicker();
+      setPickerState({
+        loading: true,
+        error: "",
+        hint: "Loading your team members…",
+        showSignup: false
+      });
+
+      try {
+        const members = await fetchTeamMembers(team);
+
+        // If no explicit name, default to first member (but still let them change)
+        if ((!params.get("name") || !String(params.get("name")).trim()) && members.length) {
+          const first = String(members[0]?.name || "").trim();
+          if (first) {
+            document.getElementById("recipientName").textContent = first;
+            setQueryParam("name", first);
+          }
+        }
+
+        const currentRecipient = document.getElementById("recipientName").textContent;
+        populateMemberPicker(members, currentRecipient);
+      } catch (e) {
+        const sel = document.getElementById("memberPicker");
+        if (sel) sel.innerHTML = `<option value="">Unable to load members</option>`;
+        setPickerState({
+          loading: false,
+          error: e.message || "Unable to load team members.",
+          hint: "If you have not registered your members yet, add them on the Sign Up page and refresh.",
+          showSignup: true
+        });
+      }
+    } else if (team && team !== "Team Name" && !password) {
+      // team present but no password: show message (still keep picker hidden to avoid confusion)
+      // If you WANT to show it anyway, call showMemberPicker() here and display an error.
+      // For now: do nothing.
+    }
+
+    // Wire verify links using pid
+    const verifyHref = `/leaderboard.html?pid=${encodeURIComponent(pid)}`;
+    const verifyTopLink = document.getElementById("verifyTopLink");
+    const verifyLink = document.getElementById("verifyLink");
+    if (verifyTopLink) verifyTopLink.href = verifyHref;
+    if (verifyLink) verifyLink.href = verifyHref;
+
+    // Wire QR image using pid
+    const qrImg = document.getElementById("qrImg");
+    if (qrImg) {
+      qrImg.src = `assets/${encodeURIComponent(pid)}/results/QR.png`;
+      qrImg.onerror = () => {
+        const qrBox = document.getElementById("qrBox");
+        if (qrBox) qrBox.textContent = "QR Code unavailable";
+      };
+    }
+
+    // Defaults while loading / if JSON fails
     const placementRankEl = document.getElementById("placementRank");
     const teamCountEl = document.getElementById("teamCount");
     const placementPercentileEl = document.getElementById("placementPercentile");
@@ -571,36 +938,29 @@
     const root = document.getElementById("certRoot");
     root.classList.remove("gold", "silver", "bronze");
 
-    // If team is missing, stop early (keeps placeholders)
     if (!team || team === "Team Name") return;
 
     try {
-      const { rank, totalTeams } = await fetchPlacementForTeam(team);
-      console.log(rank);
-      // Render totals
-      teamCountEl.textContent = (totalTeams != null ? String(totalTeams) : "—");
+      const leaderboardPayload = await fetchLeaderboardJson(pid);
+      const { rank, totalTeams } = computeRankFromLeaderboard(leaderboardPayload, team);
 
-      // Render rank + percentile (if rank exists)
+      teamCountEl.textContent = totalTeams ? String(totalTeams) : "—";
+
       let percentile = null;
-      if (typeof rank === 'number' && typeof totalTeams === 'number' && totalTeams > 0) {
+      if (typeof rank === "number" && totalTeams > 0) {
         placementRankEl.textContent = String(rank);
-
         percentile = percentileFromPlacement(rank, totalTeams);
-        const shown = Math.round(percentile * 10) / 10; // 1 decimal
-        placementPercentileEl.textContent = String(shown);
+        placementPercentileEl.textContent = String(Math.round(percentile * 10) / 10);
       } else {
-        // No submission -> rank null
         placementRankEl.textContent = "—";
         placementPercentileEl.textContent = "—";
       }
 
       const medal = medalFromPercentile(percentile);
 
-      // Apply medal class for dot coloring
       root.classList.remove("gold", "silver", "bronze");
       if (medal.className) root.classList.add(medal.className);
 
-      // Award text in pill + inline sentence
       if (medal.tier === "PARTICIPANT") {
         awardTextEl.textContent = "CERTIFICATE";
         awardInlineEl.textContent = "RECOGNITION";
@@ -608,16 +968,8 @@
         awardTextEl.textContent = `${medal.tier} AWARD`;
         awardInlineEl.textContent = medal.tier;
       }
-
-      // QR placeholder behavior
-      const qrBox = document.getElementById("qrBox");
-      if (verify) {
-        qrBox.textContent = "QR Code\n(add image here)\nfor verification URL";
-      }
-
     } catch (e) {
-      // Leave placeholders, but you may want to show a subtle message in console
-      console.warn('Placement API failed:', e);
+      console.warn("Leaderboard JSON failed:", e);
     }
   })();
 </script>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IIMOC Verification</title>
+<meta name="description" content="IIMOC Verification" />
+
+<style>
+  body {
+    background: #181818;
+    color: #f0f0f0;
+    font-family: Consolas, 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    width: 100%;
+    background: #181818;
+    border-bottom: 1px solid #333;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 16px 20px 8px 20px;
+  }
+  .brand-title {
+    font-size: 1.5rem;
+    color: #fafafa;
+    letter-spacing: 2px;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .brand-title svg {
+    vertical-align: middle;
+    height: 38px;
+    width: 38px;
+    color: #b89bfa;
+    stroke-width: 2.2;
+    flex-shrink: 0;
+  }
+  #scrambleText {
+    color: #fff;
+    letter-spacing: 0.02em;
+    font-weight: bold;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+  }
+  .brand-title .scramble-char {
+    display: inline-block;
+    min-width: 1ch;
+    transition: color 0.17s;
+    color: inherit;
+    font-family: inherit;
+  }
+  .nav-links {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .btn, .btn-lg, .nav-link {
+    background: #282828;
+    color: #f0f0f0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-family: inherit;
+    font-size: 1.02rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background .13s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+  .btn-lg { font-size: 1.08rem; padding: 14px 20px; }
+  .btn:hover, .btn-lg:hover, .nav-link:hover { background: #333; }
+  .nav-link.active { background: #333; cursor: default; }
+
+  .wrap {
+    max-width: 940px;
+    margin: 34px auto 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  .card {
+    background: #222;
+    border-radius: 10px;
+    border: 1px solid #444;
+    box-sizing: border-box;
+    padding: 24px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: linear-gradient(90deg, #1f2933, #111827);
+    border-bottom: 1px solid #333;
+  }
+
+  .inner {
+    margin-top: 12px;
+    border: 1px solid #333;
+    background: #19191c;
+    border-radius: 8px;
+    padding: 20px 18px 18px 18px;
+  }
+
+  .title {
+    margin: 0 0 10px 0;
+    letter-spacing: 2px;
+    color: #fafafa;
+    font-weight: normal;
+    font-size: 1.6rem;
+  }
+
+  .sub {
+    color: #cfcfcf;
+    line-height: 1.6;
+    font-size: 1.02rem;
+  }
+
+  .grid {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .box {
+    border: 1px solid #333;
+    border-radius: 8px;
+    background: #181818;
+    padding: 14px 14px 12px 14px;
+  }
+  .k {
+    color: #ababab;
+    font-size: 0.92rem;
+    letter-spacing: 0.9px;
+    margin-bottom: 8px;
+  }
+  .v {
+    color: #dedede;
+    font-size: 1.02rem;
+    letter-spacing: 0.6px;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .members {
+    margin-top: 12px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background: #181818;
+    padding: 14px 14px 12px 14px;
+  }
+  .member-list {
+    margin: 8px 0 0 0;
+    padding-left: 18px;
+    color: #dedede;
+    line-height: 1.55;
+  }
+  .hint {
+    margin-top: 10px;
+    color: #9aa0a6;
+    font-size: 0.92rem;
+    letter-spacing: 0.4px;
+    line-height: 1.45;
+  }
+  .error {
+    margin-top: 10px;
+    color: #fca5a5;
+    font-size: 0.92rem;
+    letter-spacing: 0.4px;
+    line-height: 1.45;
+  }
+
+  .actions {
+    margin-top: 14px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid #444;
+    border-radius: 999px;
+    background: #181818;
+    letter-spacing: 1px;
+    font-weight: 700;
+    white-space: nowrap;
+    margin-top: 14px;
+  }
+  .dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: #b89bfa;
+    box-shadow: 0 0 0 2px rgba(184,155,250,0.18);
+  }
+  .gold .dot { background: #D4AF37; box-shadow: 0 0 0 2px rgba(212,175,55,0.18); }
+  .silver .dot { background: #C0C0C0; box-shadow: 0 0 0 2px rgba(192,192,192,0.18); }
+  .bronze .dot { background: #CD7F32; box-shadow: 0 0 0 2px rgba(205,127,50,0.18); }
+
+  .site-footer {
+    margin-top: 26px;
+    border-top: 1px solid #333;
+    color: #888;
+    text-align: center;
+    padding: 18px 0 12px 0;
+  }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  @page { margin: 0; }
+  @media print {
+    header, .actions, .site-footer { display: none !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body { margin: 0 !important; background: #181818 !important; }
+    .wrap { margin: 0 !important; padding: 0 !important; max-width: none !important; }
+    .card {
+      width: calc(100vw - 24px) !important;
+      max-width: 940px !important;
+      margin: 12px auto !important;
+      padding: 18px 18px 14px 18px !important;
+      border-radius: 10px !important;
+    }
+    .inner { padding: 16px 14px 12px 14px !important; }
+    .title { font-size: 1.4rem !important; }
+    .grid { gap: 8px !important; margin-top: 12px !important; }
+    .box, .members { padding: 10px 10px 9px 10px !important; }
+  }
+</style>
+</head>
+
+<body>
+<header>
+  <nav class="nav">
+    <a class="brand-title" id="brandTitle" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 4H6l7 8-7 8h12"/>
+      </svg>
+      <span id="scrambleText">
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">I</span>
+        <span class="scramble-char">M</span>
+        <span class="scramble-char">O</span>
+        <span class="scramble-char">C</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="rules.html">Rules</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+      <a class="btn" href="/signup.html" target="_blank" rel="noopener noreferrer">Sign Up</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="card" id="root">
+    <div class="inner">
+      <h1 class="title">VERIFICATION</h1>
+
+      <div class="sub">
+        This page verifies a team’s standing on a specific problem and lists the registered team members (names only).
+      </div>
+
+      <div class="pill" id="awardPill" style="display:none;">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="awardText">CERTIFICATE</span>
+      </div>
+
+      <div class="grid" style="margin-top:16px;">
+        <div class="box">
+          <div class="k">PROBLEM</div>
+          <div class="v" id="pidText">—</div>
+        </div>
+        <div class="box">
+          <div class="k">TEAM</div>
+          <div class="v" id="teamText">—</div>
+        </div>
+        <div class="box">
+          <div class="k">RANK</div>
+          <div class="v" id="rankText">—</div>
+        </div>
+        <div class="box">
+          <div class="k">BEST SCORE</div>
+          <div class="v" id="scoreText">—</div>
+        </div>
+      </div>
+
+      <div class="members">
+        <div class="k">TEAM MEMBERS</div>
+        <div class="v" id="membersSummary">—</div>
+        <ol class="member-list" id="memberList" style="display:none;"></ol>
+
+        <div class="hint" id="memberHint" style="display:none;"></div>
+        <div class="error" id="memberError" style="display:none;"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-lg" type="button" onclick="window.print()">
+          Print / Save PDF
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="height:22px;width:22px;">
+            <path d="M6 9V2h12v7"></path>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <path d="M6 14h12v8H6z"></path>
+          </svg>
+        </button>
+
+        <a class="btn-lg" href="leaderboard.html" id="leaderboardLink">
+          View Leaderboard
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="height:22px;width:22px;">
+            <path d="M19 12H5"></path>
+            <path d="m12 19-7-7 7-7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div>&copy; <span id="year"></span> IIMOC. All rights reserved.</div>
+  </footer>
+</main>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Scramble effect (same as your other pages)
+  (function() {
+    const symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&?@*";
+    const original = ["I", "I", "M", "O", "C"];
+    const scrambleDuration = 350;
+
+    const scrambleText = document.getElementById('scrambleText');
+    if (!scrambleText) return;
+
+    const chars = Array.from(scrambleText.querySelectorAll('.scramble-char'));
+    let running = false;
+
+    function randomSymbol() { return symbols[Math.floor(Math.random() * symbols.length)]; }
+    function scrambleFrame(progress) {
+      chars.forEach((span, i) => {
+        if (progress < 0.8 || Math.random() > progress) span.textContent = randomSymbol();
+        else span.textContent = original[i];
+      });
+    }
+    function endScramble() {
+      chars.forEach((span, i) => span.textContent = original[i]);
+      running = false;
+    }
+    function startScramble() {
+      if (running) return;
+      running = true;
+      const start = performance.now();
+      function animate(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / scrambleDuration, 1);
+        scrambleFrame(progress);
+        if (elapsed < scrambleDuration) requestAnimationFrame(animate);
+        else endScramble();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    const brandTitle = document.getElementById('brandTitle');
+    brandTitle.addEventListener('mouseenter', startScramble);
+    brandTitle.addEventListener('focus', startScramble);
+    brandTitle.addEventListener('mouseleave', endScramble);
+    brandTitle.addEventListener('blur', endScramble);
+  })();
+
+  // ---- Helpers ----
+  function normalizeTeamName(s){ return String(s || "").trim(); }
+  function normalizeKey(s){ return String(s || "").trim().toLowerCase(); }
+
+  // Medal thresholds by percentile (same convention as certificate page)
+  function medalFromPercentile(p) {
+    if (p === null || Number.isNaN(p)) return { tier: "PARTICIPANT", className: "" };
+    if (p <= 10) return { tier: "GOLD", className: "gold" };
+    if (p <= 20) return { tier: "SILVER", className: "silver" };
+    if (p <= 30) return { tier: "BRONZE", className: "bronze" };
+    return { tier: "PARTICIPANT", className: "" };
+  }
+
+  function showMemberMessage({ hint="", error="" }) {
+    const hintEl = document.getElementById("memberHint");
+    const errEl = document.getElementById("memberError");
+    hintEl.style.display = hint ? "block" : "none";
+    errEl.style.display = error ? "block" : "none";
+    hintEl.textContent = hint || "";
+    errEl.textContent = error || "";
+  }
+
+  async function fetchLeaderboardJson(pid){
+    const url = `assets/${encodeURIComponent(pid)}/results/leaderboard.json`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Could not load leaderboard.json (HTTP ${res.status})`);
+    return await res.json();
+  }
+
+  function getTeamFromRow(row){
+    if (!row) return "";
+    if (row.team != null) return normalizeTeamName(row.team);
+    if (row.metadata && row.metadata.team != null) return normalizeTeamName(row.metadata.team);
+    return "";
+  }
+  function getScoreFromRow(row){
+    const v = row && row.score != null ? Number(row.score) : 0;
+    return Number.isFinite(v) ? v : 0;
+  }
+  function getTsFromRow(row){
+    const metaTs = row && row.metadata && row.metadata.ts != null ? Number(row.metadata.ts) : NaN;
+    const directTs = row && row.ts != null ? Number(row.ts) : NaN;
+    return Number.isFinite(directTs) ? directTs : (Number.isFinite(metaTs) ? metaTs : NaN);
+  }
+
+  function computeTeamStanding(payload, team){
+    const teamNorm = normalizeKey(team);
+    const subs = Array.isArray(payload?.submissions) ? payload.submissions : [];
+    if (!subs.length) return { found: false, rank: null, totalTeams: 0, score: null, percentile: null };
+
+    // Reduce to best per team (max score; tie-break newer ts)
+    const bestByTeam = new Map();
+    for (const row of subs){
+      const t = getTeamFromRow(row);
+      if (!t) continue;
+      const key = normalizeKey(t);
+      const score = getScoreFromRow(row);
+      const ts = getTsFromRow(row);
+
+      const prev = bestByTeam.get(key);
+      if (!prev) bestByTeam.set(key, { team: t, score, ts });
+      else {
+        if (score > prev.score) bestByTeam.set(key, { team: t, score, ts });
+        else if (score === prev.score) {
+          const prevTs = Number.isFinite(prev.ts) ? prev.ts : -Infinity;
+          const rowTs = Number.isFinite(ts) ? ts : -Infinity;
+          if (rowTs > prevTs) bestByTeam.set(key, { team: t, score, ts });
+        }
+      }
+    }
+
+    const teams = Array.from(bestByTeam.values());
+    teams.sort((a,b) => (b.score - a.score) || a.team.localeCompare(b.team));
+
+    const totalTeams = teams.length;
+    const idx = teams.findIndex(x => normalizeKey(x.team) === teamNorm);
+    if (idx < 0) return { found: false, rank: null, totalTeams, score: null, percentile: null };
+
+    const rank = idx + 1;
+    const best = teams[idx];
+    const percentile = totalTeams > 0 ? (rank / totalTeams) * 100 : null;
+    return { found: true, rank, totalTeams, score: best.score, percentile };
+  }
+
+  // Members endpoint:
+  // - If your endpoint is public, you can omit password entirely.
+  // - If it is protected, you can pass ?password=... (optional).
+  async function fetchTeamMembers(team, passwordOptional) {
+    const base = `https://contest.iimoc.org/team/${encodeURIComponent(team)}/members`;
+    const url = passwordOptional ? `${base}?password=${encodeURIComponent(passwordOptional)}` : base;
+
+    const res = await fetch(url, { cache: "no-store" });
+
+    if (!res.ok) {
+      if (res.status === 401 || res.status === 403) {
+        throw new Error("Team members are not publicly visible for this team. If you are a teammate, open the certificate link that includes your team password, or update your team on /signup.");
+      }
+      throw new Error(`Could not load team members (HTTP ${res.status}).`);
+    }
+
+    const payload = await res.json();
+    const members = Array.isArray(payload?.members) ? payload.members : [];
+    // Return names only
+    return members
+      .map(m => String(m?.name || "").trim())
+      .filter(n => n.length > 0);
+  }
+
+  function renderMembers(names) {
+    const summary = document.getElementById("membersSummary");
+    const list = document.getElementById("memberList");
+
+    if (!names.length) {
+      summary.textContent = "No members registered.";
+      list.style.display = "none";
+      showMemberMessage({
+        hint: "If this team should have members, add them on /signup and refresh this page."
+      });
+      return;
+    }
+
+    summary.textContent = `${names.length} member${names.length === 1 ? "" : "s"} registered.`;
+    list.innerHTML = "";
+    for (const n of names) {
+      const li = document.createElement("li");
+      li.textContent = n;
+      list.appendChild(li);
+    }
+    list.style.display = "block";
+    showMemberMessage({ hint: "" , error: "" });
+  }
+
+  function renderAward(percentile) {
+    const pill = document.getElementById("awardPill");
+    const text = document.getElementById("awardText");
+    const root = document.getElementById("root");
+
+    root.classList.remove("gold", "silver", "bronze");
+
+    if (percentile == null || Number.isNaN(percentile)) {
+      pill.style.display = "none";
+      return;
+    }
+
+    const medal = medalFromPercentile(percentile);
+    if (medal.className) root.classList.add(medal.className);
+
+    pill.style.display = "inline-flex";
+    if (medal.tier === "PARTICIPANT") text.textContent = "PARTICIPATION";
+    else text.textContent = `${medal.tier} (Top ${Math.round(percentile * 10) / 10}%)`;
+  }
+
+  (async function init() {
+    const params = new URLSearchParams(window.location.search);
+    const pid = String(params.get("pid") || "").trim();
+    const team = String(params.get("team") || "").trim();
+
+    // Optional: allow passing password for protected member lists.
+    // If you want it strictly public, remove this entirely and keep fetchTeamMembers(team, "")
+    const password = String(params.get("password") || "").trim();
+
+    document.getElementById("pidText").textContent = pid || "—";
+    document.getElementById("teamText").textContent = team || "—";
+
+    const leaderboardLink = document.getElementById("leaderboardLink");
+    leaderboardLink.href = pid ? `/leaderboard.html?pid=${encodeURIComponent(pid)}` : `/leaderboard.html`;
+
+    if (!pid || !team) {
+      document.getElementById("rankText").textContent = "—";
+      document.getElementById("scoreText").textContent = "—";
+      renderMembers([]);
+      showMemberMessage({
+        error: "Missing required parameters. Use verify.html?pid=...&team=..."
+      });
+      return;
+    }
+
+    // Leaderboard standing
+    try {
+      const payload = await fetchLeaderboardJson(pid);
+      const standing = computeTeamStanding(payload, team);
+
+      if (!standing.totalTeams) {
+        document.getElementById("rankText").textContent = "—";
+        document.getElementById("scoreText").textContent = "—";
+      } else if (!standing.found) {
+        document.getElementById("rankText").textContent = `Not found (out of ${standing.totalTeams} teams)`;
+        document.getElementById("scoreText").textContent = "—";
+      } else {
+        document.getElementById("rankText").textContent = `${standing.rank} / ${standing.totalTeams} (Top ${Math.round(standing.percentile * 10) / 10}%)`;
+        document.getElementById("scoreText").textContent = String(standing.score);
+        renderAward(standing.percentile);
+      }
+    } catch (e) {
+      document.getElementById("rankText").textContent = "—";
+      document.getElementById("scoreText").textContent = "—";
+      showMemberMessage({ error: `Leaderboard load failed: ${e.message}` });
+    }
+
+    // Team members (names only)
+    try {
+      const names = await fetchTeamMembers(team, password || "");
+      renderMembers(names);
+    } catch (e) {
+      renderMembers([]);
+      showMemberMessage({
+        error: e.message,
+        hint: "If you have not registered members for this team, add them on /signup, then refresh this page."
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

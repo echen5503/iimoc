@@ -1,0 +1,1260 @@
+{
+  "problem": "polypacksys",
+  "generatedAt": "2025-12-26T03:13:48.723Z",
+  "submissions": [
+    {
+      "team": "SPY Matrix",
+      "score": 26584454.00384001,
+      "sid": "9522",
+      "ts": 1766478001137
+    },
+    {
+      "team": "DO NOT SNAKE ME",
+      "score": 26320293.733091798,
+      "sid": "9390",
+      "ts": 1766477992047
+    },
+    {
+      "team": "Daredevil",
+      "score": 26184025.905456223,
+      "sid": "9383",
+      "ts": 1766477991561
+    },
+    {
+      "team": "Heuristics_Team_1",
+      "score": 25444504.194162954,
+      "sid": "9411",
+      "ts": 1766477993499
+    },
+    {
+      "team": "Xerxes",
+      "score": 24806414.95720877,
+      "sid": "9544",
+      "ts": 1766478002647
+    },
+    {
+      "team": "butter-karam-dosa",
+      "score": 24748863.331180677,
+      "sid": "9355",
+      "ts": 1766477989642
+    },
+    {
+      "team": "No Friends for Heuristic Contests T_T",
+      "score": 24246940.275480136,
+      "sid": "9463",
+      "ts": 1766477997084
+    },
+    {
+      "team": "Kui Wong Fan Club",
+      "score": 24134159.937086158,
+      "sid": "9437",
+      "ts": 1766477995286
+    },
+    {
+      "team": "Jhalmuri",
+      "score": 24031530.250345424,
+      "sid": "9428",
+      "ts": 1766477994663
+    },
+    {
+      "team": "worse walrus",
+      "score": 23826201.078580383,
+      "sid": "9543",
+      "ts": 1766478002579
+    },
+    {
+      "team": "Pi-thons",
+      "score": 23784313.948209196,
+      "sid": "9486",
+      "ts": 1766477998664
+    },
+    {
+      "team": "nate",
+      "score": 23546612.812799286,
+      "sid": "9454",
+      "ts": 1766477996463
+    },
+    {
+      "team": "Nicholas Kasparian",
+      "score": 23495069.758006256,
+      "sid": "9461",
+      "ts": 1766477996947
+    },
+    {
+      "team": "luh search",
+      "score": 23383534.455783073,
+      "sid": "9444",
+      "ts": 1766477995772
+    },
+    {
+      "team": "Infinite loop (2)",
+      "score": 23061706.621579222,
+      "sid": "9424",
+      "ts": 1766477994386
+    },
+    {
+      "team": "Three Musketeers",
+      "score": 22963743.353977654,
+      "sid": "9533",
+      "ts": 1766478001904
+    },
+    {
+      "team": "OF!Z",
+      "score": 22766271.326604385,
+      "sid": "9474",
+      "ts": 1766477997839
+    },
+    {
+      "team": "Serendipity",
+      "score": 22155962.62301255,
+      "sid": "9511",
+      "ts": 1766478000391
+    },
+    {
+      "team": "2147483647",
+      "score": 21921439.938896704,
+      "sid": "9343",
+      "ts": 1766477988804
+    },
+    {
+      "team": "Polymath Coders",
+      "score": 21744985.792473678,
+      "sid": "9488",
+      "ts": 1766477998800
+    },
+    {
+      "team": "Codebusters",
+      "score": 21708051.660318535,
+      "sid": "9371",
+      "ts": 1766477990735
+    },
+    {
+      "team": "champions_unknown",
+      "score": 21683960.288025815,
+      "sid": "9365",
+      "ts": 1766477990329
+    },
+    {
+      "team": "STEM Competition Club",
+      "score": 21629932.57168425,
+      "sid": "9524",
+      "ts": 1766478001281
+    },
+    {
+      "team": "RuntimeTerror",
+      "score": 21601800.14848149,
+      "sid": "9498",
+      "ts": 1766477999493
+    },
+    {
+      "team": "Neural Ninja",
+      "score": 21598778.590925016,
+      "sid": "9459",
+      "ts": 1766477996807
+    },
+    {
+      "team": "Zenithfall",
+      "score": 21309917.915969968,
+      "sid": "9550",
+      "ts": 1766478003062
+    },
+    {
+      "team": "jithin fan club",
+      "score": 20994055.382829465,
+      "sid": "9429",
+      "ts": 1766477994732
+    },
+    {
+      "team": "404: Team Not Found",
+      "score": 20854071.364462238,
+      "sid": "9344",
+      "ts": 1766477988873
+    },
+    {
+      "team": "Nextquant",
+      "score": 20225268.559195492,
+      "sid": "9460",
+      "ts": 1766477996878
+    },
+    {
+      "team": "Heuristcs_team_6__",
+      "score": 19491153.054261047,
+      "sid": "9409",
+      "ts": 1766477993361
+    },
+    {
+      "team": "Aromal",
+      "score": 19279080.239844296,
+      "sid": "9351",
+      "ts": 1766477989362
+    },
+    {
+      "team": "Aitchison College",
+      "score": 18611146.295740824,
+      "sid": "9348",
+      "ts": 1766477989150
+    },
+    {
+      "team": "C-Cashier",
+      "score": 18548291.264023077,
+      "sid": "9358",
+      "ts": 1766477989849
+    },
+    {
+      "team": "HG T2",
+      "score": 18548291.264023077,
+      "sid": "9413",
+      "ts": 1766477993635
+    },
+    {
+      "team": "Some Funny Ideas",
+      "score": 17398009.328158394,
+      "sid": "9517",
+      "ts": 1766478000800
+    },
+    {
+      "team": "Indefatagibles",
+      "score": 15652303.854627214,
+      "sid": "9421",
+      "ts": 1766477994181
+    },
+    {
+      "team": "flyhomebuddyiwearcologne",
+      "score": 14927454.778871914,
+      "sid": "9400",
+      "ts": 1766477992740
+    },
+    {
+      "team": "CURRY",
+      "score": 13838155.256013403,
+      "sid": "9380",
+      "ts": 1766477991354
+    },
+    {
+      "team": "RAHMAT",
+      "score": 13834676.500600712,
+      "sid": "9493",
+      "ts": 1766477999144
+    },
+    {
+      "team": "okk",
+      "score": 13561448.19188148,
+      "sid": "9477",
+      "ts": 1766477998044
+    },
+    {
+      "team": "DK Club (3)",
+      "score": 13515848.946561275,
+      "sid": "9388",
+      "ts": 1766477991909
+    },
+    {
+      "team": "OptiMax - Plaksha (2)",
+      "score": 13379911.037108986,
+      "sid": "9482",
+      "ts": 1766477998383
+    },
+    {
+      "team": "The Cool Cats",
+      "score": 13169357.889665538,
+      "sid": "9529",
+      "ts": 1766478001624
+    },
+    {
+      "team": "Chromosome Billionares",
+      "score": 13032581.390928358,
+      "sid": "9369",
+      "ts": 1766477990599
+    },
+    {
+      "team": "DK Club",
+      "score": 11890969.00950474,
+      "sid": "9386",
+      "ts": 1766477991771
+    },
+    {
+      "team": "Byte_Me",
+      "score": 11798288.063970363,
+      "sid": "9356",
+      "ts": 1766477989712
+    },
+    {
+      "team": "Llama_Mamba",
+      "score": 11502674.390568443,
+      "sid": "9440",
+      "ts": 1766477995495
+    },
+    {
+      "team": "this seems fun !",
+      "score": 11357929.805356843,
+      "sid": "9532",
+      "ts": 1766478001835
+    },
+    {
+      "team": "Arete",
+      "score": 10495820.850079676,
+      "sid": "9350",
+      "ts": 1766477989293
+    },
+    {
+      "team": "Busy Beaver 6",
+      "score": 10495820.850079676,
+      "sid": "9354",
+      "ts": 1766477989573
+    },
+    {
+      "team": "Necromancer",
+      "score": 10495820.850079676,
+      "sid": "9457",
+      "ts": 1766477996669
+    },
+    {
+      "team": "DK Club (2)",
+      "score": 10031571.010398379,
+      "sid": "9387",
+      "ts": 1766477991840
+    },
+    {
+      "team": "FrenchCheese",
+      "score": 9957986.440992083,
+      "sid": "9401",
+      "ts": 1766477992810
+    },
+    {
+      "team": "Wild_Animals",
+      "score": 9251556.596573804,
+      "sid": "9541",
+      "ts": 1766478002444
+    },
+    {
+      "team": "Testing",
+      "score": 8980490.786681771,
+      "sid": "9528",
+      "ts": 1766478001556
+    },
+    {
+      "team": "Edwin",
+      "score": 8962050.978523823,
+      "sid": "9394",
+      "ts": 1766477992323
+    },
+    {
+      "team": "rrrf",
+      "score": 8962050.978523823,
+      "sid": "9497",
+      "ts": 1766477999422
+    },
+    {
+      "team": "Hacker!!",
+      "score": 8268114.47183609,
+      "sid": "9408",
+      "ts": 1766477993292
+    },
+    {
+      "team": "Chem Reactors",
+      "score": 8265581.171536493,
+      "sid": "9366",
+      "ts": 1766477990396
+    },
+    {
+      "team": "klyro",
+      "score": 8140607.91729691,
+      "sid": "9436",
+      "ts": 1766477995217
+    },
+    {
+      "team": "some_lazy_lads",
+      "score": 8034590.7216171175,
+      "sid": "9518",
+      "ts": 1766478000868
+    },
+    {
+      "team": "The Zero Hero's",
+      "score": 7989373.175457233,
+      "sid": "9531",
+      "ts": 1766478001765
+    },
+    {
+      "team": "AlgoForge",
+      "score": 6690254.371290233,
+      "sid": "9349",
+      "ts": 1766477989219
+    },
+    {
+      "team": "DH-ADAM",
+      "score": 4953922.855801462,
+      "sid": "9384",
+      "ts": 1766477991633
+    },
+    {
+      "team": "Coding Club",
+      "score": 1757066.377860257,
+      "sid": "9374",
+      "ts": 1766477990941
+    },
+    {
+      "team": "Redshift_Shine",
+      "score": 1339053.7215849499,
+      "sid": "9496",
+      "ts": 1766477999354
+    },
+    {
+      "team": "unbelivable",
+      "score": 742853.2454464231,
+      "sid": "9536",
+      "ts": 1766478002107
+    },
+    {
+      "team": "-1",
+      "score": 0,
+      "sid": "9342",
+      "ts": 1766477988733
+    },
+    {
+      "team": "about:blankets",
+      "score": 0,
+      "sid": "9345",
+      "ts": 1766477988943
+    },
+    {
+      "team": "AbstractAxiom",
+      "score": 0,
+      "sid": "9346",
+      "ts": 1766477989011
+    },
+    {
+      "team": "Aether club",
+      "score": 0,
+      "sid": "9347",
+      "ts": 1766477989080
+    },
+    {
+      "team": "Artificial Intelligence Club",
+      "score": 0,
+      "sid": "9352",
+      "ts": 1766477989432
+    },
+    {
+      "team": "Axios",
+      "score": 0,
+      "sid": "9353",
+      "ts": 1766477989502
+    },
+    {
+      "team": "C--",
+      "score": 0,
+      "sid": "9357",
+      "ts": 1766477989780
+    },
+    {
+      "team": "CAMS CPC",
+      "score": 0,
+      "sid": "9359",
+      "ts": 1766477989918
+    },
+    {
+      "team": "Cascadian Coalition of Nerds",
+      "score": 0,
+      "sid": "9360",
+      "ts": 1766477989986
+    },
+    {
+      "team": "Cascadian Coalition of Nerds (2)",
+      "score": 0,
+      "sid": "9361",
+      "ts": 1766477990055
+    },
+    {
+      "team": "Cascadian Coalition of Nerds (3)",
+      "score": 0,
+      "sid": "9362",
+      "ts": 1766477990123
+    },
+    {
+      "team": "Cascadian Coalition of Nerds (4)",
+      "score": 0,
+      "sid": "9363",
+      "ts": 1766477990193
+    },
+    {
+      "team": "Cats",
+      "score": 0,
+      "sid": "9364",
+      "ts": 1766477990261
+    },
+    {
+      "team": "Chicken Banana",
+      "score": 0,
+      "sid": "9367",
+      "ts": 1766477990464
+    },
+    {
+      "team": "Christopher Gilbert",
+      "score": 0,
+      "sid": "9368",
+      "ts": 1766477990531
+    },
+    {
+      "team": "Clouds",
+      "score": 0,
+      "sid": "9370",
+      "ts": 1766477990667
+    },
+    {
+      "team": "Codees",
+      "score": 0,
+      "sid": "9372",
+      "ts": 1766477990803
+    },
+    {
+      "team": "Codepodu",
+      "score": 0,
+      "sid": "9373",
+      "ts": 1766477990871
+    },
+    {
+      "team": "Compilation Error",
+      "score": 0,
+      "sid": "9375",
+      "ts": 1766477991010
+    },
+    {
+      "team": "CrazyCoder",
+      "score": 0,
+      "sid": "9376",
+      "ts": 1766477991078
+    },
+    {
+      "team": "CS Club",
+      "score": 0,
+      "sid": "9377",
+      "ts": 1766477991147
+    },
+    {
+      "team": "CSE DSAI",
+      "score": 0,
+      "sid": "9378",
+      "ts": 1766477991216
+    },
+    {
+      "team": "CtrlFreaks",
+      "score": 0,
+      "sid": "9379",
+      "ts": 1766477991285
+    },
+    {
+      "team": "D_Vinci",
+      "score": 0,
+      "sid": "9381",
+      "ts": 1766477991423
+    },
+    {
+      "team": "Dan",
+      "score": 0,
+      "sid": "9382",
+      "ts": 1766477991492
+    },
+    {
+      "team": "div",
+      "score": 0,
+      "sid": "9385",
+      "ts": 1766477991702
+    },
+    {
+      "team": "DNR",
+      "score": 0,
+      "sid": "9389",
+      "ts": 1766477991978
+    },
+    {
+      "team": "Dynamique",
+      "score": 0,
+      "sid": "9391",
+      "ts": 1766477992116
+    },
+    {
+      "team": "Dynamique (2)",
+      "score": 0,
+      "sid": "9392",
+      "ts": 1766477992185
+    },
+    {
+      "team": "Eclipse of 27",
+      "score": 0,
+      "sid": "9393",
+      "ts": 1766477992253
+    },
+    {
+      "team": "Engineering Department of CCON",
+      "score": 0,
+      "sid": "9395",
+      "ts": 1766477992391
+    },
+    {
+      "team": "Engineering Department of CCONd",
+      "score": 0,
+      "sid": "9396",
+      "ts": 1766477992460
+    },
+    {
+      "team": "Everything Linear",
+      "score": 0,
+      "sid": "9397",
+      "ts": 1766477992531
+    },
+    {
+      "team": "Fatima Alhaj",
+      "score": 0,
+      "sid": "9398",
+      "ts": 1766477992600
+    },
+    {
+      "team": "fermat little devil's",
+      "score": 0,
+      "sid": "9399",
+      "ts": 1766477992671
+    },
+    {
+      "team": "FutureFounders",
+      "score": 0,
+      "sid": "9402",
+      "ts": 1766477992878
+    },
+    {
+      "team": "GammaCrew",
+      "score": 0,
+      "sid": "9403",
+      "ts": 1766477992947
+    },
+    {
+      "team": "GammaCrew (2)",
+      "score": 0,
+      "sid": "9404",
+      "ts": 1766477993016
+    },
+    {
+      "team": "gk",
+      "score": 0,
+      "sid": "9405",
+      "ts": 1766477993085
+    },
+    {
+      "team": "GrassStation",
+      "score": 0,
+      "sid": "9406",
+      "ts": 1766477993153
+    },
+    {
+      "team": "Guildstar",
+      "score": 0,
+      "sid": "9407",
+      "ts": 1766477993222
+    },
+    {
+      "team": "Heuristics Guild",
+      "score": 0,
+      "sid": "9410",
+      "ts": 1766477993430
+    },
+    {
+      "team": "Hex Wizards",
+      "score": 0,
+      "sid": "9412",
+      "ts": 1766477993566
+    },
+    {
+      "team": "HS",
+      "score": 0,
+      "sid": "9414",
+      "ts": 1766477993703
+    },
+    {
+      "team": "Hunter_X",
+      "score": 0,
+      "sid": "9415",
+      "ts": 1766477993771
+    },
+    {
+      "team": "IBSH Programming",
+      "score": 0,
+      "sid": "9416",
+      "ts": 1766477993840
+    },
+    {
+      "team": "IIT Bhilai",
+      "score": 0,
+      "sid": "9417",
+      "ts": 1766477993908
+    },
+    {
+      "team": "IIT bombay",
+      "score": 0,
+      "sid": "9418",
+      "ts": 1766477993976
+    },
+    {
+      "team": "IIT BOMBAY",
+      "score": 0,
+      "sid": "9419",
+      "ts": 1766477994044
+    },
+    {
+      "team": "IIT bombay (2)",
+      "score": 0,
+      "sid": "9420",
+      "ts": 1766477994112
+    },
+    {
+      "team": "Inferno Blitz",
+      "score": 0,
+      "sid": "9422",
+      "ts": 1766477994250
+    },
+    {
+      "team": "Infinite loop",
+      "score": 0,
+      "sid": "9423",
+      "ts": 1766477994318
+    },
+    {
+      "team": "Ipl_Fan",
+      "score": 0,
+      "sid": "9425",
+      "ts": 1766477994457
+    },
+    {
+      "team": "Isobel",
+      "score": 0,
+      "sid": "9426",
+      "ts": 1766477994525
+    },
+    {
+      "team": "Jayaditya",
+      "score": 0,
+      "sid": "9427",
+      "ts": 1766477994593
+    },
+    {
+      "team": "Just Trying New Things",
+      "score": 0,
+      "sid": "9430",
+      "ts": 1766477994801
+    },
+    {
+      "team": "Kasukabe Defence Force",
+      "score": 0,
+      "sid": "9431",
+      "ts": 1766477994873
+    },
+    {
+      "team": "Kasukabe Defence Force (2)",
+      "score": 0,
+      "sid": "9432",
+      "ts": 1766477994942
+    },
+    {
+      "team": "Kasukabe Defence Force (3)",
+      "score": 0,
+      "sid": "9433",
+      "ts": 1766477995010
+    },
+    {
+      "team": "Kasukabe Defence Force (4)",
+      "score": 0,
+      "sid": "9434",
+      "ts": 1766477995079
+    },
+    {
+      "team": "KingPtVoi",
+      "score": 0,
+      "sid": "9435",
+      "ts": 1766477995148
+    },
+    {
+      "team": "lazy_coders",
+      "score": 0,
+      "sid": "9438",
+      "ts": 1766477995358
+    },
+    {
+      "team": "Legendre Infinitrix",
+      "score": 0,
+      "sid": "9439",
+      "ts": 1766477995426
+    },
+    {
+      "team": "LMC",
+      "score": 0,
+      "sid": "9441",
+      "ts": 1766477995563
+    },
+    {
+      "team": "LocalMinima",
+      "score": 0,
+      "sid": "9442",
+      "ts": 1766477995634
+    },
+    {
+      "team": "Lucille",
+      "score": 0,
+      "sid": "9443",
+      "ts": 1766477995702
+    },
+    {
+      "team": "Manvi",
+      "score": 0,
+      "sid": "9445",
+      "ts": 1766477995841
+    },
+    {
+      "team": "Math Gems",
+      "score": 0,
+      "sid": "9446",
+      "ts": 1766477995910
+    },
+    {
+      "team": "Math Maniacs",
+      "score": 0,
+      "sid": "9447",
+      "ts": 1766477995978
+    },
+    {
+      "team": "mathletes peeps",
+      "score": 0,
+      "sid": "9448",
+      "ts": 1766477996047
+    },
+    {
+      "team": "Mayoiuta",
+      "score": 0,
+      "sid": "9449",
+      "ts": 1766477996115
+    },
+    {
+      "team": "Meow Meow Meow",
+      "score": 0,
+      "sid": "9450",
+      "ts": 1766477996184
+    },
+    {
+      "team": "MiBombo",
+      "score": 0,
+      "sid": "9451",
+      "ts": 1766477996252
+    },
+    {
+      "team": "midnight sun",
+      "score": 0,
+      "sid": "9452",
+      "ts": 1766477996321
+    },
+    {
+      "team": "Min of Minima",
+      "score": 0,
+      "sid": "9453",
+      "ts": 1766477996389
+    },
+    {
+      "team": "Naveen",
+      "score": 0,
+      "sid": "9455",
+      "ts": 1766477996532
+    },
+    {
+      "team": "NBA",
+      "score": 0,
+      "sid": "9456",
+      "ts": 1766477996600
+    },
+    {
+      "team": "needLe.mp3 trait = 🐱",
+      "score": 0,
+      "sid": "9458",
+      "ts": 1766477996738
+    },
+    {
+      "team": "nimo",
+      "score": 0,
+      "sid": "9462",
+      "ts": 1766477997016
+    },
+    {
+      "team": "NOI.ph Gang",
+      "score": 0,
+      "sid": "9464",
+      "ts": 1766477997154
+    },
+    {
+      "team": "NOI.ph Gang (2)",
+      "score": 0,
+      "sid": "9465",
+      "ts": 1766477997222
+    },
+    {
+      "team": "NOMD",
+      "score": 0,
+      "sid": "9466",
+      "ts": 1766477997289
+    },
+    {
+      "team": "none",
+      "score": 0,
+      "sid": "9467",
+      "ts": 1766477997357
+    },
+    {
+      "team": "Null",
+      "score": 0,
+      "sid": "9468",
+      "ts": 1766477997426
+    },
+    {
+      "team": "observer",
+      "score": 0,
+      "sid": "9469",
+      "ts": 1766477997494
+    },
+    {
+      "team": "observer (2)",
+      "score": 0,
+      "sid": "9470",
+      "ts": 1766477997562
+    },
+    {
+      "team": "observer (3)",
+      "score": 0,
+      "sid": "9471",
+      "ts": 1766477997631
+    },
+    {
+      "team": "Obsidian",
+      "score": 0,
+      "sid": "9472",
+      "ts": 1766477997699
+    },
+    {
+      "team": "Obsidian (2)",
+      "score": 0,
+      "sid": "9473",
+      "ts": 1766477997768
+    },
+    {
+      "team": "OF!Z (2)",
+      "score": 0,
+      "sid": "9475",
+      "ts": 1766477997907
+    },
+    {
+      "team": "OF!Z (3)",
+      "score": 0,
+      "sid": "9476",
+      "ts": 1766477997975
+    },
+    {
+      "team": "Opc",
+      "score": 0,
+      "sid": "9478",
+      "ts": 1766477998112
+    },
+    {
+      "team": "Opti",
+      "score": 0,
+      "sid": "9479",
+      "ts": 1766477998180
+    },
+    {
+      "team": "Optimals",
+      "score": 0,
+      "sid": "9480",
+      "ts": 1766477998248
+    },
+    {
+      "team": "OptiMax - Plaksha",
+      "score": 0,
+      "sid": "9481",
+      "ts": 1766477998315
+    },
+    {
+      "team": "OptiOne",
+      "score": 0,
+      "sid": "9483",
+      "ts": 1766477998451
+    },
+    {
+      "team": "PARSE",
+      "score": 0,
+      "sid": "9484",
+      "ts": 1766477998528
+    },
+    {
+      "team": "Pi mates",
+      "score": 0,
+      "sid": "9485",
+      "ts": 1766477998596
+    },
+    {
+      "team": "PolarBear",
+      "score": 0,
+      "sid": "9487",
+      "ts": 1766477998732
+    },
+    {
+      "team": "Polymeth Coders",
+      "score": 0,
+      "sid": "9489",
+      "ts": 1766477998868
+    },
+    {
+      "team": "Polymeth Coders (2)",
+      "score": 0,
+      "sid": "9490",
+      "ts": 1766477998936
+    },
+    {
+      "team": "ProPod",
+      "score": 0,
+      "sid": "9491",
+      "ts": 1766477999006
+    },
+    {
+      "team": "Psyduck",
+      "score": 0,
+      "sid": "9492",
+      "ts": 1766477999074
+    },
+    {
+      "team": "RatingMiserable",
+      "score": 0,
+      "sid": "9494",
+      "ts": 1766477999214
+    },
+    {
+      "team": "Red C",
+      "score": 0,
+      "sid": "9495",
+      "ts": 1766477999283
+    },
+    {
+      "team": "Sasank Mouli Fanclub",
+      "score": 0,
+      "sid": "9499",
+      "ts": 1766477999563
+    },
+    {
+      "team": "Sasank Mouli Fanclub (2)",
+      "score": 0,
+      "sid": "9500",
+      "ts": 1766477999632
+    },
+    {
+      "team": "Sasank_Mouli_fanclub",
+      "score": 0,
+      "sid": "9501",
+      "ts": 1766477999700
+    },
+    {
+      "team": "Sasank_Mouli_FC",
+      "score": 0,
+      "sid": "9502",
+      "ts": 1766477999768
+    },
+    {
+      "team": "Sasank_Mouli_FC (2)",
+      "score": 0,
+      "sid": "9503",
+      "ts": 1766477999836
+    },
+    {
+      "team": "Sasank_Mouli_FC (3)",
+      "score": 0,
+      "sid": "9504",
+      "ts": 1766477999904
+    },
+    {
+      "team": "Sasank_Mouli_FC (4)",
+      "score": 0,
+      "sid": "9505",
+      "ts": 1766477999971
+    },
+    {
+      "team": "Sasank_Mouli_FC (5)",
+      "score": 0,
+      "sid": "9506",
+      "ts": 1766478000045
+    },
+    {
+      "team": "Sasank_Mouli_FC (6)",
+      "score": 0,
+      "sid": "9507",
+      "ts": 1766478000113
+    },
+    {
+      "team": "Sasank_Mouli_FC (7)",
+      "score": 0,
+      "sid": "9508",
+      "ts": 1766478000182
+    },
+    {
+      "team": "Sasank_Mouli_FC (8)",
+      "score": 0,
+      "sid": "9509",
+      "ts": 1766478000251
+    },
+    {
+      "team": "Seferovic",
+      "score": 0,
+      "sid": "9510",
+      "ts": 1766478000320
+    },
+    {
+      "team": "Should've studied before",
+      "score": 0,
+      "sid": "9512",
+      "ts": 1766478000462
+    },
+    {
+      "team": "Sigma",
+      "score": 0,
+      "sid": "9513",
+      "ts": 1766478000530
+    },
+    {
+      "team": "SilverTongue1729",
+      "score": 0,
+      "sid": "9514",
+      "ts": 1766478000598
+    },
+    {
+      "team": "Snageshes",
+      "score": 0,
+      "sid": "9515",
+      "ts": 1766478000666
+    },
+    {
+      "team": "Solo",
+      "score": 0,
+      "sid": "9516",
+      "ts": 1766478000733
+    },
+    {
+      "team": "some_lazy_lads (2)",
+      "score": 0,
+      "sid": "9519",
+      "ts": 1766478000935
+    },
+    {
+      "team": "some_lazy_lads (3)",
+      "score": 0,
+      "sid": "9520",
+      "ts": 1766478001002
+    },
+    {
+      "team": "Sorting",
+      "score": 0,
+      "sid": "9521",
+      "ts": 1766478001069
+    },
+    {
+      "team": "St. Joseph's Anglo-Chinese School",
+      "score": 0,
+      "sid": "9523",
+      "ts": 1766478001207
+    },
+    {
+      "team": "Sunflower",
+      "score": 0,
+      "sid": "9525",
+      "ts": 1766478001349
+    },
+    {
+      "team": "Team 6 7",
+      "score": 0,
+      "sid": "9526",
+      "ts": 1766478001418
+    },
+    {
+      "team": "Team5721",
+      "score": 0,
+      "sid": "9527",
+      "ts": 1766478001486
+    },
+    {
+      "team": "The Lazy Coders",
+      "score": 0,
+      "sid": "9530",
+      "ts": 1766478001694
+    },
+    {
+      "team": "Three30one",
+      "score": 0,
+      "sid": "9534",
+      "ts": 1766478001972
+    },
+    {
+      "team": "Tiffin Tech Talks",
+      "score": 0,
+      "sid": "9535",
+      "ts": 1766478002039
+    },
+    {
+      "team": "Vascos",
+      "score": 0,
+      "sid": "9537",
+      "ts": 1766478002176
+    },
+    {
+      "team": "VinUni Algorithm Club",
+      "score": 0,
+      "sid": "9538",
+      "ts": 1766478002243
+    },
+    {
+      "team": "void*",
+      "score": 0,
+      "sid": "9539",
+      "ts": 1766478002310
+    },
+    {
+      "team": "water dancer studio",
+      "score": 0,
+      "sid": "9540",
+      "ts": 1766478002377
+    },
+    {
+      "team": "Wncc",
+      "score": 0,
+      "sid": "9542",
+      "ts": 1766478002511
+    },
+    {
+      "team": "YHLL",
+      "score": 0,
+      "sid": "9545",
+      "ts": 1766478002716
+    },
+    {
+      "team": "yilem",
+      "score": 0,
+      "sid": "9546",
+      "ts": 1766478002784
+    },
+    {
+      "team": "ZENINS",
+      "score": 0,
+      "sid": "9547",
+      "ts": 1766478002851
+    },
+    {
+      "team": "ZENINS (2)",
+      "score": 0,
+      "sid": "9548",
+      "ts": 1766478002918
+    },
+    {
+      "team": "ZENINS (3)",
+      "score": 0,
+      "sid": "9549",
+      "ts": 1766478002991
+    }
+  ]
+}
