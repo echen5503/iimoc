@@ -1,0 +1,1746 @@
+[{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe51"
+	},
+	"team": "Cascadian Coalition of Nerds"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe53"
+	},
+	"team": "IBSH Programming"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe54"
+	},
+	"team": "Cascadian Coalition of Nerds (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe59"
+	},
+	"team": "worse walrus",
+	"members": [
+		{
+			"name": "Jason Zeng"
+		},
+		{
+			"name": "Justin Li"
+		},
+		{
+			"name": "Krishna Singh"
+		},
+		{
+			"name": "Darren Xu"
+		},
+		{
+			"name": "Christopher Sperry"
+		},
+		{
+			"name": "Ethan Rajan"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe6e"
+	},
+	"team": "ZENINS"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe74"
+	},
+	"team": "ZENINS (3)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe80"
+	},
+	"team": "D_Vinci"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe8d"
+	},
+	"team": "OptiOne",
+	"members": [
+		{
+			"name": "Pooja Desai",
+			"email": "poojadesai@iitdh.ac.in"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe8f"
+	},
+	"team": "PARSE"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe95"
+	},
+	"team": "AbstractAxiom"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe96"
+	},
+	"team": "lazy_coders"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe97"
+	},
+	"team": "CSE DSAI"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe98"
+	},
+	"team": "Math Gems"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe99"
+	},
+	"team": "observer (3)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe9d"
+	},
+	"team": "Jayaditya"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea0"
+	},
+	"team": "div"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea2"
+	},
+	"team": "Polymeth Coders"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea6"
+	},
+	"team": "Busy Beaver 6"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea7"
+	},
+	"team": "Chem Reactors",
+	"members": [
+		{
+			"name": "Adarsh Tiwari",
+			"email": "adarshtiwari.280702@gmail.com"
+		},
+		{
+			"name": "Chandani Singh",
+			"email": "singhp98711@gmail.com"
+		},
+		{
+			"name": "Rishabh Sharma",
+			"email": "rishabhrishu17@gmail.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efead"
+	},
+	"team": "Solo"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb4"
+	},
+	"team": "CrazyCoder"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb6"
+	},
+	"team": "Sunflower"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb7"
+	},
+	"team": "Meow Meow Meow"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb9"
+	},
+	"team": "fermat little devil's"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeba"
+	},
+	"team": "Kasukabe Defence Force (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efebe"
+	},
+	"team": "Optimals"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efebf"
+	},
+	"team": "Codees"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec2"
+	},
+	"team": "CURRY"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec3"
+	},
+	"team": "Llama_Mamba"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec4"
+	},
+	"team": "Min of Minima"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec5"
+	},
+	"team": "Sasank Mouli Fanclub"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efecb"
+	},
+	"team": "Sasank_Mouli_FC"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed0"
+	},
+	"team": "Sasank_Mouli_FC (5)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed2"
+	},
+	"team": "Sasank_Mouli_FC (7)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed7"
+	},
+	"team": "Kasukabe Defence Force (3)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed8"
+	},
+	"team": "C--"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeda"
+	},
+	"team": "GammaCrew (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efedc"
+	},
+	"team": "Pi-thons"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efedd"
+	},
+	"team": "Sasank_Mouli_FC (8)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efedf"
+	},
+	"team": "Legendre Infinitrix"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee6"
+	},
+	"team": "OF!Z"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeed"
+	},
+	"team": "The Zero Hero's"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeee"
+	},
+	"team": "Aether club"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efef4"
+	},
+	"team": "nimo"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe55"
+	},
+	"team": "Cascadian Coalition of Nerds (3)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe56"
+	},
+	"team": "Cascadian Coalition of Nerds (4)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe58"
+	},
+	"team": "CAMS CPC"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe60"
+	},
+	"team": "yilem"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe63"
+	},
+	"team": "needLe.mp3 trait = 🐱"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe67"
+	},
+	"team": "Dynamique (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe68"
+	},
+	"team": "Lucille"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe6b"
+	},
+	"team": "IIT bombay"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe6d"
+	},
+	"team": "Dan"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe70"
+	},
+	"team": "Cats"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe72"
+	},
+	"team": "Hex Wizards"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe76"
+	},
+	"team": "IIT bombay (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe79"
+	},
+	"team": "Snageshes"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe7b"
+	},
+	"team": "Vascos"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe7c"
+	},
+	"team": "MiBombo"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe7e"
+	},
+	"team": "-1"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe83"
+	},
+	"team": "Chromosome Billionares"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe86"
+	},
+	"team": "Xerxes"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe8b"
+	},
+	"team": "Redshift_Shine"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe93"
+	},
+	"team": "Eclipse of 27"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea4"
+	},
+	"team": "Polymath Coders"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea5"
+	},
+	"team": "Coding Club"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea9"
+	},
+	"team": "Opc"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb0"
+	},
+	"team": "Hacker!!",
+	"members": [
+		{
+			"name": "Pranjay singh"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb3"
+	},
+	"team": "Compilation Error"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efebb"
+	},
+	"team": "SilverTongue1729"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efebd"
+	},
+	"team": "DK Club (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec0"
+	},
+	"team": "DK Club (3)",
+	"members": [
+		{
+			"name": "Deepak Saravanan",
+			"email": "bt22d0001@iiitdm.ac.in"
+		},
+		{
+			"name": "Dhanushkoodi"
+		},
+		{
+			"name": "Keerthana Aruldoss"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec6"
+	},
+	"team": "VinUni Algorithm Club"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec7"
+	},
+	"team": "RatingMiserable"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efecc"
+	},
+	"team": "Naveen"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efecd"
+	},
+	"team": "Sasank_Mouli_FC (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efece"
+	},
+	"team": "Sasank_Mouli_FC (3)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed6"
+	},
+	"team": "Hunter_X"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee2"
+	},
+	"team": "Jhalmuri",
+	"members": [
+		{
+			"name": "Akshil Ahuja",
+			"email": "akshil.ahuja.mat21@iitbhu.ac.in"
+		},
+		{
+			"name": "Rohan",
+			"email": "rohan.student.mat21@itbhu.ac.in"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee3"
+	},
+	"team": "Codepodu"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee8"
+	},
+	"team": "none"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee9"
+	},
+	"team": "RuntimeTerror",
+	"members": [
+		{
+			"name": "Neel Gupta",
+			"email": "neelgupta006@gmai.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe4f"
+	},
+	"team": "LMC"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe57"
+	},
+	"team": "Artificial Intelligence Club"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe5b"
+	},
+	"team": "NBA"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe61"
+	},
+	"team": "YHLL"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe64"
+	},
+	"team": "FutureFounders"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe65"
+	},
+	"team": "Isobel"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe69"
+	},
+	"team": "void*"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe6f"
+	},
+	"team": "ZENINS (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe73"
+	},
+	"team": "Guildstar"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe77"
+	},
+	"team": "luh search",
+	"members": [
+		{
+			"name": "Derek You"
+		},
+		{
+			"name": "Nathaniel George"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe7a"
+	},
+	"team": "Opti"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe7d"
+	},
+	"team": "Pi mates"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe84"
+	},
+	"team": "Red C"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe85"
+	},
+	"team": "LocalMinima"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe87"
+	},
+	"team": "Ipl_Fan"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe88"
+	},
+	"team": "observer"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe8c"
+	},
+	"team": "Obsidian"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe8e"
+	},
+	"team": "Clouds"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe91"
+	},
+	"team": "observer (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe9a"
+	},
+	"team": "The Lazy Coders"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe9e"
+	},
+	"team": "Sorting"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe9f"
+	},
+	"team": "PolarBear"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea1"
+	},
+	"team": "KingPtVoi"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea3"
+	},
+	"team": "Polymeth Coders (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeab"
+	},
+	"team": "some_lazy_lads (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb5"
+	},
+	"team": "NOI.ph Gang"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb8"
+	},
+	"team": "Kasukabe Defence Force"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efebc"
+	},
+	"team": "DK Club"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec8"
+	},
+	"team": "Sasank_Mouli_fanclub"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed1"
+	},
+	"team": "Sasank_Mouli_FC (6)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed3"
+	},
+	"team": "Wild_Animals"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed4"
+	},
+	"team": "404: Team Not Found",
+	"members": [
+		{
+			"name": "K Hari Balan",
+			"email": "sse230021009@iiti.ac.in"
+		},
+		{
+			"name": "Nandini Kumari",
+			"email": "cse230001056@iiti.ac.in"
+		},
+		{
+			"name": "Anmol Jain",
+			"email": "che230008009@iiti.ac.in"
+		},
+		{
+			"name": "Nidarsana M",
+			"email": "ce230004031@iiti.ac.in"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed5"
+	},
+	"team": "Serendipity",
+	"members": [
+		{
+			"name": "Krish Bansal",
+			"email": "Krishbansal333@gmail.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efed9"
+	},
+	"team": "GammaCrew"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efede"
+	},
+	"team": "Team5721"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee0"
+	},
+	"team": "SPY Matrix",
+	"members": [
+		{
+			"name": "Soham Pandey",
+			"email": "me240003072@iiti.ac.in"
+		},
+		{
+			"name": "Yogendra Singh",
+			"email": "ee240002083@iiti.ac.in"
+		},
+		{
+			"name": "Paawni Gulati",
+			"email": "me240003052@iiti.ac.in"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee1"
+	},
+	"team": "Kasukabe Defence Force (4)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee4"
+	},
+	"team": "about:blankets"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee5"
+	},
+	"team": "Obsidian (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeea"
+	},
+	"team": "Infinite loop"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeeb"
+	},
+	"team": "Infinite loop (2)",
+	"members": [
+		{
+			"name": "Kishan Challa"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeef"
+	},
+	"team": "OF!Z (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efef0"
+	},
+	"team": "OF!Z (3)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efef2"
+	},
+	"team": "OptiMax - Plaksha"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efef3"
+	},
+	"team": "OptiMax - Plaksha (2)",
+	"members": [
+		{
+			"name": "Krrish Singhania",
+			"email": "krrish2709@gmail.com"
+		},
+		{
+			"name": "Siddharth Singh",
+			"email": "siddharthsingh9018@gmail.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efef5"
+	},
+	"team": "Just Trying New Things"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe50"
+	},
+	"team": "Engineering Department of CCON"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe52"
+	},
+	"team": "CS Club"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe5a"
+	},
+	"team": "Tiffin Tech Talks"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe5c"
+	},
+	"team": "mathletes peeps"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe5d"
+	},
+	"team": "Necromancer"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe5e"
+	},
+	"team": "Christopher Gilbert"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe5f"
+	},
+	"team": "Heuristics Guild"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe62"
+	},
+	"team": "Three30one"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe66"
+	},
+	"team": "Dynamique"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe6a"
+	},
+	"team": "IIT BOMBAY"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe6c"
+	},
+	"team": "Wncc"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe71"
+	},
+	"team": "Manvi"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe75"
+	},
+	"team": "STEM Competition Club",
+	"members": [
+		{
+			"name": "Nathaniel Nadler",
+			"email": "nathaniel.nadler@donboscoprep.org"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe78"
+	},
+	"team": "Team 6 7"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe7f"
+	},
+	"team": "GrassStation"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe81"
+	},
+	"team": "HS"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe82"
+	},
+	"team": "CtrlFreaks"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe89"
+	},
+	"team": "ProPod"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe8a"
+	},
+	"team": "DNR"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe90"
+	},
+	"team": "Everything Linear"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe92"
+	},
+	"team": "RAHMAT",
+	"members": [
+		{
+			"name": "RAHMAT ULLAH",
+			"email": "rahmat909009@gmail.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe94"
+	},
+	"team": "Fatima Alhaj"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe9b"
+	},
+	"team": "IIT Bhilai"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efe9c"
+	},
+	"team": "Null"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efea8"
+	},
+	"team": "midnight sun"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeaa"
+	},
+	"team": "some_lazy_lads"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeac"
+	},
+	"team": "some_lazy_lads (3)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeae"
+	},
+	"team": "Axios"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeaf"
+	},
+	"team": "gk"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb1"
+	},
+	"team": "Math Maniacs"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeb2"
+	},
+	"team": "Sigma"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec1"
+	},
+	"team": "Three Musketeers"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efec9"
+	},
+	"team": "Sasank Mouli Fanclub (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeca"
+	},
+	"team": "AlgoForge",
+	"members": [
+		{
+			"name": "Ayinala Sri Nikesh",
+			"email": "mc240041005@iiti.ac.in"
+		},
+		{
+			"name": "Kesavarapu Deepak Reddy",
+			"email": "mc240041022@iiti.ac.in"
+		},
+		{
+			"name": "Ramanuj Kartik Anilbhai",
+			"email": "mc240041030@iiti.ac.in"
+		},
+		{
+			"name": "Sana Tejasri Lakshmi",
+			"email": "mc240041033@iiti.ac.in"
+		},
+		{
+			"name": "Geddada Mahidhar",
+			"email": "mc240041017@iiti.ac.in"
+		},
+		{
+			"name": "Budde Snehith",
+			"email": "mc240041008@iiti.ac.in"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efecf"
+	},
+	"team": "Sasank_Mouli_FC (4)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efedb"
+	},
+	"team": "Chicken Banana"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efee7"
+	},
+	"team": "Should've studied before"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efeec"
+	},
+	"team": "NOI.ph Gang (2)"
+},
+{
+	"_id": {
+		"$oid": "692163cca0315ac9eb7efef1"
+	},
+	"team": "Codebusters",
+	"members": [
+		{
+			"name": "Vidush",
+			"email": "vidush23592@iiitd.ac.in"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "6921691b775c1d8c6d111477"
+	},
+	"team": "Edwin",
+	"members": [
+		{
+			"name": "Edwin",
+			"email": "echen1ffa@gmail.com"
+		},
+		{
+			"name": "sfdgsdf",
+			"email": "gsdfgsdfg@gmail.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "69216a6b775c1d8c6d111479"
+	},
+	"team": "Engineering Department of CCONd"
+},
+{
+	"_id": {
+		"$oid": "69217357775c1d8c6d11147b"
+	},
+	"team": "Seferovic"
+},
+{
+	"_id": {
+		"$oid": "692178ef775c1d8c6d11147d"
+	},
+	"team": "NOMD"
+},
+{
+	"_id": {
+		"$oid": "692183ac775c1d8c6d111529"
+	},
+	"team": "No Friends for Heuristic Contests T_T"
+},
+{
+	"_id": {
+		"$oid": "69218d5d775c1d8c6d11152b"
+	},
+	"team": "FrenchCheese"
+},
+{
+	"_id": {
+		"$oid": "69219508775c1d8c6d111531"
+	},
+	"team": "no_team"
+},
+{
+	"_id": {
+		"$oid": "6921ba39775c1d8c6d111532"
+	},
+	"team": "butter-karam-dosa",
+	"members": [
+		{
+			"name": "Ujjwal Shekhar",
+			"email": "ujjwalshekharofficial@gmail.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "6921d7fc775c1d8c6d111533"
+	},
+	"team": "Asian_coalition_of_nerds"
+},
+{
+	"_id": {
+		"$oid": "6921ffd0775c1d8c6d11153a"
+	},
+	"team": "DH-ADAM"
+},
+{
+	"_id": {
+		"$oid": "692205e4775c1d8c6d111545"
+	},
+	"team": "nandhagk"
+},
+{
+	"_id": {
+		"$oid": "69225942775c1d8c6d111584"
+	},
+	"team": "Mayoiuta"
+},
+{
+	"_id": {
+		"$oid": "692284fe775c1d8c6d111586"
+	},
+	"team": "champions_unknown"
+},
+{
+	"_id": {
+		"$oid": "6922bef9775c1d8c6d1115b0"
+	},
+	"team": "Redsh1ft_Sh1ne"
+},
+{
+	"_id": {
+		"$oid": "6922bfe5775c1d8c6d1115b1"
+	},
+	"team": "Aromal"
+},
+{
+	"_id": {
+		"$oid": "6922cd8b775c1d8c6d1115b2"
+	},
+	"team": "Zenith"
+},
+{
+	"_id": {
+		"$oid": "6922dd85775c1d8c6d1115b3"
+	},
+	"team": "raindrop"
+},
+{
+	"_id": {
+		"$oid": "6922e09a775c1d8c6d1115b4"
+	},
+	"team": "nameless"
+},
+{
+	"_id": {
+		"$oid": "6923411a8a81d30aa784c455"
+	},
+	"team": "karna"
+},
+{
+	"_id": {
+		"$oid": "692370cd8a81d30aa784c457"
+	},
+	"team": "water dancer studio"
+},
+{
+	"_id": {
+		"$oid": "6923748b8a81d30aa784c45b"
+	},
+	"team": "Testing"
+},
+{
+	"_id": {
+		"$oid": "6923d8698a81d30aa784c487"
+	},
+	"team": "Daredevil",
+	"members": [
+		{
+			"name": "Dev Tripathi",
+			"email": "devtripathi.bt24ele@pec.edu.in"
+		},
+		{
+			"name": "Manav kohli",
+			"email": "manavkohli.bt24ele@pec.edu.in"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "6923dbe68a81d30aa784c489"
+	},
+	"team": "Zenithfall"
+},
+{
+	"_id": {
+		"$oid": "6923e8668a81d30aa784c490"
+	},
+	"team": "Neural Ninja",
+	"members": [
+		{
+			"name": "Kripalu Sonar",
+			"email": "kripalusonar2906@gmail.com"
+		},
+		{
+			"name": "Kartik Sonar"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "69241b948a81d30aa784c4bd"
+	},
+	"team": "Indefatagibles",
+	"members": [
+		{
+			"name": "Duy Nguyen"
+		},
+		{
+			"name": "Jack Tz Kiu Wong"
+		},
+		{
+			"name": "Luke Limon"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "6924554a8a81d30aa784c4ce"
+	},
+	"team": "flyhomebuddyiwearcologne"
+},
+{
+	"_id": {
+		"$oid": "692457c28a81d30aa784c4d2"
+	},
+	"team": "MONEY?"
+},
+{
+	"_id": {
+		"$oid": "69247adb8a81d30aa784c4f2"
+	},
+	"team": "nate"
+},
+{
+	"_id": {
+		"$oid": "6924a2c18a81d30aa784c504"
+	},
+	"team": "Shang Zhou"
+},
+{
+	"_id": {
+		"$oid": "692514828a81d30aa784c57d"
+	},
+	"team": "LobitosFC"
+},
+{
+	"_id": {
+		"$oid": "6925236d8a81d30aa784c587"
+	},
+	"team": "Aitchison College",
+	"members": [
+		{
+			"name": "Aayan Faraz Shaikh"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "6925f13c8a81d30aa784c5de"
+	},
+	"team": "Inferno Blitz"
+},
+{
+	"_id": {
+		"$oid": "6925f1718a81d30aa784c5df"
+	},
+	"team": "this seems fun !"
+},
+{
+	"_id": {
+		"$oid": "692690dd8a81d30aa784c62c"
+	},
+	"team": "C-Cashier"
+},
+{
+	"_id": {
+		"$oid": "6926de518a81d30aa784c62e"
+	},
+	"team": ":wilted_rose:"
+},
+{
+	"_id": {
+		"$oid": "6926e3588a81d30aa784c635"
+	},
+	"team": "newbie"
+},
+{
+	"_id": {
+		"$oid": "6926fc2d8a81d30aa784c63e"
+	},
+	"team": "Heuristics_Team_1",
+	"members": [
+		{
+			"name": "Samarth Shah"
+		},
+		{
+			"name": "Anton"
+		},
+		{
+			"name": "Kevin"
+		},
+		{
+			"name": "Athul"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692717868a81d30aa784c64e"
+	},
+	"team": "HG T2"
+},
+{
+	"_id": {
+		"$oid": "6927c1c38a81d30aa784c67f"
+	},
+	"team": "Kui Wong Fan Club",
+	"members": [
+		{
+			"name": "CHOI Kui Wang",
+			"email": "kuiwchoi2-c@my.cityu.edu.hk"
+		},
+		{
+			"name": "YAN Yachao"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "6928556d8a81d30aa784c699"
+	},
+	"team": "Psyduck"
+},
+{
+	"_id": {
+		"$oid": "692940488a81d30aa784c6ad"
+	},
+	"team": "Lazarus"
+},
+{
+	"_id": {
+		"$oid": "692944798a81d30aa784c6ae"
+	},
+	"team": "Aps"
+},
+{
+	"_id": {
+		"$oid": "6929ae6d8a81d30aa784c6ce"
+	},
+	"team": "SwarnaBharat"
+},
+{
+	"_id": {
+		"$oid": "692e22b18a81d30aa784c767"
+	},
+	"team": "Nicholas Kasparian",
+	"members": [
+		{
+			"name": "Nicholas Kasparian",
+			"email": "nicholask2010@outlook.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692e970b8a81d30aa784c79c"
+	},
+	"team": "Nextquant",
+	"members": [
+		{
+			"name": "Ariyan Rout",
+			"email": "24f2008555@ds.study.iitm.ac.in"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "692ea0728a81d30aa784c7a8"
+	},
+	"team": "2147483647"
+},
+{
+	"_id": {
+		"$oid": "692eda038a81d30aa784c7e4"
+	},
+	"team": "Arete"
+},
+{
+	"_id": {
+		"$oid": "692ef1e58a81d30aa784c7fc"
+	},
+	"team": "jithin fan club"
+},
+{
+	"_id": {
+		"$oid": "693191bd8a81d30aa784c8cd"
+	},
+	"team": "okk"
+},
+{
+	"_id": {
+		"$oid": "6931958e8a81d30aa784c8d2"
+	},
+	"team": "Heuristcs_team_6__"
+},
+{
+	"_id": {
+		"$oid": "6932ddd58a81d30aa784c8fc"
+	},
+	"team": "etk005"
+},
+{
+	"_id": {
+		"$oid": "69360b128a81d30aa784c9e4"
+	},
+	"team": "The Cool Cats"
+},
+{
+	"_id": {
+		"$oid": "693650d18a81d30aa784ca24"
+	},
+	"team": "The Relentless"
+},
+{
+	"_id": {
+		"$oid": "6939df75865b8772218d17d1"
+	},
+	"team": "A Lone Wolf"
+},
+{
+	"_id": {
+		"$oid": "693be3fd865b8772218d17d4"
+	},
+	"team": "Pow uh of DT"
+},
+{
+	"_id": {
+		"$oid": "693be441865b8772218d17d5"
+	},
+	"team": "RUBlevka"
+},
+{
+	"_id": {
+		"$oid": "693be5ac865b8772218d17d6"
+	},
+	"team": "FCTC-OverC"
+},
+{
+	"_id": {
+		"$oid": "693c1af9865b8772218d17d7"
+	},
+	"team": "Delft Autisten"
+},
+{
+	"_id": {
+		"$oid": "693ca1ca865b8772218d1820"
+	},
+	"team": "rrrf"
+},
+{
+	"_id": {
+		"$oid": "693d6f5b865b8772218d1858"
+	},
+	"team": "XYZ"
+},
+{
+	"_id": {
+		"$oid": "693e3117865b8772218d1887"
+	},
+	"team": "Infinity"
+},
+{
+	"_id": {
+		"$oid": "6941266e865b8772218d19e3"
+	},
+	"team": "Apriori"
+},
+{
+	"_id": {
+		"$oid": "694135d1865b8772218d19ee"
+	},
+	"team": "klyro"
+},
+{
+	"_id": {
+		"$oid": "69413d89865b8772218d19fb"
+	},
+	"team": "St. Joseph's Anglo-Chinese School"
+},
+{
+	"_id": {
+		"$oid": "69413f99865b8772218d19ff"
+	},
+	"team": "unbelivable"
+},
+{
+	"_id": {
+		"$oid": "69415ae4865b8772218d1a2e"
+	},
+	"team": "Some Funny Ideas"
+},
+{
+	"_id": {
+		"$oid": "6941afdb865b8772218d1ad3"
+	},
+	"team": "kunts"
+},
+{
+	"_id": {
+		"$oid": "6943daa8865b8772218d1c96"
+	},
+	"team": "Ba***ds of Optimisation"
+},
+{
+	"_id": {
+		"$oid": "6944c1cf865b8772218d1d34"
+	},
+	"team": "Byte_Me",
+	"members": [
+		{
+			"name": "Harsh Mishra",
+			"email": "jodpanti@gmail.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "6946f4a7865b8772218d2089"
+	},
+	"team": "DO NOT SNAKE ME"
+},
+{
+	"_id": {
+		"$oid": "6948299f865b8772218d2616"
+	},
+	"team": "Sanskar"
+},
+{
+	"_id": {
+		"$oid": "694f2115148cc28f390e1700"
+	},
+	"team": "nicholask2010@outlook.com",
+	"members": [
+		{
+			"name": "Nicholas Kasparian",
+			"email": "nicholask2010@outlook.com"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "694f3daf148cc28f390e1701"
+	},
+	"team": "Sasank_Mouli_FC(8)",
+	"members": [
+		{
+			"name": "Udarapu Mohan Sai",
+			"email": "mc230041034@iiti.ac.in"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "6950eb04148cc28f390e1703"
+	},
+	"team": "ASHISH30",
+	"members": [
+		{
+			"name": "ASHISH RAIKWAR",
+			"email": "ASHISHRR@IITBHILAI.AC.IN"
+		}
+	]
+},
+{
+	"_id": {
+		"$oid": "6956bdf5148cc28f390e1705"
+	},
+	"team": "Rahmat",
+	"members": [
+		{
+			"name": "RAHMAT ULLAH"
+		}
+	]
+}]
+
