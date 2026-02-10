@@ -86,14 +86,21 @@
     text-decoration: none;
     font-weight: 600;
     letter-spacing: 1px;
-    transition: background .13s;
+    transition: background .13s, border-color .13s;
     display: inline-flex;
     align-items: center;
     gap: 8px;
   }
   .btn-lg { font-size: 1.13rem; padding: 14px 26px; margin-top: 12px;}
-  .btn:hover, .btn-lg:hover, .nav-link:hover { background: #333; }
+  .btn:hover, .btn-lg:hover, .nav-link:hover { background: #333; border-color: #555; }
   .nav-link.active { background: #333; cursor: default; }
+
+  /* accessibility: keyboard focus */
+  .btn:focus-visible, .btn-lg:focus-visible, .nav-link:focus-visible, .brand-title:focus-visible {
+    outline: 2px solid #b89bfa;
+    outline-offset: 2px;
+  }
+
   main { width: 100%; }
   h1, h2, h3 {
     color: #fafafa;
@@ -113,7 +120,7 @@
     text-align: center;
     font-size: 1.32rem;
     font-weight: bold;
-    margin-bottom: 22px;
+    margin-bottom: 18px;
     letter-spacing: 1px;
     color: #dedede;
   }
@@ -129,26 +136,19 @@
     line-height: 1.6;
     text-align: center;
   }
-  .lead {
-    text-align: center;
-    font-size: 1.12rem;
-    color: #dedede;
-    margin-bottom: 20px;
-    line-height: 1.6;
-  }
   .sub {
     text-align: center;
     color: #bdbdbd;
     font-size: 1.02rem;
-    margin-bottom: 32px;
+    margin-bottom: 26px;
     line-height: 1.5;
   }
   .cta-wrap {
-    margin: 32px 0 0 0;
+    margin: 22px 0 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
   }
   .section { margin-top: 38px; margin-bottom: 38px; }
   .how-it-works-title {
@@ -197,7 +197,6 @@
     font-weight: bold;
     letter-spacing: 1px;
     display: inline;
-    vertical-align: middle;
     line-height: 1;
     padding: 0;
   }
@@ -208,6 +207,7 @@
     font-family: inherit;
     line-height: 1.45;
   }
+
   .badges-wrap {
     max-width: 330px;
     margin: 0 auto 0 auto;
@@ -229,35 +229,13 @@
     font-family: inherit;
     letter-spacing: 1px;
   }
-  .timeline {
-    margin-top: 24px;
-    display: grid;
-    gap: 14px;
-  }
-  .timeline-item {
-    background: #19191c;
-    border: 1px solid #333;
-    border-radius: 6px;
-    padding: 16px 20px 14px 20px;
-  }
-  .timeline-date {
-    font-size: 1.05rem;
-    font-weight: bold;
-    color: #f0e7ff;
-    letter-spacing: 1.1px;
-  }
-  .timeline-label {
-    margin-top: 6px;
-    color: #cfcfcf;
-    font-size: 0.98rem;
-    letter-spacing: 0.6px;
-  }
+
   .icon { height: 22px; width: 22px; color: #b89bfa; stroke-width: 2.2; }
   .icon-yellow { color: #facc15; }
   .icon-green { color: #7ee787; }
   .icon-blue  { color: #38bdf8; }
   .icon-purple { color: #b89bfa; }
-  .icon-lg { height: 28px; width: 28px; }
+
   .footer {
     background: #181818;
     border-top: 1px solid #333;
@@ -283,18 +261,112 @@
     text-align: center;
     letter-spacing: 0.04em;
   }
-  .notice-banner strong {
-    color: #facc15;
+  .notice-banner strong { color: #facc15; }
+
+  /* Partners */
+  .partners-title {
+    text-align: center;
+    font-size: 1.32rem;
+    font-weight: bold;
+    margin: 0 0 14px 0;
+    letter-spacing: 1.2px;
   }
+  .partners-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .logo-slot {
+    background: #181818;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 14px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 84px;
+  }
+  .logo-slot img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: saturate(1.05);
+  }
+  .logo-slot a { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+
+
+/* --- Partners marquee (auto-scrolling, infinite loop) --- */
+.partners-marquee {
+  background: #19191c;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 14px 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.partners-track {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: max-content;
+  animation: partners-marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover (optional but nice UX) */
+.partners-marquee:hover .partners-track {
+  animation-play-state: paused;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .partners-track { animation: none; }
+}
+
+@keyframes partners-marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Item styling */
+.partner-pill {
+  flex: 0 0 auto;
+  background: #181818;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 12px 16px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partner-pill img {
+  max-height: 46px;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Slightly tighter on mobile */
+@media (max-width: 900px) {
+  .partner-pill { height: 64px; padding: 10px 14px; }
+  .partner-pill img { max-height: 42px; max-width: 170px; }
+}
 
   @media (max-width: 900px) {
     .container, .nav { max-width: 99vw; padding-left: 5vw; padding-right: 5vw; }
     .features { flex-direction: column; gap: 18px; }
     .card { max-width: none; }
     .badges-wrap { max-width: 99vw; }
+    .partners-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
+
 <body>
 <header>
   <nav class="nav">
@@ -314,10 +386,8 @@
       <a class="nav-link" href="sponsor.html">Sponsors</a>
       <a class="nav-link" href="contact.html">Contact</a>
       <a class="nav-link" href="rules.html">Rules</a>
-      <a class="nav-link" href="#frontiercs">FrontierCS</a>
-      <!-- <a class="btn" href="/signup.html" target="_blank" rel="noopener noreferrer">
-        Sign Up
-      </a> -->
+      <!-- If 2025 is closed, consider swapping this to a waitlist -->
+      <a class="btn" href="/signup.html" target="_blank" rel="noopener noreferrer">Sign Up</a>
     </div>
   </nav>
 </header>
@@ -326,22 +396,27 @@
   <div class="container">
     <h1>IIMOC</h1>
     <span class="iimoc-full">International Math Optimization Challenge</span>
-    <div class="sub">One tough problem. Worldwide competition.</div>
 
     <div class="notice-banner">
       IIMOC 2025 has closed. You can view the results here: <br>
-      <strong><a href="/leaderboard.html?pid=polypack" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline;">https://iimoc.org/problem.html?pid=polypack</a></strong>. <br>
+      <strong><a href="/leaderboard.html?pid=polypack" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline;">https://iimoc.org/leaderboard.html?pid=polypack</a></strong>.
     </div>
 
     <div class="section">
-      <div class="how-it-works-title">How It Works</div>
+      <div class="how-it-works-title">About IIMOC</div>
       <div class="about-section">
-        IIMOC is a global Math/Computer Science competition. Each team gets an approachable but unsolvable optimization problem and four weeks to submit their best solution. The club with the lowest loss wins. Special awards for creativity and best approach are also given.<br /><br />Once the contest opens, the organizers release the official problem statement and the accompanying test dataset. Your team&apos;s goal is to design a Python/C++/Java program that runs in a reasonable amount of time and drives the loss on that dataset as low as possible.
+        IIMOC is a global Math/Computer Science competition, centered around challenging optimization
+        problems that are easy to approach but impossible to solve exactly. Teams must use heuristic optimization techniques
+        over a 4-week window to iteratively improve their solutions and climb the leaderboard. The problems are designed to be
+        accessible to college and motivated high school students, while still being deep enough to allow for extended research and improvement.
       </div>
+
+      <!-- About cards with logical icons -->
       <div class="features">
         <div class="card">
           <div class="card-header">
-            <svg class="icon icon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <!-- Teamwork: users -->
+            <svg class="icon icon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
               <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="9" cy="7" r="4"></circle>
               <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -351,134 +426,259 @@
           </div>
           <p>Solve together as a club. Collaboration is key.</p>
         </div>
+
         <div class="card">
           <div class="card-header">
-            <svg class="icon icon-green" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M22 12h-4"></path><path d="M2 12h4"></path>
-              <path d="M12 2v4"></path><path d="M12 18v4"></path>
-              <circle cx="12" cy="12" r="7"></circle>
-              <circle cx="12" cy="12" r="3"></circle>
+            <!-- External tooling: wrench -->
+            <svg class="icon icon-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a4.9 4.9 0 0 0-6.9 6.9l-5.1 5.1a2 2 0 0 0 2.8 2.8l5.1-5.1a4.9 4.9 0 0 0 6.9-6.9l-2.1 2.1-3.5-.7-.7-3.5 2.1-2.1z"></path>
             </svg>
-            <h3>Infinite Submissions</h3>
+            <h3>External tooling</h3>
           </div>
-          <p>We believe in second chances ;O</p>
+          <p>We emphasize realism by encouraging the use of external tools to help evaluate and debug your approach locally.</p>
         </div>
+
         <div class="card">
           <div class="card-header">
-            <svg class="icon icon-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M15 9V4a3 3 0 0 0-6 0v5"></path>
-              <rect x="3" y="9" width="18" height="12" rx="4"></rect>
-              <path d="M7 13h.01M12 13h.01M17 13h.01M7 17h10"></path>
+            <!-- Optimization: target -->
+            <svg class="icon icon-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="6"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
             </svg>
             <h3>Optimization</h3>
           </div>
           <p>Minimize loss or maximize gain in a real-world scenario.</p>
         </div>
+
         <div class="card">
           <div class="card-header">
-            <svg class="icon icon-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <!-- Global Rankings: trophy -->
+            <svg class="icon icon-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
               <path d="M8 21h8"></path>
               <path d="M12 17v4"></path>
-              <path d="M7 4h10v4a5 5 0 0 1-10 0V4Z"></path>
-              <path d="M5 8A2 2 0 0 1 3 6V4h2"></path>
-              <path d="M19 8a2 2 0 0 0 2-2V4h-2"></path>
+              <path d="M7 4h10v5a5 5 0 0 1-10 0V4z"></path>
+              <path d="M5 7H3a2 2 0 0 0 2 2"></path>
+              <path d="M19 7h2a2 2 0 0 1-2 2"></path>
             </svg>
             <h3>Global Rankings</h3>
           </div>
-          <p>See how you stack up against clubs worldwide.</p>
+          <p>See how you stack up against teams worldwide.</p>
         </div>
       </div>
     </div>
-    <div class="section">
-  
-  <div class="section" id="frontiercs" style="text-align: center;">
-  <h2>FrontierCS Partnership</h2>
+<!-- 2) Replace your current Partners grid section with this marquee version -->
 
-  <div class="about-section">
-    The problems for <strong>IIMOC 2025</strong> were taken from <strong>FrontierCS</strong>, a research benchmark of frontier-level algorithmic tasks.
-    <br /><br />
-    IIMOC relies on partnerships like this to make tough, high-quality contests possible.
-    If you enjoyed the contest, please consider supporting FrontierCS by giving them a star and checking out their blog posts.
+<div class="section" id="partners" style="text-align:center;">
+  <div class="partners-title">Partners</div>
+
+  <div class="about-section" style="margin-bottom: 16px;">
+    IIMOC relies on partnerships to make tough, high-quality contests possible.
   </div>
 
-  <div class="cta-wrap" style="margin-top: 14px;">
-    <a class="btn-lg" href="https://github.com/FrontierCS" target="_blank" rel="noopener noreferrer">
-      Star FrontierCS on GitHub
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="12 2 15 9 22 9 16.5 13.5 18.5 21 12 16.8 5.5 21 7.5 13.5 2 9 9 9 12 2"></polygon>
-      </svg>
-    </a>
+  <div class="partners-marquee" aria-label="Partners (auto-scrolling)">
+    <div class="partners-track" id="partnersTrack">
+      <!-- ORIGINAL SET -->
+      <div class="partner-pill">
+        <img src="assets/cascadelogo.png"
+             alt="CascadeX CXL logo" width="200px" />
+      </div>
 
-    <a class="btn-lg" href="https://frontier-cs.org" target="_blank" rel="noopener noreferrer">
-      Read FrontierCS Blog Posts
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
-      </svg>
-    </a>
+      <div class="partner-pill">
+        <img src="assets/apmemorylogo.svg"
+             alt="AP Memory logo"
+             width="200px" />
+      </div>
+
+      <div class="partner-pill">
+        <img src="assets/skylablogo.png" alt="Berkeley Sky Computing Lab logo" />
+      </div>
+
+      <div class="partner-pill">
+        <img src="assets/sualogo.png" alt="Sua logo" />
+      </div>
+
+      <div class="partner-pill">
+        <img src="assets/frontierlogo.png" alt="FrontierCS logo" />
+      </div>
+
+      <!-- DUPLICATE SET (for seamless looping) -->
+      <div class="partner-pill" aria-hidden="true">
+        <img src="assets/cascadelogo.png"
+             alt="" 
+             width="200px"/>
+      </div>
+
+      <div class="partner-pill" aria-hidden="true">
+        <img src="assets/apmemorylogo.svg"
+             alt=""
+             width="200px" />
+      </div>
+
+      <div class="partner-pill" aria-hidden="true">
+        <img src="assets/skylablogo.png" alt="" width="200px" />
+      </div>
+
+      <div class="partner-pill" aria-hidden="true">
+        <img src="assets/sualogo.png" alt="" width="200px" />
+      </div>
+
+      <div class="partner-pill" aria-hidden="true">
+        <img src="assets/frontierlogo.png" alt="" />
+      </div>
+    </div>
   </div>
 
-  <div class="muted-2" style="text-align:center; margin-top: 10px;">
-    FrontierCS content is used with permission; FrontierCS remains the original source of the problems.
+  <div class="muted-2" style="margin-top: 10px;">
+    Hover to pause.
   </div>
 </div>
 
-  <h2 style="text-align:center;">2025 by the Numbers</h2>
-  <div class="features" style="justify-content: center;">
-    <div class="card" style="text-align: center; flex: 0 1 200px;">
-      <div class="card-header" style="justify-content: center;">
-        <svg class="icon icon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-        </svg>
-        <h3 style="font-size: 1.5rem; color: #b89bfa;">209</h3>
+
+    <!-- NEW FORMAT SECTION: IIMOC × FrontierCS -->
+    <div class="section" id="frontiercs" style="text-align: center;">
+      <h2>Next Season: IIMOC × FrontierCS (New Format)</h2>
+
+      <div class="about-section">
+        <strong>IIMOC 2025</strong> used problems from <strong>FrontierCS</strong>.
+        <br /><br />
+        For the next season, we’re going further: instead of a single contest problem, teams will compete on a
+        <strong>frontier of many algorithmic tasks</strong> sourced from FrontierCS.
+        Each task has a public “best-known” score, and the leaderboard rewards <strong>verified improvements</strong>.
+        <br /><br />
+        This format is designed to measure real progress on hard problems, encourage reproducible work, and make
+        improvements visible to everyone—not just within a one-month window.
       </div>
-      <p style="font-weight: bold; letter-spacing: 1px;">Teams</p>
-      <p class="muted-2">Competing from top universities and clubs globally.</p>
+
+      <div class="features" style="justify-content:center;">
+        <div class="card">
+          <div class="card-header">
+            <!-- Many Problems: grid -->
+            <svg class="icon icon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+            </svg>
+            <h3>Many Problems</h3>
+          </div>
+          <p>A curated set of FrontierCS tasks (not just one problem). Teams can specialize, explore, and iterate.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <!-- Frontier Scoring: trending up -->
+            <svg class="icon icon-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 17l6-6 4 4 7-7"></path>
+              <path d="M14 8h6v6"></path>
+            </svg>
+            <h3>Frontier Scoring</h3>
+          </div>
+          <p>A submission only matters if it <strong>beats the current frontier</strong>. Improvements update the public best-known score.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <!-- Reproducibility: check-circle -->
+            <svg class="icon icon-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M8 12l2.5 2.5L16 9"></path>
+            </svg>
+            <h3>Reproducibility</h3>
+          </div>
+          <p>We’ll encourage standardized evaluation via FrontierCS’s tooling (so results are comparable and auditable).</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <!-- Credit for Δ: plus-circle -->
+            <svg class="icon icon-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 8v8"></path>
+              <path d="M8 12h8"></path>
+            </svg>
+            <h3>Credit for Δ</h3>
+          </div>
+          <p>Ranking is based on <strong>how much you improve the frontier</strong>, not how many times you submit.</p>
+        </div>
+      </div>
+
+      <div class="about-section" style="margin-top: 18px;">
+        <strong>What to expect:</strong><br/>
+        • A public task list with an initial frontier for each task<br/>
+        • A points system based on verified improvement (Δ over the current frontier)<br/>
+        • Club / team rankings + special awards for novel ideas and clean engineering<br/>
+        <span class="muted-2"><br/>We’ll post exact rules and dates once the evaluation + infrastructure is finalized.</span>
+      </div>
+      
+      <a class="btn-lg" href="/signup.html" target="_blank" rel="noopener noreferrer">
+        Sign Up for IIMOC × FrontierCS
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+        </svg>
+      </a>
+      <div class="cta-wrap" style="margin-top: 14px;">
+        <a class="btn-lg" href="https://github.com/FrontierCS" target="_blank" rel="noopener noreferrer">
+          Support FrontierCS on GitHub
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15 9 22 9 16.5 13.5 18.5 21 12 16.8 5.5 21 7.5 13.5 2 9 9 9 12 2"></polygon>
+          </svg>
+        </a>
+
+        <a class="btn-lg" href="https://frontier-cs.org" target="_blank" rel="noopener noreferrer">
+          Learn about the benchmark
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+
+      <div class="muted-2" style="text-align:center; margin-top: 10px;">
+        FrontierCS content is used with permission; FrontierCS remains the original source of the tasks.
+      </div>
     </div>
 
-    <div class="card" style="text-align: center; flex: 0 1 200px;">
-      <div class="card-header" style="justify-content: center;">
-        <svg class="icon icon-green" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-          <polyline points="16 7 22 7 22 13"></polyline>
-        </svg>
-        <h3 style="font-size: 1.5rem; color: #7ee787;">9,549</h3>
+    <h2 style="text-align:center;">2025 by the Numbers</h2>
+    <div class="features" style="justify-content: center;">
+      <div class="card" style="text-align: center; flex: 0 1 200px;">
+        <div class="card-header" style="justify-content: center;">
+          <svg class="icon icon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <h3 style="font-size: 1.5rem; color: #b89bfa;">209</h3>
+        </div>
+        <p style="font-weight: bold; letter-spacing: 1px;">Teams</p>
+        <p class="muted-2">Competing from top universities and clubs globally.</p>
       </div>
-      <p style="font-weight: bold; letter-spacing: 1px;">Submissions</p>
-      <p class="muted-2">Total iterative optimizations across the 4-week window.</p>
+
+      <div class="card" style="text-align: center; flex: 0 1 200px;">
+        <div class="card-header" style="justify-content: center;">
+          <svg class="icon icon-green" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+            <polyline points="16 7 22 7 22 13"></polyline>
+          </svg>
+          <h3 style="font-size: 1.5rem; color: #7ee787;">9,549</h3>
+        </div>
+        <p style="font-weight: bold; letter-spacing: 1px;">Submissions</p>
+        <p class="muted-2">Total iterative optimizations across the 4-week window.</p>
+      </div>
     </div>
-  </div>
-</div>
+
     <div class="section">
       <h2 style="text-align:center;">Where Clubs Compete</h2>
-      <div class="muted" style="text-align:center;">
-        Join students from:
-      </div>
+      <div class="muted" style="text-align:center;">Join students from:</div>
       <div class="badges-wrap">
         <div class="badges">
-          <span class="badge">USA</span>
-          <span class="badge">Japan</span>
-          <span class="badge">Korea</span>
-          <span class="badge">Taiwan</span>
-          <span class="badge">Morocco</span>
-          <span class="badge">Canada</span>
-          <span class="badge">Ethiopia</span>
-          <span class="badge">UK</span>
-          <span class="badge">China</span>
-          <span class="badge">India</span>
-          <span class="badge">Iran</span>
-          <span class="badge">Pakistan</span>
-          <span class="badge">Netherlands</span>
-          <span class="badge">Germany</span>
-          <span class="badge">Vietnam</span>
-          <span class="badge">Poland</span>
-          <span class="badge">Qatar</span>
-          <span class="badge">Finland</span>
-          <span class="badge">Hong Kong</span>
-          <span class="badge">Egypt</span>
-          <span class="badge">Bahrain</span>
+          <span class="badge">USA</span><span class="badge">Japan</span><span class="badge">Korea</span>
+          <span class="badge">Taiwan</span><span class="badge">Morocco</span><span class="badge">Canada</span>
+          <span class="badge">Ethiopia</span><span class="badge">UK</span><span class="badge">China</span>
+          <span class="badge">India</span><span class="badge">Iran</span><span class="badge">Pakistan</span>
+          <span class="badge">Netherlands</span><span class="badge">Germany</span><span class="badge">Vietnam</span>
+          <span class="badge">Poland</span><span class="badge">Qatar</span><span class="badge">Finland</span>
+          <span class="badge">Hong Kong</span><span class="badge">Egypt</span><span class="badge">Bahrain</span>
         </div>
       </div>
     </div>
@@ -486,7 +686,6 @@
     <div class="section" style="text-align: center;">
       <h2>2025 Problems</h2>
 
-      <!-- Sample / reference problem -->
       <div class="problem-block" style="margin-bottom: 18px;">
         <h3>Permutation (Sample)</h3>
         <strong>Author:</strong> Qiuyang Mang (Sua)<br>
@@ -503,41 +702,15 @@
         <strong>Prepared by:</strong> Edwin Chen
       </div>
     </div>
-  </div>
 
-  <div class="section" style="margin-top:48px">
-    <div class="muted" style="text-align:center;">
-    </div>
-    <div class="cta-wrap" style="margin-top:19px;">
-      <!--
-      <a class="btn-lg" href="/signup.html" target="_blank" rel="noopener noreferrer">
-        Sign Up
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
-        </svg>
-      </a> -->
-      <!--
-      <a class="btn-lg" href="https://iimoc.org/problem.html?pid=polypack" target="_blank" rel="noopener noreferrer">
-        Start Official Problem: Polypack
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
-        </svg>
-      </a>
-      <a class="btn-lg" href="/problem.html?pid=Permutation" target="_blank" rel="noopener noreferrer">
-        View Sample Problem
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
-        </svg>
-      </a> -->
-    </div>
+    <script src="assets/js/markdown-renderer.js" defer></script>
   </div>
-
-  <script src="assets/js/markdown-renderer.js" defer></script>
 </main>
 
 <footer class="footer">
   <p>&copy; <span id="year"></span> IIMOC. All rights reserved.</p>
 </footer>
+
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -551,7 +724,6 @@
 
     const chars = Array.from(scrambleText.querySelectorAll('.scramble-char'));
 
-    let scrambleTimer = null;
     let running = false;
 
     function randomSymbol() {
@@ -569,9 +741,7 @@
     }
 
     function endScramble() {
-      chars.forEach((span, i) => {
-        span.textContent = original[i];
-      });
+      chars.forEach((span, i) => { span.textContent = original[i]; });
       running = false;
     }
 
@@ -585,15 +755,16 @@
         const progress = Math.min(elapsed / scrambleDuration, 1);
         scrambleFrame(progress);
         if (elapsed < scrambleDuration) {
-          scrambleTimer = requestAnimationFrame(animate);
+          requestAnimationFrame(animate);
         } else {
           endScramble();
         }
       }
-      scrambleTimer = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     }
 
     const brandTitle = document.getElementById('brandTitle');
+    if (!brandTitle) return;
     brandTitle.addEventListener('mouseenter', startScramble);
     brandTitle.addEventListener('focus', startScramble);
     brandTitle.addEventListener('mouseleave', endScramble);
