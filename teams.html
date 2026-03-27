@@ -115,7 +115,7 @@
 </main>
 
 <script>
-  const URL = "https://diphycercal-aurore-introrsely.ngrok-free.dev";
+  const URL = "https://contest.iimoc.org";
 
   function qs(name){
     const p = new URLSearchParams(location.search);
@@ -249,7 +249,7 @@
       const curPage = Number(data.page||page);
       const pageSize = Number(data.pageSize||state.pageSize);
       const totalPages = Math.max(1, Number(data.totalPages||Math.ceil(total / Math.max(1,pageSize))));
-      const results = Array.isArray(data.results) ? data.results : (data.submissions || []); // backward compat
+      const results = Array.isArray(data.submissions) ? data.submissions : [];
 
       // update state
       state.page = curPage;

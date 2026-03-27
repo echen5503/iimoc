@@ -452,7 +452,7 @@ async function loadLeaderboard(page = lbState.page){
       return;
     }
 
-    const url = `${URL}/getProblemSubmissions/${encodeURIComponent(pid)}/${encodeURIComponent(page)}?pageSize=${encodeURIComponent(lbState.pageSize)}`;
+    const url = `${URL}/getProblemSubmissions/${encodeURIComponent(page)}/${encodeURIComponent(pid)}?pageSize=${encodeURIComponent(lbState.pageSize)}`;
     const res = await fetch(url, { headers: {'ngrok-skip-browser-warning':'true'} });
     if(!res.ok) throw new Error('Failed to fetch leaderboard');
     const data = await res.json();
@@ -597,7 +597,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   async function fetchStatement(pid){
-    const base = `${URL}/problem/${encodeURIComponent(pid)}/statement`;
+    const base = `${URL}/problem/statement/${encodeURIComponent(pid)}`;
     console.log(base);
     let password = getStoredPassword(pid);
 
