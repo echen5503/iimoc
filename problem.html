@@ -597,7 +597,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   async function fetchStatement(pid){
-    const base = `${URL}/problem/statement/${encodeURIComponent(pid)}`;
+    const base = `${URL}/problem/statement/${pid}`;
     console.log(base);
     let password = getStoredPassword(pid);
 
