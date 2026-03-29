@@ -202,14 +202,33 @@ async function showTeamBreakdown(teamName) {
 
     // Render Bonus History
     if (data.bonusHistory && data.bonusHistory.length > 0) {
-      let bonusHtml = `<table class="cases-table"><thead><tr><th>Problem</th><th>Points</th></tr></thead><tbody>`;
-      data.bonusHistory.forEach(b => {
-        bonusHtml += `<tr><td>${b.pid}</td><td class="score-bonus">+${b.points}</td></tr>`;
-      });
-      bonusHtml += `</tbody></table>`;
-      document.getElementById('bonusHistory').innerHTML = bonusHtml;
+    let bonusHtml = `
+        <table class="cases-table">
+        <thead>
+            <tr>
+            <th>Problem</th>
+            <th>Date Awarded</th>
+            <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>`;
+        
+    data.bonusHistory.forEach(b => {
+        // Format the date. If 'b.date' is "2026-03-29", this makes it readable.
+        const dateStr = b.date ? new Date(b.date).toLocaleDateString() : '—';
+        
+        bonusHtml += `
+        <tr>
+            <td>${b.pid}</td>
+            <td style="color:#888;">${dateStr}</td>
+            <td class="score-bonus">+${b.points}</td>
+        </tr>`;
+    });
+    
+    bonusHtml += `</tbody></table>`;
+    document.getElementById('bonusHistory').innerHTML = bonusHtml;
     } else {
-      document.getElementById('bonusHistory').innerHTML = '<p style="color:#666;">No bonuses awarded yet.</p>';
+    document.getElementById('bonusHistory').innerHTML = '<p style="color:#666;">No bonuses awarded yet.</p>';
     }
 
   } catch (err) {
