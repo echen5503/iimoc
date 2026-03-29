@@ -386,50 +386,53 @@ function fmtTs(ts){
 }
 
 function renderLeaderboardPayload(payload){
-  if(!payload){
+  if(!payload || !payload.rows){
     leaderboardContainer.innerHTML = '<p>⚠️ No data.</p>';
     lbPageInfo.textContent = '—';
     return;
   }
 
-  const { submissions=[], total=0, page=1, pageSize=lbState.pageSize, totalPages=1 } = payload;
+  // UPDATED: Destructuring from the new API response structure
+  const { rows=[], total=0, page=1, pageSize=lbState.pageSize, totalPages=1, baseline, globalBest } = payload;
 
-  const rows = submissions.map((s, i)=>{
-    const teamRaw = (s.metadata && s.metadata.team) ? s.metadata.team : '—';
-    const teamHtml = teamRaw !== '—'
-      ? `<a href="/teams.html?team=${encodeURIComponent(teamRaw)}">${teamRaw}</a>`
+  const tableRows = rows.map((r)=>{
+    const teamHtml = r.team 
+      ? `<a href="/teams.html?team=${encodeURIComponent(r.team)}">${r.team}</a>`
       : '—';
-    const score = (typeof s.score === 'number') ? s.score : Number(s.score||0);
-    const sid = s.sid ?? (s.metadata && s.metadata.sid) ?? '—';
-    const when = (s.metadata && s.metadata.ts) ? fmtTs(Number(s.metadata.ts)) : '—';
-    const sidHtml = sid !== '—'
-      ? `<a href="/render.html?submissionID=${encodeURIComponent(sid)}">${sid}</a>`
+    
+    const sidHtml = r.sid 
+      ? `<a href="/render.html?submissionID=${encodeURIComponent(r.sid)}">${r.sid}</a>`
       : '—';
-    const rank = (page-1)*pageSize + (i+1);
+
+    // score is the relative percentage (0-100)
+    const displayScore = (typeof r.score === 'number') ? r.score.toFixed(2) + '%' : '0%';
 
     return `<tr>
-      <td>${rank}</td>
+      <td>${r.rank}</td>
       <td>${teamHtml}</td>
-      <td>${score}</td>
+      <td style="font-weight:bold;color:#b89bfa;">${displayScore}</td>
+      <td style="color:#888;">${r.raw}</td>
       <td>${sidHtml}</td>
-      <td>${when}</td>
     </tr>`;
   }).join('');
 
-  leaderboardContainer.innerHTML = submissions.length === 0
+  leaderboardContainer.innerHTML = rows.length === 0
     ? '<p>No submissions yet.</p>'
     : `
+      <div style="margin-bottom:10px; font-size:0.85rem; color:#888;">
+        Target: ${globalBest} | Baseline: ${baseline}
+      </div>
       <table class="cases-table">
         <thead>
           <tr>
-            <th>#</th>
+            <th>Rank</th>
             <th>Team</th>
             <th>Score</th>
-            <th>Submission ID</th>
-            <th>Time</th>
+            <th>Raw</th>
+            <th>ID</th>
           </tr>
         </thead>
-        <tbody>${rows}</tbody>
+        <tbody>${tableRows}</tbody>
       </table>
     `;
 
@@ -441,7 +444,7 @@ function renderLeaderboardPayload(payload){
 }
 
 async function loadLeaderboard(page = lbState.page){
-  try{
+  try {
     leaderboardContainer.innerHTML = '<p>Leaderboard Loading...</p>';
     const pid = getPidFromQuery();
 
@@ -452,12 +455,15 @@ async function loadLeaderboard(page = lbState.page){
       return;
     }
 
-    const url = `${URL}/getProblemSubmissions/${encodeURIComponent(page)}/${encodeURIComponent(pid)}?pageSize=${encodeURIComponent(lbState.pageSize)}`;
+    // UPDATED: Using the new /leaderboard/:pid endpoint with query params
+    const url = `${URL}/leaderboard/${encodeURIComponent(pid)}?page=${encodeURIComponent(page)}&pageSize=${encodeURIComponent(lbState.pageSize)}`;
+    
     const res = await fetch(url, { headers: {'ngrok-skip-browser-warning':'true'} });
     if(!res.ok) throw new Error('Failed to fetch leaderboard');
     const data = await res.json();
+    
     renderLeaderboardPayload(data);
-  }catch(e){
+  } catch(e) {
     console.error(e);
     leaderboardContainer.innerHTML = '<p>⚠️ Could not load leaderboard.</p>';
     lbPageInfo.textContent = '—';
