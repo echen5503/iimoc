@@ -193,7 +193,7 @@ async function showTeamBreakdown(teamName) {
           </div>
           <div style="text-align:right;">
             <div style="font-size:1.2rem; color:${scoreColor}; font-weight:bold;">${details.relative.toFixed(2)}%</div>
-            ${details.sid ? `<a href="/result/${details.sid}" style="font-size:0.75rem;">View Best Submission</a>` : ''}
+            ${details.sid ? `<a href="/render.html?sid=${details.sid}" style="font-size:0.75rem;">View Best Submission</a>` : ''}
           </div>
         </div>
       `;
