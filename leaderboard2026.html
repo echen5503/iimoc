@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIMOC 2026 Leaderboard</title>
+
+  <style>
+    /* ---------- Shared Styling from Template ---------- */
+    body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
+    header { width:100%; background:#181818; border-bottom:1px solid #333; }
+    .nav { display:flex; align-items:center; justify-content:space-between; max-width:900px; margin:0 auto; padding:16px 20px 8px; }
+    .nav-links { display:flex; gap:18px; }
+    .nav-link, .btn {
+      background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
+      padding:10px 20px; font-family:inherit; font-size:1.09rem; cursor:pointer;
+      text-decoration:none; font-weight:600; letter-spacing:1px; transition:background .13s;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .nav-link:hover, .btn:hover { background:#333; }
+    .brand-title { font-size:1.5rem; color:#fafafa; letter-spacing:2px; display:flex; align-items:center; gap:7px; text-decoration:none; }
+    .brand-title svg { height:38px; width:38px; color:#b89bfa; stroke-width:2.2; }
+    
+    .container { max-width:900px; margin:56px auto 40px; padding:38px 32px; background:#222; border-radius:8px; border:1px solid #444; }
+    h1 { text-align:center; font-size:2.1rem; margin-bottom:18px; color:#fafafa; }
+    
+    .status-panel { background:#1a1a1d; border:1px solid #34343a; border-radius:6px; padding:18px 20px; margin-top:20px; }
+    .cases-table { width:100%; border-collapse:collapse; margin-top:12px; }
+    .cases-table th, .cases-table td { border:1px solid #34343a; padding:12px; text-align:left; font-size:0.98rem; }
+    .cases-table th { background:#26262b; color:#f5f5f5; letter-spacing:1px; }
+    .cases-table tr:hover { background: #2a2a2f; cursor: pointer; }
+    
+    .score-high { color:#b89bfa; font-weight:bold; }
+    .score-bonus { color:#8adf8a; }
+    .hidden { display:none; }
+    a { color:cyan; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+
+    .control-row { display:flex; justify-content: space-between; align-items:center; margin-bottom: 20px; }
+    .page-info { color: #888; font-size: 0.9rem; }
+
+    /* Breakdown specific styles */
+    .breakdown-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #444; padding-bottom: 15px; margin-bottom: 20px; }
+    .problem-card { background: #28282b; border: 1px solid #444; border-radius: 6px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+    .back-btn { margin-bottom: 20px; }
+  </style>
+</head>
+
+<body>
+<header>
+  <nav class="nav">
+    <a href="/index.html" class="brand-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4H6l7 8-7 8h12"/></svg>
+      <span>IIMOC</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/leaderboard2026.html">Leaderboard</a>
+      <a class="nav-link" href="/problems.html">Problems</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="container">
+    
+    <div id="leaderboardView">
+      <h1>IIMOC 2026 Leaderboard</h1>
+      
+      <div class="control-row">
+        <div class="page-info" id="lbPageInfo">Loading...</div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn" id="prevBtn">Prev</button>
+          <button class="btn" id="nextBtn">Next</button>
+          <button class="btn" id="refreshBtn">Refresh</button>
+        </div>
+      </div>
+
+      <div id="tableContainer">
+        <table class="cases-table">
+          <thead>
+            <tr>
+              <th style="width:60px;">Rank</th>
+              <th>Team</th>
+              <th>Total Score</th>
+              <th>Base</th>
+              <th>Bonus</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="breakdownView" class="hidden">
+      <button class="btn back-btn" id="backBtn">← Back to Leaderboard</button>
+      
+      <div class="breakdown-header">
+        <div>
+          <h2 id="breakdownTeamName" style="margin:0; font-size:2rem; color:#b89bfa;">Team Name</h2>
+          <p id="breakdownTeamScore" style="margin:5px 0 0 0; color:#888;">Total Score: 0.00</p>
+        </div>
+      </div>
+
+      <h3>Problem Breakdown</h3>
+      <div id="problemList">
+        </div>
+
+      <h3 style="margin-top:30px;">Bonus History</h3>
+      <div id="bonusHistory">
+        </div>
+    </div>
+
+  </section>
+</main>
+
+<script>
+const API_URL = "https://contest.iimoc.org"; // Replace with your actual backend URL
+let currentPage = 1;
+const pageSize = 20;
+
+// Elements
+const leaderboardBody = document.getElementById('leaderboardBody');
+const lbPageInfo = document.getElementById('lbPageInfo');
+const leaderboardView = document.getElementById('leaderboardView');
+const breakdownView = document.getElementById('breakdownView');
+
+/**
+ * Fetch and display the main leaderboard
+ */
+async function fetchLeaderboard(page = 1) {
+  try {
+    const res = await fetch(`${API_URL}/leaderboard?page=${page}&pageSize=${pageSize}`, {
+      headers: {'ngrok-skip-browser-warning': 'true'}
+    });
+    const data = await res.json();
+
+    leaderboardBody.innerHTML = '';
+    data.leaderboard.forEach(row => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${row.rank}</td>
+        <td style="font-weight:bold; color:cyan;">${row.team}</td>
+        <td class="score-high">${row.finalScore.toFixed(2)}</td>
+        <td>${row.baseScore.toFixed(2)}</td>
+        <td class="score-bonus">+${row.bonus}</td>
+      `;
+      tr.onclick = () => showTeamBreakdown(row.team);
+      leaderboardBody.appendChild(tr);
+    });
+
+    lbPageInfo.textContent = `Page ${data.page} of ${data.totalPages} (${data.total} teams)`;
+    currentPage = data.page;
+    document.getElementById('prevBtn').disabled = currentPage <= 1;
+    document.getElementById('nextBtn').disabled = currentPage >= data.totalPages;
+
+  } catch (err) {
+    console.error("Leaderboard error:", err);
+    leaderboardBody.innerHTML = '<tr><td colspan="5">Error loading leaderboard</td></tr>';
+  }
+}
+
+/**
+ * Fetch and display breakdown for a specific team
+ */
+async function showTeamBreakdown(teamName) {
+  try {
+    leaderboardView.classList.add('hidden');
+    breakdownView.classList.remove('hidden');
+    
+    document.getElementById('breakdownTeamName').textContent = teamName;
+    document.getElementById('problemList').innerHTML = 'Loading breakdown...';
+    document.getElementById('bonusHistory').innerHTML = '';
+
+    const res = await fetch(`${API_URL}/scoring/team/${encodeURIComponent(teamName)}`, {
+      headers: {'ngrok-skip-browser-warning': 'true'}
+    });
+    const data = await res.json();
+
+    document.getElementById('breakdownTeamScore').textContent = `Total Score: ${data.finalScore.toFixed(2)} (Base: ${data.baseScore.toFixed(2)}, Bonus: ${data.bonus})`;
+
+    // Render Problems
+    let problemHtml = '';
+    for (const [pid, details] of Object.entries(data.breakdown)) {
+      const scoreColor = details.relative > 0 ? '#b89bfa' : '#666';
+      problemHtml += `
+        <div class="problem-card">
+          <div>
+            <div style="font-weight:bold; font-size:1.1rem; text-transform:uppercase;">${pid}</div>
+            <div style="font-size:0.85rem; color:#888; margin-top:4px;">
+              Raw Score: ${details.raw ?? 'No submission'}
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:1.2rem; color:${scoreColor}; font-weight:bold;">${details.relative.toFixed(2)}%</div>
+            ${details.sid ? `<a href="/result/${details.sid}" style="font-size:0.75rem;">View Best Submission</a>` : ''}
+          </div>
+        </div>
+      `;
+    }
+    document.getElementById('problemList').innerHTML = problemHtml;
+
+    // Render Bonus History
+    if (data.bonusHistory && data.bonusHistory.length > 0) {
+      let bonusHtml = `<table class="cases-table"><thead><tr><th>Problem</th><th>Points</th></tr></thead><tbody>`;
+      data.bonusHistory.forEach(b => {
+        bonusHtml += `<tr><td>${b.pid}</td><td class="score-bonus">+${b.points}</td></tr>`;
+      });
+      bonusHtml += `</tbody></table>`;
+      document.getElementById('bonusHistory').innerHTML = bonusHtml;
+    } else {
+      document.getElementById('bonusHistory').innerHTML = '<p style="color:#666;">No bonuses awarded yet.</p>';
+    }
+
+  } catch (err) {
+    console.error("Breakdown error:", err);
+  }
+}
+
+// Event Listeners
+document.getElementById('backBtn').onclick = () => {
+  breakdownView.classList.add('hidden');
+  leaderboardView.classList.remove('hidden');
+};
+
+document.getElementById('prevBtn').onclick = () => fetchLeaderboard(currentPage - 1);
+document.getElementById('nextBtn').onclick = () => fetchLeaderboard(currentPage + 1);
+document.getElementById('refreshBtn').onclick = () => fetchLeaderboard(currentPage);
+
+// Initial Load
+document.addEventListener('DOMContentLoaded', () => fetchLeaderboard(1));
+</script>
+</body>
+</html>
