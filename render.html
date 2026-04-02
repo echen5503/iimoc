@@ -50,7 +50,7 @@
         <h1>Submission Details</h1>
         <div>
           <button id="refreshBtn" class="btn">Refresh</button>
-          <button class="btn" onclick="history.back()">← Back</button>
+          <button class="btn" onclick="smartBack()">← Back</button>
         </div>
       </div>
       <div class="meta-grid" id="metaGrid">
@@ -289,6 +289,25 @@ if (cached) codePwd.value = cached;
 
 /* ---------- Kick off ---------- */
 loadSubmission();
+
+
+function smartBack() {
+  // If there's no history (new tab), try to close it
+  if (window.history.length <= 1) {
+    window.close();
+    
+    // Fallback: If window.close() is blocked, redirect to home
+    setTimeout(() => {
+       if (!window.closed) {
+         window.location.href = "/"; 
+       }
+    }, 200);
+  } else {
+    // Otherwise, just go back
+    window.history.back();
+  }
+}
+
 </script>
 </body>
 </html>
