@@ -81,22 +81,27 @@
         <div class="label">Total Submissions</div>
         <div class="value" id="statCount">—</div>
       </div>
-      <div class="stat">
-        <div class="label">Best Score (this page)</div>
-        <div class="value" id="statBest">—</div>
-      </div>
-      <div class="stat">
-        <div class="label">Most Recent (this page)</div>
-        <div class="value" id="statRecent">—</div>
-      </div>
+    </div>
+    <div class="panel" style="margin-bottom:18px;">
+      <div class="label" style="margin-bottom:8px;font-weight:700;font-size:.95rem;letter-spacing:.5px;">Per-Problem Stats (this page)</div>
+      <div id="statsByProblem"><p style="color:#888;margin:4px 0;">Loading…</p></div>
     </div>
 
     <div class="panel">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
         <h2 style="margin:0;font-size:1.25rem;letter-spacing:.5px;">Submissions</h2>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <input type="text" id="pidFilter" placeholder="Filter by problem…" style="width:160px;padding:8px 10px;" />
+          <select id="sortBySel" style="width:auto;background:#111;color:#fafafa;border:1px solid #444;border-radius:6px;padding:8px 10px;font-family:inherit;font-size:1rem;">
+            <option value="ts">Sort: Time</option>
+            <option value="score">Sort: Score</option>
+          </select>
+          <select id="sortOrderSel" style="width:auto;background:#111;color:#fafafa;border:1px solid #444;border-radius:6px;padding:8px 10px;font-family:inherit;font-size:1rem;">
+            <option value="desc">Desc</option>
+            <option value="asc">Asc</option>
+          </select>
           <label for="pageSizeSel" style="font-weight:700;">Page size</label>
-          <select id="pageSizeSel" class="select" style="width:auto;">
+          <select id="pageSizeSel" style="width:auto;background:#111;color:#fafafa;border:1px solid #444;border-radius:6px;padding:8px 10px;font-family:inherit;font-size:1rem;">
             <option>20</option>
             <option>50</option>
             <option selected>100</option>
@@ -129,18 +134,20 @@
     } catch { return '—'; }
   }
 
-  const teamTitle = document.getElementById('teamTitle');
-  const teamSub   = document.getElementById('teamSub');
-  const statCount = document.getElementById('statCount');
-  const statBest  = document.getElementById('statBest');
-  const statRecent= document.getElementById('statRecent');
-  const tableWrap = document.getElementById('tableWrap');
+  const teamTitle     = document.getElementById('teamTitle');
+  const teamSub       = document.getElementById('teamSub');
+  const statCount     = document.getElementById('statCount');
+  const statsByProblem= document.getElementById('statsByProblem');
+  const tableWrap     = document.getElementById('tableWrap');
 
-  const refreshBtn= document.getElementById('refreshBtn');
-  const prevBtn   = document.getElementById('prevBtn');
-  const nextBtn   = document.getElementById('nextBtn');
-  const pageInfo  = document.getElementById('pageInfo');
+  const refreshBtn  = document.getElementById('refreshBtn');
+  const prevBtn     = document.getElementById('prevBtn');
+  const nextBtn     = document.getElementById('nextBtn');
+  const pageInfo    = document.getElementById('pageInfo');
   const pageSizeSel = document.getElementById('pageSizeSel');
+  const pidFilter   = document.getElementById('pidFilter');
+  const sortBySel   = document.getElementById('sortBySel');
+  const sortOrderSel= document.getElementById('sortOrderSel');
 
   const team = qs('team');
   teamTitle.textContent = team ? `Team ${team}` : 'Team —';
@@ -152,6 +159,9 @@
     pageSize: Number(pageSizeSel.value) || 100,
     totalPages: 1,
     total: 0,
+    pid: '',
+    sortBy: 'ts',
+    sortOrder: 'desc',
   };
 
   function renderTable(results, page, pageSize){
@@ -208,27 +218,39 @@
   }
 
   function renderStatsFromPage(results){
-    // These are for the current page; total count is shown separately
     if(!Array.isArray(results) || results.length===0){
-      statBest.textContent = '—';
-      statRecent.textContent = '—';
+      statsByProblem.innerHTML = '<p style="color:#888;margin:4px 0;">No data.</p>';
       return;
     }
-    let best = null, recentTs = null;
+    // group by problem
+    const byPid = {};
     for(const s of results){
+      const pid = (s.metadata && s.metadata.pid) ? s.metadata.pid : (s.pid ?? '—');
+      if(!byPid[pid]) byPid[pid] = { best: null, recentTs: null, count: 0 };
       const sc = Number(s.score || 0);
-      if(best===null || sc>best) best = sc;
+      if(byPid[pid].best === null || sc > byPid[pid].best) byPid[pid].best = sc;
       const ts = (s.metadata && s.metadata.ts) ? Number(s.metadata.ts) : NaN;
-      if(Number.isFinite(ts) && (!Number.isFinite(recentTs) || ts>recentTs)) recentTs = ts;
+      if(Number.isFinite(ts) && (byPid[pid].recentTs === null || ts > byPid[pid].recentTs)) byPid[pid].recentTs = ts;
+      byPid[pid].count++;
     }
-    statBest.textContent = (best===null) ? '—' : String(best);
-    statRecent.textContent = Number.isFinite(recentTs) ? fmtTs(recentTs) : '—';
+    const rows = Object.entries(byPid).sort(([a],[b])=>a.localeCompare(b)).map(([pid, st]) => `
+      <tr>
+        <td>${pid}</td>
+        <td>${st.count}</td>
+        <td>${st.best !== null ? st.best : '—'}</td>
+        <td>${st.recentTs !== null ? fmtTs(st.recentTs) : '—'}</td>
+      </tr>`).join('');
+    statsByProblem.innerHTML = `
+      <table class="cases-table">
+        <thead><tr><th>Problem</th><th>Submissions</th><th>Best Score</th><th>Most Recent</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
   }
 
   async function loadTeam(page = state.page){
     if(!state.team){
       tableWrap.innerHTML = '<p>⚠️ Missing ?team= in URL.</p>';
-      statCount.textContent='—'; statBest.textContent='—'; statRecent.textContent='—';
+      statCount.textContent='—'; statsByProblem.innerHTML='';
       pageInfo.textContent='—'; prevBtn.disabled = nextBtn.disabled = true;
       return;
     }
@@ -236,7 +258,9 @@
       tableWrap.innerHTML = '<p>Loading…</p>';
 
       // NEW API: /getTeamSubmissions/:team/:page?pageSize=...
-      const url = `${URL}/getTeamSubmissions/${encodeURIComponent(state.team)}/${encodeURIComponent(page)}?pageSize=${encodeURIComponent(state.pageSize)}`;
+      const params = new URLSearchParams({ pageSize: state.pageSize, sortBy: state.sortBy, sortOrder: state.sortOrder });
+      if (state.pid) params.set('pid', state.pid);
+      const url = `${URL}/getTeamSubmissions/${encodeURIComponent(state.team)}/${encodeURIComponent(page)}?${params}`;
       const res = await fetch(url, { headers: {'ngrok-skip-browser-warning':'true'} });
       if(!res.ok){
         tableWrap.innerHTML = `<p>⚠️ Failed to fetch team submissions (${res.status})</p>`;
@@ -249,7 +273,7 @@
       const curPage = Number(data.page||page);
       const pageSize = Number(data.pageSize||state.pageSize);
       const totalPages = Math.max(1, Number(data.totalPages||Math.ceil(total / Math.max(1,pageSize))));
-      const results = Array.isArray(data.submissions) ? data.submissions : [];
+      const results = Array.isArray(data.results) ? data.results : [];
 
       // update state
       state.page = curPage;
@@ -279,6 +303,13 @@
   pageSizeSel.addEventListener('change', () => {
     state.pageSize = Math.max(1, Number(pageSizeSel.value) || 20);
     loadTeam(1);
+  });
+  sortBySel.addEventListener('change', () => { state.sortBy = sortBySel.value; loadTeam(1); });
+  sortOrderSel.addEventListener('change', () => { state.sortOrder = sortOrderSel.value; loadTeam(1); });
+  let pidFilterTimer;
+  pidFilter.addEventListener('input', () => {
+    clearTimeout(pidFilterTimer);
+    pidFilterTimer = setTimeout(() => { state.pid = pidFilter.value.trim(); loadTeam(1); }, 400);
   });
 
   // initial
