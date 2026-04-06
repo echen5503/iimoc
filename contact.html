@@ -154,12 +154,25 @@
     margin-right: 6px;
     font-size: 1.01rem;
   }
+  .contact-role {
+    font-size: 0.82rem;
+    color: #888;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .contact-credits {
+    font-size: 0.93rem;
+    color: #999;
+  }
   .contact-item {
     color: #c5e1a5;
     font-size: 1.01rem;
     margin-left: 2px;
     overflow-wrap: anywhere;
+    text-decoration: none;
   }
+  a.contact-item:hover { text-decoration: underline; }
   .footer {
     background: #181818;
     border-top: 1px solid #333;
@@ -190,27 +203,42 @@
         <span class="scramble-char">C</span>
       </span>
     </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="btn" href="/signup.html" target="_blank" rel="noopener noreferrer">Sign Up</a>
+    </div>
   </nav>
 </header>
 <main>
   <div class="container">
     <h1>Contact</h1>
-    <div class="desc">Contact our team below.</div>
+    <div class="desc">Questions about IIMOC? Reach out to our team.</div>
     <div class="contact-list">
-      
+
       <div class="contact-card">
-        <span class="contact-name">Chief Organizer: Edwin Chen</span>
-        <span><span class="contact-label">Email:</span> <span class="contact-item">edwin.chen@iimoc.org</span></span>
+        <div class="contact-role">Chief Organizer (General Inquiry)</div>
+        <div class="contact-name">Edwin Chen</div>
+        <a class="contact-item" href="mailto:edwin.chen@iimoc.org">edwin.chen@iimoc.org</a>
       </div>
+
       <div class="contact-card">
-          <span class="contact-name">Advisor: Rob Kolstad</span>
-          <span><span class="contact-label">Email:</span> <span class="contact-item">rob.kolstad@gmail.com</span></span>
+        <div class="contact-role">Advisor</div>
+        <div class="contact-name">Rob Kolstad</div>
+        <a class="contact-item" href="mailto:rob.kolstad@gmail.com">rob.kolstad@gmail.com</a>
       </div>
+
       <div class="contact-card">
-          <span class="contact-name">Frontend: sirbread, Edwin Chen</span>
-          <span class="contact-name">Backend: Edwin Chen</span>
-          <span><span class="contact-label">Email:</span> <span class="contact-item">sirbread.dev@outlook.com</span></span>
+        <div class="contact-role">Development</div>
+        <div class="contact-name">sirbread &amp; Edwin Chen</div>
+        <div class="contact-credits">
+          <span class="contact-label">Frontend:</span> sirbread, Edwin Chen
+        </div>
+        <div class="contact-credits">
+          <span class="contact-label">Backend:</span> Edwin Chen
+        </div>
+        <a class="contact-item" href="mailto:sirbread.dev@outlook.com">sirbread.dev@outlook.com</a>
       </div>
+
     </div>
   </div>
 </main>
@@ -279,7 +307,6 @@
     brandTitle.addEventListener('blur', endScramble);
   })();
 </script>
-  <script src="assets/js/markdown-renderer.js" defer></script>
 </body>
 
 </html>
