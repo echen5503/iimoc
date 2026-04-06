@@ -215,7 +215,7 @@ async function showTeamBreakdown(teamName) {
         
     data.bonusHistory.forEach(b => {
         // Format the date. If 'b.date' is "2026-03-29", this makes it readable.
-        const dateStr = b.date ? new Date(b.date).toLocaleDateString() : '—';
+        const dateStr = b.awardedAt ? new Date(b.awardedAt).toLocaleString(undefined, {hour12:false}) : '—';
         
         bonusHtml += `
         <tr>
