@@ -209,9 +209,40 @@
   }
 
   .badges-wrap {
-    max-width: 330px;
-    margin: 0 auto 0 auto;
+    margin: 0 auto;
   }
+
+  /* Problem cards */
+  .problem-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 14px;
+  }
+  .problem-block {
+    background: #181818;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 18px 20px 16px 20px;
+    text-align: left;
+    color: #cfcfcf;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    flex: 1 1 280px;
+    max-width: 340px;
+  }
+  .problem-block h3 {
+    color: #f0e7ff;
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+  }
+  .problem-block .credit-row { color: #999; font-size: 0.9rem; }
+  .problem-block .credit-row strong { color: #bdbdbd; font-weight: normal; }
   .badges {
     margin-top: 18px;
     display: flex;
@@ -379,6 +410,7 @@
     border: 2px solid #444;
     flex-shrink: 0;
   }
+  .tl-dot-blue   { background: #38bdf8; border-color: #38bdf8; box-shadow: 0 0 7px #38bdf866; }
   .tl-dot-green  { background: #4ade80; border-color: #4ade80; box-shadow: 0 0 7px #4ade8066; }
   .tl-dot-yellow { background: #facc15; border-color: #facc15; box-shadow: 0 0 7px #facc1566; }
   .tl-dot-purple { background: #b89bfa; border-color: #b89bfa; box-shadow: 0 0 7px #b89bfa66; }
@@ -431,7 +463,6 @@
     </a>
     <div class="nav-links">
       <a class="nav-link" href="contact.html">Contact</a>
-      <a class="nav-link" href="#frontiercs">IIMOC x FrontierCS</a>
       <a class="btn" href="/signup.html" target="_blank" rel="noopener noreferrer">Sign Up</a>
     </div>
   </nav>
@@ -443,10 +474,16 @@
     <span class="iimoc-full">International Math Optimization Challenge</span>
 
     <div class="about-section">
-      IIMOC is a global Math/CS competition centered around hard optimization problems — accessible to motivated high school and college students, but deep enough for weeks of research. For 2026, teams compete across a <strong>frontier of algorithmic tasks</strong> from FrontierCS, earning points by beating the public best-known scores. Every verified improvement updates the global leaderboard and is visible to everyone.
+      IIMOC is a global Math/CS competition centered around hard optimization problems — accessible to motivated high school and college students, but deep enough for weeks of research. For 2026, teams compete across a <strong>frontier of algorithmic tasks</strong> from FrontierCS. Points are awarded by <strong>final placement</strong> on each task's leaderboard — the higher you rank when submissions close, the more points your team earns.
     </div>
 
     <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-blue"></div>
+        <div class="tl-label">Apr 15</div>
+        <div class="tl-desc">Practice problems released</div>
+      </div>
+      <div class="tl-line"></div>
       <div class="tl-item">
         <div class="tl-dot tl-dot-green"></div>
         <div class="tl-label">May 1</div>
@@ -562,14 +599,14 @@
 
         <div class="card">
           <div class="card-header">
-            <!-- Frontier Scoring: trending up -->
+            <!-- Placement Scoring: trending up -->
             <svg class="icon icon-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 17l6-6 4 4 7-7"></path>
               <path d="M14 8h6v6"></path>
             </svg>
-            <h3>Frontier Scoring</h3>
+            <h3>Placement Scoring</h3>
           </div>
-          <p>A submission only matters if it <strong>beats the current frontier</strong>. Improvements update the public best-known score.</p>
+          <p>Points are awarded by <strong>final rank</strong> on each task. Submit your best solution before the deadline and lock in your placement.</p>
         </div>
 
         <div class="card">
@@ -586,24 +623,22 @@
 
         <div class="card">
           <div class="card-header">
-            <!-- Credit for Δ: plus-circle -->
+            <!-- Rank-based points: trophy -->
             <svg class="icon icon-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M12 8v8"></path>
-              <path d="M8 12h8"></path>
+              <path d="M8 21h8"></path>
+              <path d="M12 17v4"></path>
+              <path d="M7 4h10v5a5 5 0 0 1-10 0V4z"></path>
+              <path d="M5 7H3a2 2 0 0 0 2 2"></path>
+              <path d="M19 7h2a2 2 0 0 1-2 2"></path>
             </svg>
-            <h3>Credit for Δ</h3>
+            <h3>Rank-Based Points</h3>
           </div>
-          <p>Ranking is based on <strong>how much you improve the frontier</strong>, not how many times you submit.</p>
+          <p>The higher you place across all tasks, the more points you earn. Consistent top placements win the overall leaderboard.</p>
         </div>
       </div>
 
       <div class="about-section" style="margin-top: 18px; text-align: left;">
-        <strong>What to expect:</strong><br/>
-        • Public task list with an initial frontier for each task<br/>
-        • Points based on verified improvement (Δ over the current frontier)<br/>
-        • Club / team rankings + awards for novel ideas and clean engineering<br/>
-        <span class="muted-2" style="display:block; margin-top: 8px;">Rules and dates will be posted once infrastructure is finalized.</span>
+        We will release complete rules nearer to contest start date.
       </div>
 
       <div style="display:flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;">
@@ -655,39 +690,39 @@
       </div>
     </div>
 
-    <div class="section">
-      <h2 style="text-align:center;">Where Clubs Compete</h2>
-      <div class="muted" style="text-align:center;">Join students from:</div>
+    <div class="section" style="text-align:center;">
+      <h2>Where Clubs Compete</h2>
+      <div class="muted" style="margin-bottom: 14px;">21 countries in 2025</div>
       <div class="badges-wrap">
         <div class="badges">
-          <span class="badge">USA</span><span class="badge">Japan</span><span class="badge">Korea</span>
-          <span class="badge">Taiwan</span><span class="badge">Morocco</span><span class="badge">Canada</span>
-          <span class="badge">Ethiopia</span><span class="badge">UK</span><span class="badge">China</span>
-          <span class="badge">India</span><span class="badge">Iran</span><span class="badge">Pakistan</span>
-          <span class="badge">Netherlands</span><span class="badge">Germany</span><span class="badge">Vietnam</span>
-          <span class="badge">Poland</span><span class="badge">Qatar</span><span class="badge">Finland</span>
-          <span class="badge">Hong Kong</span><span class="badge">Egypt</span><span class="badge">Bahrain</span>
+          <span class="badge">🇺🇸 USA</span><span class="badge">🇯🇵 Japan</span><span class="badge">🇰🇷 Korea</span>
+          <span class="badge">🇹🇼 Taiwan</span><span class="badge">🇲🇦 Morocco</span><span class="badge">🇨🇦 Canada</span>
+          <span class="badge">🇪🇹 Ethiopia</span><span class="badge">🇬🇧 UK</span><span class="badge">🇨🇳 China</span>
+          <span class="badge">🇮🇳 India</span><span class="badge">🇮🇷 Iran</span><span class="badge">🇵🇰 Pakistan</span>
+          <span class="badge">🇳🇱 Netherlands</span><span class="badge">🇩🇪 Germany</span><span class="badge">🇻🇳 Vietnam</span>
+          <span class="badge">🇵🇱 Poland</span><span class="badge">🇶🇦 Qatar</span><span class="badge">🇫🇮 Finland</span>
+          <span class="badge">🇭🇰 Hong Kong</span><span class="badge">🇪🇬 Egypt</span><span class="badge">🇧🇭 Bahrain</span>
         </div>
       </div>
     </div>
 
     <div class="section" style="text-align: center;">
       <h2>2025 Problems</h2>
-
-      <div class="problem-block" style="margin-bottom: 18px;">
-        <h3>Permutation (Sample)</h3>
-        <strong>Author:</strong> Qiuyang Mang (Sua)<br>
-        <strong>Edited by:</strong> Edwin Chen<br>
-        <strong>Editorial by:</strong> Alexander Du<br>
-        <strong>Prepared by:</strong> Alexander Du &amp; Edwin Chen
-      </div>
-
-      <div class="problem-block">
-        <h3>Additional Official Materials</h3>
-        <strong>Author:</strong> Shang Zhou (Berkeley Sky Computing Lab)<br>
-        <strong>Edited by:</strong> Shang Zhou<br>
-        <strong>Editorial by:</strong> Shang Zhou<br>
-        <strong>Prepared by:</strong> Edwin Chen
+      <div class="problem-cards">
+        <div class="problem-block">
+          <h3>Permutation (Sample)</h3>
+          <div class="credit-row"><strong>Author:</strong> Qiuyang Mang (Sua)</div>
+          <div class="credit-row"><strong>Edited by:</strong> Edwin Chen</div>
+          <div class="credit-row"><strong>Editorial by:</strong> Alexander Du</div>
+          <div class="credit-row"><strong>Prepared by:</strong> Alexander Du &amp; Edwin Chen</div>
+        </div>
+        <div class="problem-block">
+          <h3>Poly Pack</h3>
+          <div class="credit-row"><strong>Author:</strong> Shang Zhou (Berkeley Sky Computing Lab)</div>
+          <div class="credit-row"><strong>Edited by:</strong> Shang Zhou</div>
+          <div class="credit-row"><strong>Editorial by:</strong> Shang Zhou</div>
+          <div class="credit-row"><strong>Prepared by:</strong> Edwin Chen</div>
+        </div>
       </div>
     </div>
   </div>
