@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IIMOC Admin Dashboard</title>
+  <style>
+    body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
+    header { width:100%; background:#181818; border-bottom:1px solid #333; }
+    .nav { display:flex; align-items:center; justify-content:space-between; max-width:960px; margin:0 auto; padding:16px 20px 8px; }
+    .nav-links { display:flex; gap:18px; }
+    .nav-link {
+      background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
+      padding:10px 20px; font-family:inherit; font-size:1.09rem; cursor:pointer;
+      text-decoration:none; font-weight:600; letter-spacing:1px; transition:background .13s;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .nav-link:hover { background:#333; }
+    .brand-title { font-size:1.5rem; color:#fafafa; letter-spacing:2px; display:flex; align-items:center; gap:7px; text-decoration:none; }
+    .brand-title svg { height:38px; width:38px; color:#b89bfa; stroke-width:2.2; }
+
+    .wrap { max-width:960px; margin:48px auto 60px; padding:0 20px; }
+
+    h1 { text-align:center; font-size:2rem; color:#fafafa; margin-bottom:6px; letter-spacing:2px; font-weight:normal; }
+    .subtitle { text-align:center; color:#888; margin-bottom:36px; font-size:0.97rem; }
+
+    /* Password bar */
+    .pw-bar {
+      display:flex; align-items:center; gap:12px;
+      background:#1e1e22; border:1px solid #444; border-radius:6px;
+      padding:14px 18px; margin-bottom:32px;
+    }
+    .pw-bar label { color:#aaa; font-size:0.93rem; white-space:nowrap; }
+    .pw-bar input {
+      flex:1; background:#111; border:1px solid #555; border-radius:4px;
+      color:#f0f0f0; font-family:inherit; font-size:0.97rem; padding:7px 10px;
+      outline:none;
+    }
+    .pw-bar input:focus { border-color:#b89bfa; }
+    .pw-status { font-size:0.85rem; white-space:nowrap; }
+    .pw-status.set { color:#8adf8a; }
+    .pw-status.unset { color:#f28b82; }
+
+    /* Section grid */
+    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:18px; margin-bottom:24px; }
+
+    .card {
+      background:#222; border:1px solid #3a3a3a; border-radius:8px; padding:22px 20px 18px;
+      display:flex; flex-direction:column; gap:14px;
+    }
+    .card-title {
+      font-size:1.02rem; font-weight:bold; letter-spacing:1px; color:#e8e0ff;
+      display:flex; align-items:center; gap:8px; margin:0;
+    }
+    .card-title svg { color:#b89bfa; flex-shrink:0; }
+    .card-desc { color:#999; font-size:0.88rem; line-height:1.5; margin:0; }
+
+    .field { display:flex; flex-direction:column; gap:5px; }
+    .field label { font-size:0.85rem; color:#aaa; }
+    .field select, .field input[type="text"], .field input[type="number"], .field input[type="datetime-local"] {
+      background:#111; border:1px solid #555; border-radius:4px;
+      color:#f0f0f0; font-family:inherit; font-size:0.95rem; padding:7px 10px;
+      outline:none; width:100%; box-sizing:border-box;
+    }
+    .field select:focus, .field input:focus { border-color:#b89bfa; }
+
+    /* Buttons */
+    .btn {
+      background:#282828; color:#f0f0f0; border:1px solid #555; border-radius:4px;
+      padding:9px 18px; font-family:inherit; font-size:0.97rem; cursor:pointer;
+      font-weight:600; letter-spacing:1px; transition:background .13s, border-color .13s;
+      display:inline-flex; align-items:center; justify-content:center; gap:7px;
+      width:100%; box-sizing:border-box;
+    }
+    .btn:hover { background:#333; border-color:#666; }
+    .btn:disabled { opacity:.45; cursor:not-allowed; }
+    .btn-action { border-color:#b89bfa; color:#e0d4ff; }
+    .btn-action:hover { background:#2a243a; border-color:#d4bfff; }
+    .btn-warn { border-color:#f0c040; color:#f5e090; }
+    .btn-warn:hover { background:#2a2510; border-color:#f5d060; }
+    .btn-danger { border-color:#f28b82; color:#ffd0cc; }
+    .btn-danger:hover { background:#2a1510; border-color:#ff9d94; }
+
+    /* Inline result */
+    .card-result {
+      font-size:0.82rem; border-radius:4px; padding:8px 10px;
+      display:none; word-break:break-all; white-space:pre-wrap;
+    }
+    .card-result.ok { background:#0d2010; border:1px solid #2a5030; color:#8adf8a; display:block; }
+    .card-result.err { background:#20100d; border:1px solid #502a2a; color:#f28b82; display:block; }
+
+    /* Log panel */
+    .log-panel {
+      background:#111; border:1px solid #3a3a3a; border-radius:8px;
+      margin-top:8px; padding:0;
+      overflow:hidden;
+    }
+    .log-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 16px; border-bottom:1px solid #2a2a2a;
+      font-size:0.9rem; color:#aaa; letter-spacing:1px;
+    }
+    .log-clear { background:none; border:none; color:#666; cursor:pointer; font-family:inherit; font-size:0.85rem; padding:2px 6px; }
+    .log-clear:hover { color:#aaa; }
+    .log-body { max-height:320px; overflow-y:auto; padding:8px 0; }
+    .log-entry {
+      padding:6px 16px; font-size:0.82rem; line-height:1.5;
+      border-bottom:1px solid #1a1a1a; display:flex; gap:10px;
+    }
+    .log-entry:last-child { border-bottom:none; }
+    .log-time { color:#555; white-space:nowrap; }
+    .log-method { font-weight:bold; width:56px; flex-shrink:0; }
+    .log-route { color:#b89bfa; flex:1; min-width:0; }
+    .log-status { font-weight:bold; white-space:nowrap; }
+    .log-status.ok { color:#8adf8a; }
+    .log-status.err { color:#f28b82; }
+    .log-payload { color:#888; font-size:0.78rem; padding:2px 16px 6px 82px; white-space:pre-wrap; word-break:break-all; }
+
+    .spinner {
+      display:inline-block; width:13px; height:13px;
+      border:2px solid #555; border-top-color:#b89bfa;
+      border-radius:50%; animation:spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    .section-label {
+      font-size:0.78rem; letter-spacing:2px; color:#666; text-transform:uppercase;
+      margin:28px 0 10px; padding-bottom:6px; border-bottom:1px solid #2a2a2a;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="/index.html" class="brand-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 4H6l7 8-7 8h12"/>
+      </svg>
+      <span>IIMOC</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/leaderboard2026.html">Leaderboard</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1>Admin Dashboard</h1>
+  <p class="subtitle">IIMOC 2026 — Contest Administration</p>
+
+  <!-- Password bar -->
+  <div class="pw-bar">
+    <label for="pwInput">Admin Password</label>
+    <input type="password" id="pwInput" placeholder="Enter admin password…" autocomplete="off" />
+    <span class="pw-status unset" id="pwStatus">Not set</span>
+  </div>
+
+  <!-- ── Daily Bonuses ─────────────────────────────────────────── -->
+  <div class="section-label">Daily Bonuses</div>
+  <div class="grid">
+
+    <div class="card">
+      <p class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Award Daily Bonuses
+      </p>
+      <p class="card-desc">Run the daily cutoff — award bonus points to all teams based on their current rankings across each active problem.</p>
+      <button class="btn btn-action" id="btnAwardBonuses">Award Bonuses</button>
+      <div class="card-result" id="resAwardBonuses"></div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+        Clear All Daily Bonuses
+      </p>
+      <p class="card-desc">Permanently delete every daily bonus record from the database. All team bonus totals will reset to zero.</p>
+      <button class="btn btn-danger" id="btnClearBonuses">Clear All Bonuses</button>
+      <div class="card-result" id="resClearBonuses"></div>
+    </div>
+
+  </div>
+
+  <!-- ── Scoring ───────────────────────────────────────────────── -->
+  <div class="section-label">Scoring</div>
+  <div class="grid">
+
+    <div class="card">
+      <p class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Rebuild Team Bests
+      </p>
+      <p class="card-desc">Reprocess every submission in the database and recalculate the best score per team per problem from scratch.</p>
+      <button class="btn btn-warn" id="btnRebuildBests">Rebuild Team Bests</button>
+      <div class="card-result" id="resRebuildBests"></div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Set Problem Baseline
+      </p>
+      <p class="card-desc">Update the baseline score for a problem. Used as the denominator in relative-score calculations.</p>
+      <div class="field">
+        <label>Problem</label>
+        <select id="baselinePid">
+          <option value="kcircle">kcircle</option>
+          <option value="longcycle">longcycle</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Baseline value</label>
+        <input type="number" id="baselineValue" placeholder="e.g. 1000" min="0" step="any" />
+      </div>
+      <button class="btn btn-action" id="btnSetBaseline">Set Baseline</button>
+      <div class="card-result" id="resSetBaseline"></div>
+    </div>
+
+  </div>
+
+  <!-- ── System Testing ────────────────────────────────────────── -->
+  <div class="section-label">System Testing</div>
+  <div class="grid">
+
+    <div class="card">
+      <p class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Run Systest
+      </p>
+      <p class="card-desc">Copy a problem to <code style="color:#b89bfa">[pid]_sys</code>, regenerate test cases using <code style="color:#b89bfa">n_systest</code>, and re-judge every team's last submission before the cutoff.</p>
+      <div class="field">
+        <label>Problem</label>
+        <select id="systestPid">
+          <option value="kcircle">kcircle</option>
+          <option value="longcycle">longcycle</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Cutoff (optional — defaults to now)</label>
+        <input type="datetime-local" id="systestCutoff" />
+      </div>
+      <button class="btn btn-warn" id="btnSystest">Run Systest</button>
+      <div class="card-result" id="resSystest"></div>
+    </div>
+
+  </div>
+
+  <!-- ── Problem Management ─────────────────────────────────────── -->
+  <div class="section-label">Problem Management</div>
+  <div class="grid">
+
+    <div class="card">
+      <p class="card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        Delete Problem
+      </p>
+      <p class="card-desc">Permanently remove a problem folder and purge all its submissions, team-bests, and problem-meta records.</p>
+      <div class="field">
+        <label>Problem ID (free-form — include _sys suffix if needed)</label>
+        <input type="text" id="deletePid" placeholder="e.g. kcircle or kcircle_sys" autocomplete="off" />
+      </div>
+      <button class="btn btn-danger" id="btnDeleteProblem">Delete Problem</button>
+      <div class="card-result" id="resDeleteProblem"></div>
+    </div>
+
+  </div>
+
+  <!-- ── Response Log ───────────────────────────────────────────── -->
+  <div class="section-label">Response Log</div>
+  <div class="log-panel">
+    <div class="log-header">
+      <span>API Activity</span>
+      <button class="log-clear" id="btnClearLog">Clear</button>
+    </div>
+    <div class="log-body" id="logBody">
+      <div style="padding:16px; color:#444; font-size:0.85rem; text-align:center;">No requests yet.</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const API = 'https://contest.iimoc.org';
+const HEADERS = { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' };
+
+// ── Password helpers ─────────────────────────────────────────────
+const pwInput  = document.getElementById('pwInput');
+const pwStatus = document.getElementById('pwStatus');
+
+(function restorePw() {
+  const saved = sessionStorage.getItem('iimoc_admin_pw');
+  if (saved) { pwInput.value = saved; updatePwStatus(); }
+})();
+
+pwInput.addEventListener('input', () => { sessionStorage.setItem('iimoc_admin_pw', pwInput.value); updatePwStatus(); });
+
+function getPassword() { return pwInput.value.trim(); }
+
+function updatePwStatus() {
+  const has = getPassword().length > 0;
+  pwStatus.textContent = has ? 'Set' : 'Not set';
+  pwStatus.className = 'pw-status ' + (has ? 'set' : 'unset');
+}
+
+// ── Logging ──────────────────────────────────────────────────────
+const logBody = document.getElementById('logBody');
+let logEmpty = true;
+
+function addLog(method, route, statusCode, ok, payloadObj) {
+  if (logEmpty) { logBody.innerHTML = ''; logEmpty = false; }
+  const time = new Date().toLocaleTimeString(undefined, { hour12: false });
+  const entry = document.createElement('div');
+  entry.className = 'log-entry';
+  entry.innerHTML =
+    `<span class="log-time">${time}</span>` +
+    `<span class="log-method" style="color:${methodColor(method)}">${method}</span>` +
+    `<span class="log-route">${route}</span>` +
+    `<span class="log-status ${ok ? 'ok' : 'err'}">${statusCode}</span>`;
+  logBody.appendChild(entry);
+
+  if (payloadObj) {
+    const payload = document.createElement('div');
+    payload.className = 'log-payload';
+    payload.textContent = JSON.stringify(payloadObj, null, 2);
+    logBody.appendChild(payload);
+  }
+  logBody.scrollTop = logBody.scrollHeight;
+}
+
+function methodColor(m) {
+  return { GET:'#8adf8a', POST:'#b89bfa', DELETE:'#f28b82' }[m] || '#aaa';
+}
+
+document.getElementById('btnClearLog').onclick = () => {
+  logBody.innerHTML = '<div style="padding:16px; color:#444; font-size:0.85rem; text-align:center;">No requests yet.</div>';
+  logEmpty = true;
+};
+
+// ── Generic fetch wrapper ────────────────────────────────────────
+async function apiFetch(method, path, body, resultEl) {
+  const pw = getPassword();
+  if (!pw) { showResult(resultEl, false, 'Set the admin password first.'); return null; }
+
+  setLoading(resultEl, true);
+  try {
+    const opts = { method, headers: HEADERS };
+    if (body) opts.body = JSON.stringify({ ...body, password: pw });
+
+    // For DELETE with no body, pass password as query param
+    let url = API + path;
+    if (method === 'DELETE' && !body) url += `?password=${encodeURIComponent(pw)}`;
+    if (method === 'GET') url += (path.includes('?') ? '&' : '?') + `password=${encodeURIComponent(pw)}`;
+
+    const res = await fetch(url, opts);
+    let data;
+    try { data = await res.json(); } catch { data = { error: 'Non-JSON response' }; }
+
+    addLog(method, path, res.status, res.ok, data);
+    showResult(resultEl, res.ok, res.ok ? formatOk(data) : (data.error || data.message || 'Request failed'));
+    return res.ok ? data : null;
+  } catch (err) {
+    addLog(method, path, 'ERR', false, { error: err.message });
+    showResult(resultEl, false, 'Network error: ' + err.message);
+    return null;
+  } finally {
+    setLoading(resultEl, false);
+  }
+}
+
+function setLoading(el, loading) {
+  const btn = el.previousElementSibling;
+  if (!btn || btn.tagName !== 'BUTTON') return;
+  btn.disabled = loading;
+  btn.dataset.origText = btn.dataset.origText || btn.innerHTML;
+  btn.innerHTML = loading
+    ? '<span class="spinner"></span> Working…'
+    : btn.dataset.origText;
+}
+
+function showResult(el, ok, msg) {
+  el.className = 'card-result ' + (ok ? 'ok' : 'err');
+  el.textContent = msg;
+}
+
+function formatOk(data) {
+  const parts = [];
+  if (data.message) parts.push(data.message);
+  if (data.deleted !== undefined) parts.push(`Deleted: ${data.deleted}`);
+  if (data.awarded !== undefined) parts.push(`Awarded: ${Array.isArray(data.awarded) ? data.awarded.length + ' records' : data.awarded}`);
+  if (data.recordsProcessed !== undefined) parts.push(`Processed: ${data.recordsProcessed} records`);
+  if (data.pid) parts.push(`PID: ${data.pid}`);
+  if (data.baseline !== undefined) parts.push(`Baseline: ${data.baseline}`);
+  if (data.teamsJudged !== undefined) parts.push(`Teams judged: ${data.teamsJudged}`);
+  if (data.submissionsDeleted !== undefined) parts.push(`Submissions deleted: ${data.submissionsDeleted}`);
+  return parts.join(' · ') || 'OK';
+}
+
+// ── Award Daily Bonuses ──────────────────────────────────────────
+document.getElementById('btnAwardBonuses').onclick = async () => {
+  await apiFetch('POST', '/admin/dailyCutoff', {}, document.getElementById('resAwardBonuses'));
+};
+
+// ── Clear All Daily Bonuses ──────────────────────────────────────
+document.getElementById('btnClearBonuses').onclick = async () => {
+  if (!confirm('Delete ALL daily bonus records? This will reset every team\'s bonus to zero and cannot be undone.')) return;
+  const pw = getPassword();
+  const resultEl = document.getElementById('resClearBonuses');
+  if (!pw) { showResult(resultEl, false, 'Set the admin password first.'); return; }
+
+  setLoading(resultEl, true);
+  try {
+    const res = await fetch(`${API}/admin/dailyBonuses`, {
+      method: 'DELETE',
+      headers: HEADERS,
+      body: JSON.stringify({ password: pw }),
+    });
+    let data;
+    try { data = await res.json(); } catch { data = { error: 'Non-JSON response' }; }
+    addLog('DELETE', '/admin/dailyBonuses', res.status, res.ok, data);
+    showResult(resultEl, res.ok, res.ok ? formatOk(data) : (data.error || 'Request failed'));
+  } catch (err) {
+    addLog('DELETE', '/admin/dailyBonuses', 'ERR', false, { error: err.message });
+    showResult(resultEl, false, 'Network error: ' + err.message);
+  } finally {
+    setLoading(resultEl, false);
+  }
+};
+
+// ── Rebuild Team Bests ───────────────────────────────────────────
+document.getElementById('btnRebuildBests').onclick = async () => {
+  if (!confirm('Rebuild all team bests? This clears the teamBests collection and reprocesses every submission.')) return;
+  await apiFetch('POST', '/admin/rebuildBests', {}, document.getElementById('resRebuildBests'));
+};
+
+// ── Set Baseline ─────────────────────────────────────────────────
+document.getElementById('btnSetBaseline').onclick = async () => {
+  const pid = document.getElementById('baselinePid').value;
+  const baseline = parseFloat(document.getElementById('baselineValue').value);
+  const resultEl = document.getElementById('resSetBaseline');
+  if (isNaN(baseline)) { showResult(resultEl, false, 'Enter a valid baseline number.'); return; }
+  await apiFetch('POST', '/admin/setBaseline', { pid, baseline }, resultEl);
+};
+
+// ── Systest ──────────────────────────────────────────────────────
+document.getElementById('btnSystest').onclick = async () => {
+  const pid = document.getElementById('systestPid').value;
+  const cutoffRaw = document.getElementById('systestCutoff').value;
+  const resultEl = document.getElementById('resSystest');
+  const body = { pid };
+  if (cutoffRaw) body.cutoff = new Date(cutoffRaw).getTime();
+  if (!confirm(`Run systest for "${pid}"? This will regenerate test cases and re-judge all team submissions.`)) return;
+  await apiFetch('POST', '/admin/systest', body, resultEl);
+};
+
+// ── Delete Problem ───────────────────────────────────────────────
+document.getElementById('btnDeleteProblem').onclick = async () => {
+  const pid = document.getElementById('deletePid').value.trim();
+  const resultEl = document.getElementById('resDeleteProblem');
+  if (!pid) { showResult(resultEl, false, 'Enter a problem ID.'); return; }
+  if (!confirm(`Permanently delete "${pid}"? This removes the problem folder and ALL associated submissions. This cannot be undone.`)) return;
+
+  const pw = getPassword();
+  if (!pw) { showResult(resultEl, false, 'Set the admin password first.'); return; }
+
+  setLoading(resultEl, true);
+  try {
+    const res = await fetch(`${API}/admin/problem/${encodeURIComponent(pid)}?password=${encodeURIComponent(pw)}`, {
+      method: 'DELETE',
+      headers: HEADERS,
+    });
+    let data;
+    try { data = await res.json(); } catch { data = { error: 'Non-JSON response' }; }
+    addLog('DELETE', `/admin/problem/${pid}`, res.status, res.ok, data);
+    showResult(resultEl, res.ok, res.ok ? formatOk(data) : (data.error || 'Request failed'));
+  } catch (err) {
+    addLog('DELETE', `/admin/problem/${pid}`, 'ERR', false, { error: err.message });
+    showResult(resultEl, false, 'Network error: ' + err.message);
+  } finally {
+    setLoading(resultEl, false);
+  }
+};
+</script>
+</body>
+</html>
