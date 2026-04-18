@@ -264,10 +264,7 @@
       <p class="card-desc">Submit solution code on behalf of every team for a problem. Judging runs normally; use the score override to force a specific score after judging completes.</p>
       <div class="field">
         <label>Problem</label>
-        <select id="seedPid">
-          <option value="kcircle">kcircle</option>
-          <option value="longcycle">longcycle</option>
-        </select>
+        <input type="text" id="seedPid" placeholder="e.g. kcircle" autocomplete="off" />
       </div>
       <div class="field">
         <label>Language</label>
@@ -502,13 +499,14 @@ document.getElementById('btnSystest').onclick = async () => {
 
 // ── Seed Dummy Submissions ───────────────────────────────────────
 document.getElementById('btnSeedDummy').onclick = async () => {
-  const pid      = document.getElementById('seedPid').value;
+  const pid      = document.getElementById('seedPid').value.trim();
   const lang     = document.getElementById('seedLang').value;
   const code     = document.getElementById('seedCode').value.trim();
   const scoreRaw = document.getElementById('seedScore').value.trim();
   const overwrite = document.getElementById('seedOverwrite').checked;
   const resultEl = document.getElementById('resSeedDummy');
 
+  if (!pid) { showResult(resultEl, false, 'Enter a problem ID.'); return; }
   if (!code) { showResult(resultEl, false, 'Paste some code first.'); return; }
   if (!confirm(`Submit "${lang}" code for ALL teams on "${pid}"? ${overwrite ? 'Existing bests will be overwritten.' : 'Teams with existing bests will be skipped.'}`)) return;
 
