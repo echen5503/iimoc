@@ -62,6 +62,15 @@
     @media (max-width:900px){ .container,.nav{ max-width:98vw; padding-left:5vw; padding-right:5vw; } .cases-table{ display:block; overflow-x:auto; } }
     code.language-python { background-color: #111!important; padding: 0!important; }
     .problem-text img { max-width: 100%; height: auto; display: block; }
+    .problem-text a { color: cyan; text-decoration: underline; }
+    .meta-bar {
+      display: flex; flex-wrap: wrap; gap: 10px 20px;
+      background: #1b1b1e; border: 1px solid #333; border-radius: 6px;
+      padding: 12px 18px; margin-bottom: 18px; font-size: 0.92rem;
+    }
+    .meta-item { display: flex; gap: 6px; align-items: center; }
+    .meta-label { color: #888; }
+    .meta-value { color: #e0d4ff; font-weight: 700; }
 
     .control-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
     select.select {
@@ -105,6 +114,7 @@
 
 <main>
   <section class="container">
+    <div id="metaBar" class="meta-bar" style="display:none;"></div>
     <div id="problemMarkdown" class="problem-text">Loading problem statement…</div>
     
     <form class="code-form" id="codeForm">
@@ -626,13 +636,46 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(!pid){
       container.textContent = '⚠️ Missing ?pid= in URL.';
     } else {
-      const res = await fetchStatement(pid);
-      if (!res.ok) throw new Error(`Markdown not found (${res.status})`);
-      const md = await res.text();
+      // Fetch config metadata and statement in parallel
+      const [configRes, stmtRes] = await Promise.all([
+        fetch(`${URL}/problem/config/${encodeURIComponent(pid)}`, { headers: {'ngrok-skip-browser-warning':'true'} }),
+        fetchStatement(pid),
+      ]);
+
+      // Render metadata bar
+      if (configRes.ok) {
+        const cfg = await configRes.json();
+        const metaBar = document.getElementById('metaBar');
+        const items = [
+          cfg.time     ? ['Time limit',   cfg.time]                  : null,
+          cfg.memory   ? ['Memory limit', cfg.memory]                : null,
+          cfg.n_cases  ? ['Tests',        cfg.n_cases]               : null,
+          cfg.n_visualize ? ['Systests',  cfg.n_visualize]           : null,
+          cfg.type !== 'default' ? ['Type', cfg.type]                : null,
+          ['Package', `<a href="${URL}/package/${encodeURIComponent(pid)}" target="_blank">Download</a>`],
+        ].filter(Boolean);
+        metaBar.innerHTML = items.map(([label, val]) =>
+          `<div class="meta-item"><span class="meta-label">${label}:</span><span class="meta-value">${val}</span></div>`
+        ).join('');
+        metaBar.style.display = 'flex';
+      }
+
+      // Render statement
+      if (!stmtRes.ok) throw new Error(`Markdown not found (${stmtRes.status})`);
+      const md = await stmtRes.text();
 
       const rawHtml = marked.parse(md);
-      const safeHtml = DOMPurify.sanitize(rawHtml, { ADD_ATTR: ['class'] });
+      const safeHtml = DOMPurify.sanitize(rawHtml, {
+        ADD_ATTR: ['class', 'target', 'rel'],
+        ADD_TAGS: ['img'],
+      });
       container.innerHTML = safeHtml;
+
+      // Make all links open in a new tab
+      container.querySelectorAll('a[href]').forEach(a => {
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      });
 
       container.querySelectorAll('pre code').forEach(block => {
         if (!block.classList.contains('hljs')) hljs.highlightElement(block);
