@@ -43,7 +43,18 @@
   <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js"></script>
 </head>
 <body>
-  <div class="wrap">
+  <!-- Password gate -->
+  <div class="wrap" id="authGate">
+    <div class="panel" style="max-width:380px;margin:0 auto;">
+      <h1 style="font-size:1.3rem;margin-bottom:6px;">Submission Details</h1>
+      <p class="muted" id="authLabel" style="margin:0 0 18px;">Enter your team password to view this submission.</p>
+      <input id="pwdInput" type="password" placeholder="Team password" autocomplete="current-password" />
+      <p id="authError" style="color:#f55;margin:10px 0 0;display:none;">Incorrect password.</p>
+      <button id="authBtn" class="btn" style="width:100%;margin-top:14px;">Unlock</button>
+    </div>
+  </div>
+
+  <div class="wrap" id="mainWrap" style="display:none;">
     <!-- Header / Meta -->
     <div class="panel">
       <div class="row">
@@ -80,7 +91,7 @@
       <p id="codeStatus" class="muted">Code is hidden. Enter the password to view.</p>
       <pre id="codePre" class="codebox" style="display:none;"><code id="codeBlock"></code></pre>
     </div>
-  </div>
+  </div>  <!-- end mainWrap -->
 
 <script>
 /* ---------- Config ---------- */
@@ -91,6 +102,77 @@ function getSidFromQuery(){
   const p = new URLSearchParams(location.search);
   return p.get('submissionID');
 }
+
+/* ---------- Auth gate ---------- */
+const authGate  = document.getElementById('authGate');
+const mainWrap  = document.getElementById('mainWrap');
+const authLabel = document.getElementById('authLabel');
+const authError = document.getElementById('authError');
+const authBtn   = document.getElementById('authBtn');
+const pwdInput  = document.getElementById('pwdInput');
+
+let _authTeam = null;
+
+function showMain() {
+  authGate.style.display = 'none';
+  mainWrap.style.display = '';
+  loadSubmission();
+}
+
+async function attemptAuth(password) {
+  if (!_authTeam) { authError.textContent = 'Could not determine submission team.'; authError.style.display = ''; return; }
+  authBtn.disabled = true;
+  authError.style.display = 'none';
+  try {
+    const res = await fetch(`${URL}/verifyTeam`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+      body: JSON.stringify({ team: _authTeam, password }),
+    });
+    if (res.ok) {
+      sessionStorage.setItem(`iimoc_team_auth_${_authTeam}`, password);
+      showMain();
+    } else {
+      authError.textContent = 'Incorrect password.';
+      authError.style.display = '';
+      pwdInput.value = '';
+      pwdInput.focus();
+    }
+  } catch {
+    authError.textContent = 'Network error. Please try again.';
+    authError.style.display = '';
+  } finally {
+    authBtn.disabled = false;
+  }
+}
+
+authBtn.addEventListener('click', () => attemptAuth(pwdInput.value.trim()));
+pwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') attemptAuth(pwdInput.value.trim()); });
+
+async function initAuthGate() {
+  const sid = getSidFromQuery();
+  if (!sid) { showMain(); return; }
+
+  try {
+    const res = await fetch(`${URL}/submissionTeam/${encodeURIComponent(sid)}`, { headers: { 'ngrok-skip-browser-warning': 'true' } });
+    if (res.ok) {
+      const data = await res.json();
+      _authTeam = data.team || null;
+    }
+  } catch { /* network error — fall through to gate */ }
+
+  if (!_authTeam) { showMain(); return; }
+
+  authLabel.textContent = `Team ${_authTeam} — enter your password to view this submission.`;
+
+  const saved = sessionStorage.getItem(`iimoc_team_auth_${_authTeam}`);
+  if (saved) { attemptAuth(saved); return; }
+
+  pwdInput.focus();
+}
+
+initAuthGate();
+/* ---------- End auth gate ---------- */
 async function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 function formatTime(ns){ return (typeof ns==='number'&&Number.isFinite(ns))?(ns/1e6).toFixed(2)+' ms':'—'; }
 function formatMemory(b){ return (typeof b==='number'&&Number.isFinite(b))?(b/1024).toFixed(0)+' KB':'—'; }
@@ -288,7 +370,7 @@ const cached = sessionStorage.getItem('iimoc_admin_pw');
 if (cached) codePwd.value = cached;
 
 /* ---------- Kick off ---------- */
-loadSubmission();
+// loadSubmission() is called by the auth gate after verifying password
 
 
 function smartBack() {
