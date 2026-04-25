@@ -66,7 +66,19 @@
 </header>
 
 <main>
-  <section class="container">
+  <!-- Password gate -->
+  <section class="container" id="authGate">
+    <h1 id="authTitle">Team —</h1>
+    <p class="muted">Enter your team password to view submissions.</p>
+    <div style="max-width:340px;margin:24px auto 0;">
+      <input type="password" id="pwdInput" placeholder="Team password" autocomplete="current-password" />
+      <p id="authError" style="color:#f55;margin:10px 0 0;display:none;">Incorrect password.</p>
+      <button class="btn btn-lg" id="authBtn" style="width:100%;margin-top:14px;">Unlock</button>
+    </div>
+  </section>
+
+  <!-- Team submissions (hidden until authenticated) -->
+  <section class="container" id="teamContent" style="display:none;">
     <h1 id="teamTitle">Team —</h1>
     <p class="muted" id="teamSub">Viewing all submissions by this team</p>
 
@@ -144,8 +156,61 @@
   const sortOrderSel= document.getElementById('sortOrderSel');
 
   const team = qs('team');
+  document.getElementById('authTitle').textContent = team ? `Team ${team}` : 'Team —';
   teamTitle.textContent = team ? `Team ${team}` : 'Team —';
   teamSub.textContent   = team ? `Viewing all submissions by “${team}”` : 'Missing ?team= in URL.';
+
+  // ---- Auth gate ----
+  const SESSION_KEY = `iimoc_team_auth_${team}`;
+  const authGate    = document.getElementById('authGate');
+  const teamContent = document.getElementById('teamContent');
+  const pwdInput    = document.getElementById('pwdInput');
+  const authBtn     = document.getElementById('authBtn');
+  const authError   = document.getElementById('authError');
+
+  function showContent() {
+    authGate.style.display = 'none';
+    teamContent.style.display = '';
+    loadTeam(1);
+  }
+
+  async function attemptAuth(password) {
+    authBtn.disabled = true;
+    authError.style.display = 'none';
+    try {
+      const res = await fetch(`${URL}/verifyTeam`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+        body: JSON.stringify({ team, password }),
+      });
+      if (res.ok) {
+        sessionStorage.setItem(SESSION_KEY, password);
+        showContent();
+      } else {
+        authError.style.display = '';
+        pwdInput.value = '';
+        pwdInput.focus();
+      }
+    } catch {
+      authError.textContent = 'Network error. Please try again.';
+      authError.style.display = '';
+    } finally {
+      authBtn.disabled = false;
+    }
+  }
+
+  authBtn.addEventListener('click', () => attemptAuth(pwdInput.value.trim()));
+  pwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') attemptAuth(pwdInput.value.trim()); });
+
+  // Resume session if password already verified this session
+  const savedPwd = sessionStorage.getItem(SESSION_KEY);
+  if (savedPwd) {
+    attemptAuth(savedPwd);
+  } else if (!team) {
+    // No team param — skip gate, show content with error state
+    showContent();
+  }
+  // ---- End auth gate ----
 
   const state = {
     team,
