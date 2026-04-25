@@ -112,11 +112,17 @@ const authBtn   = document.getElementById('authBtn');
 const pwdInput  = document.getElementById('pwdInput');
 
 let _authTeam = null;
+let _pendingTeamPassword = null;
 
-function showMain() {
+function showMain(teamPassword) {
   authGate.style.display = 'none';
   mainWrap.style.display = '';
   loadSubmission();
+  if (teamPassword) {
+    codePwd.value = teamPassword;
+    // Auto-fetch code once the submission result is ready
+    _pendingTeamPassword = teamPassword;
+  }
 }
 
 async function attemptAuth(password) {
@@ -131,7 +137,7 @@ async function attemptAuth(password) {
     });
     if (res.ok) {
       sessionStorage.setItem(`iimoc_team_auth_${_authTeam}`, password);
-      showMain();
+      showMain(password);
     } else {
       authError.textContent = 'Incorrect password.';
       authError.style.display = '';
@@ -166,7 +172,7 @@ async function initAuthGate() {
   authLabel.textContent = `Team ${_authTeam} — enter your password to view this submission.`;
 
   const saved = sessionStorage.getItem(`iimoc_team_auth_${_authTeam}`);
-  if (saved) { attemptAuth(saved); return; }
+  if (saved) { await attemptAuth(saved); return; }
 
   pwdInput.focus();
 }
@@ -292,6 +298,10 @@ async function loadSubmission(){
   renderMeta(sid, data);
   statusText.textContent = '';
   renderCases(data.cases || []);
+
+  if (_pendingTeamPassword) {
+    fetchAndShowCode();
+  }
 }
 
 /* ---------- Show Source Code (password input) ---------- */
