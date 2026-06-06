@@ -237,10 +237,7 @@
       <p class="card-desc">Copy a problem to <code style="color:#b89bfa">[pid]_sys</code>, regenerate test cases using <code style="color:#b89bfa">n_systest</code>, and re-judge every team's last submission before the cutoff.</p>
       <div class="field">
         <label>Problem</label>
-        <select id="systestPid">
-          <option value="kcircle">kcircle</option>
-          <option value="longcycle">longcycle</option>
-        </select>
+        <input type="text" id="systestPid" placeholder="e.g. squareapproximation" autocomplete="off" />
       </div>
       <div class="field">
         <label>Cutoff (optional — defaults to now)</label>
@@ -488,9 +485,10 @@ document.getElementById('btnSetBaseline').onclick = async () => {
 
 // ── Systest ──────────────────────────────────────────────────────
 document.getElementById('btnSystest').onclick = async () => {
-  const pid = document.getElementById('systestPid').value;
+  const pid = document.getElementById('systestPid').value.trim();
   const cutoffRaw = document.getElementById('systestCutoff').value;
   const resultEl = document.getElementById('resSystest');
+  if (!pid) { showResult(resultEl, false, 'Enter a problem ID.'); return; }
   const body = { pid };
   if (cutoffRaw) body.cutoff = new Date(cutoffRaw).getTime();
   if (!confirm(`Run systest for "${pid}"? This will regenerate test cases and re-judge all team submissions.`)) return;
