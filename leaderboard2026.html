@@ -125,6 +125,7 @@ async function tryLoadStatic() {
   try {
     const r = await fetch('/leaderboard2026-final.json');
     if (r.ok) staticData = await r.json();
+    console.log("Static data loaded:", !!staticData);
   } catch { /* no static file — live mode */ }
 }
 
