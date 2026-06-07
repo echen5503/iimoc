@@ -115,9 +115,18 @@
 </main>
 
 <script>
-const API_URL = "https://contest.iimoc.org"; // Replace with your actual backend URL
+const API_URL = "https://contest.iimoc.org";
 let currentPage = 1;
 const pageSize = 20;
+
+// Static export loaded once on startup; null means use live API.
+let staticData = null;
+async function tryLoadStatic() {
+  try {
+    const r = await fetch('/leaderboard2026-final.json');
+    if (r.ok) staticData = await r.json();
+  } catch { /* no static file — live mode */ }
+}
 
 // Elements
 const leaderboardBody = document.getElementById('leaderboardBody');
@@ -130,13 +139,28 @@ const breakdownView = document.getElementById('breakdownView');
  */
 async function fetchLeaderboard(page = 1) {
   try {
-    const res = await fetch(`${API_URL}/leaderboard?page=${page}&pageSize=${pageSize}`, {
-      headers: {'ngrok-skip-browser-warning': 'true'}
-    });
-    const data = await res.json();
+    let rows, total, totalPages;
+
+    if (staticData) {
+      // Serve from the exported snapshot
+      const all = staticData.leaderboard;
+      total = all.length;
+      totalPages = Math.max(1, Math.ceil(total / pageSize));
+      page = Math.min(Math.max(1, page), totalPages);
+      rows = all.slice((page - 1) * pageSize, page * pageSize);
+    } else {
+      const res = await fetch(`${API_URL}/leaderboard?page=${page}&pageSize=${pageSize}`, {
+        headers: {'ngrok-skip-browser-warning': 'true'}
+      });
+      const data = await res.json();
+      rows = data.leaderboard;
+      total = data.total;
+      totalPages = data.totalPages;
+      page = data.page;
+    }
 
     leaderboardBody.innerHTML = '';
-    data.leaderboard.forEach(row => {
+    rows.forEach(row => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${row.rank}</td>
@@ -149,10 +173,10 @@ async function fetchLeaderboard(page = 1) {
       leaderboardBody.appendChild(tr);
     });
 
-    lbPageInfo.textContent = `Page ${data.page} of ${data.totalPages} (${data.total} teams)`;
-    currentPage = data.page;
+    lbPageInfo.textContent = `Page ${page} of ${totalPages} (${total} teams)${staticData ? ' — final results' : ''}`;
+    currentPage = page;
     document.getElementById('prevBtn').disabled = currentPage <= 1;
-    document.getElementById('nextBtn').disabled = currentPage >= data.totalPages;
+    document.getElementById('nextBtn').disabled = currentPage >= totalPages;
 
   } catch (err) {
     console.error("Leaderboard error:", err);
@@ -172,10 +196,11 @@ async function showTeamBreakdown(teamName) {
     document.getElementById('problemList').innerHTML = 'Loading breakdown...';
     document.getElementById('bonusHistory').innerHTML = '';
 
-    const res = await fetch(`${API_URL}/scoring/team/${encodeURIComponent(teamName)}`, {
-      headers: {'ngrok-skip-browser-warning': 'true'}
-    });
-    const data = await res.json();
+    const data = staticData
+      ? staticData.breakdowns[teamName]
+      : await fetch(`${API_URL}/scoring/team/${encodeURIComponent(teamName)}`, {
+          headers: {'ngrok-skip-browser-warning': 'true'}
+        }).then(r => r.json());
 
     document.getElementById('breakdownTeamScore').textContent = `Total Score: ${data.finalScore} (Base: ${data.baseScore.toFixed(2)}, Bonus: ${data.bonus})`;
 
@@ -247,7 +272,7 @@ document.getElementById('nextBtn').onclick = () => fetchLeaderboard(currentPage 
 document.getElementById('refreshBtn').onclick = () => fetchLeaderboard(currentPage);
 
 // Initial Load
-document.addEventListener('DOMContentLoaded', () => fetchLeaderboard(1));
+document.addEventListener('DOMContentLoaded', () => tryLoadStatic().then(() => fetchLeaderboard(1)));
 </script>
 </body>
 </html>
