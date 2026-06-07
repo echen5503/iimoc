@@ -141,7 +141,7 @@ async function fetchLeaderboard(page = 1) {
       tr.innerHTML = `
         <td>${row.rank}</td>
         <td style="font-weight:bold; color:cyan;">${row.team}</td>
-        <td class="score-high">${row.finalScore.toFixed(2)}</td>
+        <td class="score-high">${row.finalScore}</td>
         <td>${row.baseScore.toFixed(2)}</td>
         <td class="score-bonus">+${row.bonus}</td>
       `;
@@ -177,7 +177,7 @@ async function showTeamBreakdown(teamName) {
     });
     const data = await res.json();
 
-    document.getElementById('breakdownTeamScore').textContent = `Total Score: ${data.finalScore.toFixed(2)} (Base: ${data.baseScore.toFixed(2)}, Bonus: ${data.bonus})`;
+    document.getElementById('breakdownTeamScore').textContent = `Total Score: ${data.finalScore} (Base: ${data.baseScore.toFixed(2)}, Bonus: ${data.bonus})`;
 
     // Render Problems
     let problemHtml = '';
