@@ -116,11 +116,12 @@
 <main>
   <section class="container">
     <h1>Team Signup</h1>
-    <p class="hint" style="margin-bottom:18px;">
-      Create your team credentials for the IIMOC judge. If your team already exists, enter the same password to update your team members.
-    </p>
 
-    <form id="signupForm">
+    <div class="status-panel success" style="text-align:center; font-size:1.05rem; margin-bottom:24px;">
+      IIMOC 2026 has closed. Registrations are no longer being accepted.
+    </div>
+
+    <form id="signupForm" style="display:none;">
       <div class="field">
         <label for="team">Team Name *</label>
         <input id="team" name="team" placeholder="e.g. FrontierCS" required />
