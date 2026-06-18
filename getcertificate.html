@@ -216,7 +216,7 @@
     <div class="inner">
       <h1 class="title">GET CERTIFICATE</h1>
       <div class="sub">
-        Enter your team name to view your certificate for <strong>Polypack</strong>.
+        Enter your team name to view your certificate for <strong>IIMOC 2026</strong>.
       </div>
 
       <form class="form" id="form">
@@ -232,8 +232,18 @@
         </div>
 
         <div class="row">
+          <input
+            id="passwordInput"
+            type="password"
+            autocomplete="off"
+            placeholder="Team password"
+            aria-label="Team password"
+          />
+        </div>
+
+        <div class="row">
           <button class="btn-lg" type="submit" id="goBtn">Open Certificate</button>
-          <a class="btn-lg" href="/leaderboard.html?pid=polypack">View Leaderboard</a>
+          <a class="btn-lg" href="/leaderboard.html?pid=iimoc2026">View Leaderboard</a>
         </div>
 
         <div class="hint">
@@ -296,7 +306,7 @@
     brandTitle.addEventListener('blur', endScramble);
   })();
 
-  const PID = "polypack";
+  const PID = "iimoc2026";
 
   function showError(msg) {
     const el = document.getElementById("err");
@@ -304,27 +314,60 @@
     el.style.display = msg ? "block" : "none";
   }
 
+  async function sha256(str) {
+    const buf = new TextEncoder().encode(str);
+    const hash = await crypto.subtle.digest("SHA-256", buf);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  let _teamsCache = null;
+  async function loadTeams() {
+    if (_teamsCache) return _teamsCache;
+    const res = await fetch("assets/teams.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("Could not load teams data.");
+    _teamsCache = await res.json();
+    return _teamsCache;
+  }
+
   (function init() {
     const params = new URLSearchParams(window.location.search);
     const team = (params.get("team") || "").trim();
     if (team) document.getElementById("teamInput").value = team;
-
-    // Autofocus for convenience
     document.getElementById("teamInput").focus();
   })();
 
-  document.getElementById("form").addEventListener("submit", (e) => {
+  document.getElementById("form").addEventListener("submit", async (e) => {
     e.preventDefault();
     showError("");
 
     const team = String(document.getElementById("teamInput").value || "").trim();
-    if (!team) {
-      showError("Please enter your team name.");
-      return;
-    }
+    const password = String(document.getElementById("passwordInput").value || "");
 
-    const target = `certificate.html?team=${encodeURIComponent(team)}&pid=${encodeURIComponent(PID)}`;
-    window.location.href = target;
+    if (!team) { showError("Please enter your team name."); return; }
+    if (!password) { showError("Please enter your team password."); return; }
+
+    const goBtn = document.getElementById("goBtn");
+    goBtn.disabled = true;
+    goBtn.textContent = "Verifying…";
+
+    try {
+      const teams = await loadTeams();
+      const key = team.toLowerCase();
+      const entry = teams.find(t => String(t.team || "").trim().toLowerCase() === key);
+
+      if (!entry) { showError("Team not found."); return; }
+
+      const hash = await sha256(password);
+      if (hash !== entry.passwordHash) { showError("Incorrect password."); return; }
+
+      const target = `certificate.html?team=${encodeURIComponent(entry.team)}&pid=${encodeURIComponent(PID)}`;
+      window.location.href = target;
+    } catch (err) {
+      showError(err.message || "Something went wrong.");
+    } finally {
+      goBtn.disabled = false;
+      goBtn.textContent = "Open Certificate";
+    }
   });
 </script>
 

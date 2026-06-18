@@ -185,7 +185,7 @@
     const htmlRows = filtered.map((r, i) => {
       const rank = i + 1;
       const teamHtml = r.team !== "—"
-        ? `<a href="/verify.html?team=${encodeURIComponent(r.team)}&pid=${encodeURIComponent(params.get("pid"))}">${escapeHtml(r.team)}</a>`
+        ? escapeHtml(r.team)
         : "—";
 
       // Keep sid link optional (if you still have /render.html as a static artifact, remove if not)

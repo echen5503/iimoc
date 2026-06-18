@@ -1,0 +1,1541 @@
+{
+  "problem": "iimoc2026",
+  "generatedAt": "2026-06-07T04:10:25.273Z",
+  "submissions": [
+    {
+      "team": "flyhomebuddyiwearcologne",
+      "score": 199.98768091344738,
+      "rank": 1
+    },
+    {
+      "team": "REF2",
+      "score": 199.98682795439413,
+      "rank": 2
+    },
+    {
+      "team": "AMR",
+      "score": 199.9715636956067,
+      "rank": 3
+    },
+    {
+      "team": "hlamxnska",
+      "score": 199.96322169455527,
+      "rank": 4
+    },
+    {
+      "team": "Moo",
+      "score": 199.92532133247514,
+      "rank": 5
+    },
+    {
+      "team": "HITOORI",
+      "score": 199.88194452639732,
+      "rank": 6
+    },
+    {
+      "team": "Maximum",
+      "score": 199.55855261002387,
+      "rank": 7
+    },
+    {
+      "team": "Wenhao Lu",
+      "score": 199.10702590133934,
+      "rank": 8
+    },
+    {
+      "team": "luh search",
+      "score": 198.96238783974525,
+      "rank": 9
+    },
+    {
+      "team": "IITMadras_HNG",
+      "score": 198.70828480139062,
+      "rank": 10
+    },
+    {
+      "team": "dumdum",
+      "score": 198.0177841233416,
+      "rank": 11
+    },
+    {
+      "team": "Snakes",
+      "score": 193.20046502550207,
+      "rank": 12
+    },
+    {
+      "team": "My Team",
+      "score": 192.6831903157178,
+      "rank": 13
+    },
+    {
+      "team": "Keller Crunchers",
+      "score": 191.03973216528982,
+      "rank": 14
+    },
+    {
+      "team": "M3F4S0",
+      "score": 190.35606742612697,
+      "rank": 15
+    },
+    {
+      "team": "Nextquant",
+      "score": 189.88691361847265,
+      "rank": 16
+    },
+    {
+      "team": "Chem Reactors",
+      "score": 185.3717752516672,
+      "rank": 17
+    },
+    {
+      "team": "finding a hashmap that doesn't exist",
+      "score": 160.7929523667166,
+      "rank": 18
+    },
+    {
+      "team": "aryam abdo al-begali",
+      "score": 157.43676463319517,
+      "rank": 19
+    },
+    {
+      "team": "nate",
+      "score": 155.8779021559187,
+      "rank": 20
+    },
+    {
+      "team": "Ponderer",
+      "score": 154.1166566360468,
+      "rank": 21
+    },
+    {
+      "team": "Zerui Li",
+      "score": 138.43357358424836,
+      "rank": 22
+    },
+    {
+      "team": "life",
+      "score": 123.87112584072804,
+      "rank": 23
+    },
+    {
+      "team": "SQ",
+      "score": 120.56647943073057,
+      "rank": 24
+    },
+    {
+      "team": "TheGGoat",
+      "score": 113.92623737293029,
+      "rank": 25
+    },
+    {
+      "team": "AntonEgo",
+      "score": 112.62915954337369,
+      "rank": 26
+    },
+    {
+      "team": "Vands",
+      "score": 99.97383745034983,
+      "rank": 27
+    },
+    {
+      "team": "CompetitiveCibeVozer",
+      "score": 99.94695994639335,
+      "rank": 28
+    },
+    {
+      "team": "Daredevil",
+      "score": 99.92452204374594,
+      "rank": 29
+    },
+    {
+      "team": "Virtual Machine",
+      "score": 98.37803144397431,
+      "rank": 30
+    },
+    {
+      "team": "HNG_test_1",
+      "score": 97.93451268426946,
+      "rank": 31
+    },
+    {
+      "team": "voyage",
+      "score": 97.0093338002199,
+      "rank": 32
+    },
+    {
+      "team": "Jerrasterix",
+      "score": 92.70798051330561,
+      "rank": 33
+    },
+    {
+      "team": "throwupthefive",
+      "score": 92.14983556850689,
+      "rank": 34
+    },
+    {
+      "team": "Kristen Chiapperini",
+      "score": 86.01770988043127,
+      "rank": 35
+    },
+    {
+      "team": "RuntimeTerror",
+      "score": 82.2816158125807,
+      "rank": 36
+    },
+    {
+      "team": "Jason",
+      "score": 74.42681297413694,
+      "rank": 37
+    },
+    {
+      "team": "Bastion",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Catalyst",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Chaos",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Citadel",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Crucible",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Empty Set",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Entropy",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "First Principles",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Fourth Wall",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Frozen Lake",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Fugitive",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Fulcrum",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Harbinger",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Hard Stop",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Hooligan",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Ironclad",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Ironforge",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Ironhill",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Ironside",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Last Resort",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Maverick",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Mayhem",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Mischief",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "orangecat",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Outpost",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Phantom",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Radio Silence",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Rascal",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Renegade",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Scoundrel",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Second Wind",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Sharp Left",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Shenanigans",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Soft Cap",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Static Noise",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Stronghold",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Turmoil",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Vanguard",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Vibes",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Warm Up",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "Watershed",
+      "score": 64.7184890037438,
+      "rank": 38
+    },
+    {
+      "team": "SoloPastry",
+      "score": 64.71296315190011,
+      "rank": 79
+    },
+    {
+      "team": "Keystone",
+      "score": 64.70812658569261,
+      "rank": 80
+    },
+    {
+      "team": "Pivot",
+      "score": 64.67631365443773,
+      "rank": 81
+    },
+    {
+      "team": "Linchpin",
+      "score": 64.67384102405079,
+      "rank": 82
+    },
+    {
+      "team": "FrenchCheese \ud83e\uddc0",
+      "score": 64.63056159425429,
+      "rank": 83
+    },
+    {
+      "team": "Breadcrumbs",
+      "score": 61.792375149086496,
+      "rank": 84
+    },
+    {
+      "team": "Handshake",
+      "score": 61.792375149086496,
+      "rank": 84
+    },
+    {
+      "team": "Heartbeat",
+      "score": 61.78263489249273,
+      "rank": 86
+    },
+    {
+      "team": "Flashpoint",
+      "score": 61.752381848411076,
+      "rank": 87
+    },
+    {
+      "team": "Thunderclap",
+      "score": 61.75044435882325,
+      "rank": 88
+    },
+    {
+      "team": "Deadlock",
+      "score": 57.25158602616068,
+      "rank": 89
+    },
+    {
+      "team": "Overflow",
+      "score": 57.25158602616068,
+      "rank": 89
+    },
+    {
+      "team": "Bottleneck",
+      "score": 57.24260718464538,
+      "rank": 91
+    },
+    {
+      "team": "Spaghetti",
+      "score": 57.21526494169892,
+      "rank": 92
+    },
+    {
+      "team": "Bottleneck2",
+      "score": 57.21351763864018,
+      "rank": 93
+    },
+    {
+      "team": "hallpass",
+      "score": 52.58865024434949,
+      "rank": 94
+    },
+    {
+      "team": "CE",
+      "score": 50.751997982463884,
+      "rank": 95
+    },
+    {
+      "team": "OP",
+      "score": 50.751997982463884,
+      "rank": 95
+    },
+    {
+      "team": "RTE",
+      "score": 50.74429913326555,
+      "rank": 97
+    },
+    {
+      "team": "Undefined",
+      "score": 50.72133897565318,
+      "rank": 98
+    },
+    {
+      "team": "Segfault",
+      "score": 50.71987438647423,
+      "rank": 99
+    },
+    {
+      "team": "Capybara",
+      "score": 46.76637121197966,
+      "rank": 100
+    },
+    {
+      "team": "Tamandua",
+      "score": 46.76637121197966,
+      "rank": 100
+    },
+    {
+      "team": "Pangolin",
+      "score": 46.75944069203028,
+      "rank": 102
+    },
+    {
+      "team": "EZ",
+      "score": 46.7391896880181,
+      "rank": 103
+    },
+    {
+      "team": "GG",
+      "score": 46.73781194049044,
+      "rank": 104
+    },
+    {
+      "team": "Axolotl",
+      "score": 42.25890588521094,
+      "rank": 105
+    },
+    {
+      "team": "Blobfish",
+      "score": 42.25890588521094,
+      "rank": 105
+    },
+    {
+      "team": "Wombat",
+      "score": 42.25283541772442,
+      "rank": 107
+    },
+    {
+      "team": "Kinkajou",
+      "score": 42.23548596640303,
+      "rank": 108
+    },
+    {
+      "team": "Meerkat",
+      "score": 42.23429116655272,
+      "rank": 109
+    },
+    {
+      "team": "cold open",
+      "score": 37.05594303317989,
+      "rank": 110
+    },
+    {
+      "team": "false start",
+      "score": 37.05594303317989,
+      "rank": 110
+    },
+    {
+      "team": "full send",
+      "score": 37.0508022397488,
+      "rank": 112
+    },
+    {
+      "team": "dry run",
+      "score": 37.0364544693929,
+      "rank": 113
+    },
+    {
+      "team": "free run",
+      "score": 37.03545480118594,
+      "rank": 114
+    },
+    {
+      "team": "Mongoose",
+      "score": 32.28884513548499,
+      "rank": 115
+    },
+    {
+      "team": "Wolverine",
+      "score": 32.28884513548499,
+      "rank": 115
+    },
+    {
+      "team": "Salamander",
+      "score": 32.284175051669024,
+      "rank": 117
+    },
+    {
+      "team": "Narwhal",
+      "score": 32.271469920899925,
+      "rank": 118
+    },
+    {
+      "team": "Geoduck",
+      "score": 32.27038406892039,
+      "rank": 119
+    },
+    {
+      "team": "early bird",
+      "score": 31.195207222527333,
+      "rank": 120
+    },
+    {
+      "team": "midnight oil",
+      "score": 31.195207222527333,
+      "rank": 120
+    },
+    {
+      "team": "wrong turn",
+      "score": 31.191116919440503,
+      "rank": 122
+    },
+    {
+      "team": "dead end",
+      "score": 31.179865885860657,
+      "rank": 123
+    },
+    {
+      "team": "blind guess",
+      "score": 31.17899191357149,
+      "rank": 124
+    },
+    {
+      "team": "controlled chaos",
+      "score": 24.60079031278567,
+      "rank": 125
+    },
+    {
+      "team": "slight panic",
+      "score": 24.60079031278567,
+      "rank": 125
+    },
+    {
+      "team": "organized mess",
+      "score": 24.597754380124563,
+      "rank": 127
+    },
+    {
+      "team": "minimum effort",
+      "score": 24.589468731562782,
+      "rank": 128
+    },
+    {
+      "team": "barely passing",
+      "score": 24.588787051961756,
+      "rank": 129
+    },
+    {
+      "team": "on a prayer",
+      "score": 17.339153572809096,
+      "rank": 130
+    },
+    {
+      "team": "please work",
+      "score": 17.339153572809096,
+      "rank": 130
+    },
+    {
+      "team": "send help",
+      "score": 17.339153572809096,
+      "rank": 130
+    },
+    {
+      "team": "wing it",
+      "score": 17.337087118797655,
+      "rank": 133
+    },
+    {
+      "team": "no sleep",
+      "score": 17.331340622879907,
+      "rank": 134
+    },
+    {
+      "team": "CMU_Gold",
+      "score": 9.197229259292884,
+      "rank": 135
+    },
+    {
+      "team": "Fabian_G",
+      "score": 9.197229259292884,
+      "rank": 135
+    },
+    {
+      "team": "IIT_Bombay_A",
+      "score": 9.197229259292884,
+      "rank": 135
+    },
+    {
+      "team": "IIT_Madras_B",
+      "score": 9.197229259292884,
+      "rank": 135
+    },
+    {
+      "team": "Kasper_H",
+      "score": 9.197229259292884,
+      "rank": 135
+    },
+    {
+      "team": "MIT_Grind",
+      "score": 9.197229259292884,
+      "rank": 135
+    },
+    {
+      "team": "NUS_Alpha",
+      "score": 9.197229259292884,
+      "rank": 135
+    },
+    {
+      "team": "Tobias_F",
+      "score": 9.197229259292884,
+      "rank": 135
+    },
+    {
+      "team": "TU_Berlin_A",
+      "score": 9.197229259292884,
+      "rank": 135
+    },
+    {
+      "team": "POSTECH_1",
+      "score": 9.193561438476811,
+      "rank": 144
+    },
+    {
+      "team": "Romain",
+      "score": 9.193561438476811,
+      "rank": 144
+    },
+    {
+      "team": "Stanford_B",
+      "score": 9.029258017910816,
+      "rank": 146
+    },
+    {
+      "team": "NTU_Platypus",
+      "score": 9.026322862490712,
+      "rank": 147
+    },
+    {
+      "team": "KTH_Vikings",
+      "score": 8.984495291529562,
+      "rank": 148
+    },
+    {
+      "team": "EPFL_Blue",
+      "score": 8.884542416105674,
+      "rank": 149
+    },
+    {
+      "team": "UNSW_Drop",
+      "score": 8.879380808015632,
+      "rank": 150
+    },
+    {
+      "team": "ETH_Zurich_A",
+      "score": 8.86501163148882,
+      "rank": 151
+    },
+    {
+      "team": "KAIST_Two",
+      "score": 8.750804811600782,
+      "rank": 152
+    },
+    {
+      "team": "Antoine",
+      "score": 8.746343093244667,
+      "rank": 153
+    },
+    {
+      "team": "Nathan_B",
+      "score": 8.523248186303928,
+      "rank": 154
+    },
+    {
+      "team": "Lukas_A",
+      "score": 7.104081838832485,
+      "rank": 155
+    },
+    {
+      "team": "Aryan_C",
+      "score": 7.078649791377399,
+      "rank": 156
+    },
+    {
+      "team": "Sid_D",
+      "score": 7.032808042996126,
+      "rank": 157
+    },
+    {
+      "team": "Adrien",
+      "score": 6.90937860662406,
+      "rank": 158
+    },
+    {
+      "team": "void0",
+      "score": 6.90937860662406,
+      "rank": 158
+    },
+    {
+      "team": "Pierre",
+      "score": 6.90364641863037,
+      "rank": 160
+    },
+    {
+      "team": "Julien",
+      "score": 6.889299048343584,
+      "rank": 161
+    },
+    {
+      "team": "log2n",
+      "score": 6.889163475472364,
+      "rank": 162
+    },
+    {
+      "team": "Mateus",
+      "score": 6.889163475472364,
+      "rank": 162
+    },
+    {
+      "team": "Theo",
+      "score": 6.868618112404912,
+      "rank": 164
+    },
+    {
+      "team": "Mihail_E",
+      "score": 6.865171345245151,
+      "rank": 165
+    },
+    {
+      "team": "Gustavo",
+      "score": 6.863592719100995,
+      "rank": 166
+    },
+    {
+      "team": "nan42",
+      "score": 6.863592719100995,
+      "rank": 166
+    },
+    {
+      "team": "Rodrigo",
+      "score": 6.861555675672655,
+      "rank": 168
+    },
+    {
+      "team": "sqrt2",
+      "score": 6.861555675672655,
+      "rank": 168
+    },
+    {
+      "team": "Baptiste",
+      "score": 6.85510875741174,
+      "rank": 170
+    },
+    {
+      "team": "Guilherme",
+      "score": 6.853518656912204,
+      "rank": 171
+    },
+    {
+      "team": "tau6283",
+      "score": 6.853518656912204,
+      "rank": 171
+    },
+    {
+      "team": "e2718",
+      "score": 6.850392380622296,
+      "rank": 173
+    },
+    {
+      "team": "Tiago",
+      "score": 6.850392380622296,
+      "rank": 173
+    },
+    {
+      "team": "cbrt3",
+      "score": 6.849932418056635,
+      "rank": 175
+    },
+    {
+      "team": "Eduardo",
+      "score": 6.849932418056635,
+      "rank": 175
+    },
+    {
+      "team": "inf0",
+      "score": 6.847890949547574,
+      "rank": 177
+    },
+    {
+      "team": "Leonardo",
+      "score": 6.847890949547574,
+      "rank": 177
+    },
+    {
+      "team": "Pedro",
+      "score": 6.846543652632546,
+      "rank": 179
+    },
+    {
+      "team": "phi161",
+      "score": 6.846543652632546,
+      "rank": 179
+    },
+    {
+      "team": "Rafael",
+      "score": 6.845485945482199,
+      "rank": 181
+    },
+    {
+      "team": "root2",
+      "score": 6.845485945482199,
+      "rank": 181
+    },
+    {
+      "team": "L2l2l2l2l2",
+      "score": 6.8392520655982585,
+      "rank": 183
+    },
+    {
+      "team": "Quentin",
+      "score": 6.8392520655982585,
+      "rank": 183
+    },
+    {
+      "team": "Henrique",
+      "score": 6.817341031984824,
+      "rank": 185
+    },
+    {
+      "team": "nil99",
+      "score": 6.817341031984824,
+      "rank": 185
+    },
+    {
+      "team": "Maxime",
+      "score": 6.772329018301619,
+      "rank": 187
+    },
+    {
+      "team": "Clement",
+      "score": 4.959149411655892,
+      "rank": 188
+    },
+    {
+      "team": "C-Cashier",
+      "score": 3.505486019544695,
+      "rank": 189
+    },
+    {
+      "team": "IIT_Delhi_B",
+      "score": 0.09516362115192352,
+      "rank": 190
+    },
+    {
+      "team": "_gheekhatam_",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": ">\"<",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "12367",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "A Scoundrat",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "ace007",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Anahita",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "ANOnymou5",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "AR",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Artic Seagull",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "asdf",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "asdfa",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "asdfasdfasd",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "ASDFX",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Asian_coalition_of_nerds",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "benqspark",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Binminh",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Bit_Mask",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Boiling Point",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "C--",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Chevrolet_Niva",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Compile and Pray (CP)",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "crashdummy",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "CS+",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Dhruv",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "DO NOT SNAKE ME",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Easdfdwin",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Echo",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Edwin",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Edwinasd",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "EENA MEENA DEEKA",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "EFT",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Elisabed Arabidze",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "fasdfasdf",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "fireballz",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Ghost",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "GhumiGhumi",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "GlobalMax",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Godsend",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "gradientAscent",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "GUGUGAGA",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "hackathon",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Hehhe",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Iitrpr",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "INVINCIBLE",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Ironfall",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Ironwall",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Ironwood",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Ishaan",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "justatest",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Kunal",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Ladybugs",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "LUM\u0130NA",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Mathnerd",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Millburn Mathletes",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Mirage",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "MOUSTAFA",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Nah, I'd Lose",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "naming things is hard for programmers",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Natural Intelligence",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Neural Ninja",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "NgThaiSon",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "NoBadBeat",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "nub",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "null",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "OctaveSolo",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Outlaw",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "pi314",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "poasdfapsdf",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Pranav",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Pravesh",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Raghav",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "RAHMAT",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "RAHMAT_9009",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "raindrop",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Revenant",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "S.P.A.C.E.",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Sanskar Ranjan",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Saurabh",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Schanizade",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "sdfasdfxcv",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "sdfg",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Sentinel",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "shad_07",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Shadow",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Shubham",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Sid",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "snakes",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Some1",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Spectre",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Tanmay",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Team5721",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "TestRunKenneth",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "TestTeam42",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "ThayirSoru",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "The Claw",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "theoretical minima",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Three Misketeers",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Threyeth",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Tom",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "TopG",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "topgun",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Tourist",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "TOURISTS",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Utkarsh",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "valorious",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Vivek",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "VSolo",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "vzxcvzxcbzxcbzxcb",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Wraith",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Xerxes",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Yachao Fan Club",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "Z5",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "zero1",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "zxcbzx",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "zxcvzxcv",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "zxcvzxcvasdf",
+      "score": 0,
+      "rank": 191
+    },
+    {
+      "team": "\u51b0\u51bb\u91ce\u9e21\u5927\u5b66",
+      "score": 0,
+      "rank": 191
+    }
+  ]
+}

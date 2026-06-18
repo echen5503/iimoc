@@ -261,10 +261,6 @@
 
   .footer-row {
     margin-top: 20px;
-    display: grid;
-    grid-template-columns: 1fr 240px;
-    gap: 14px;
-    align-items: end;
   }
 
   .signatures {
@@ -306,48 +302,6 @@
     letter-spacing: 0.8px;
   }
 
-  .qr {
-    border: 1px solid #333;
-    border-radius: 8px;
-    background: #181818;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .qr-box {
-    height: 140px;
-    width: 140px;
-    border: 1px dashed #444;
-    border-radius: 8px;
-    display: grid;
-    place-items: center;
-    color: #9aa0a6;
-    font-size: 0.92rem;
-    letter-spacing: 0.6px;
-    text-align: center;
-    padding: 10px;
-    box-sizing: border-box;
-    white-space: pre-line;
-  }
-  .qr-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-  .verify {
-    color: #e5e7eb;
-    font-size: 0.92rem;
-    letter-spacing: 0.5px;
-    text-align: center;
-  }
-  .verify a {
-    color: inherit;
-    text-decoration: underline;
-  }
 
   .actions {
     margin-top: 16px;
@@ -431,18 +385,14 @@
     .detail .k { font-size: 0.82rem !important; margin-bottom: 6px !important; }
     .detail .v { font-size: 0.92rem !important; }
 
-    .footer-row { margin-top: 12px !important; gap: 10px !important; grid-template-columns: 1fr 200px !important; }
+    .footer-row { margin-top: 12px !important; }
     .signatures { gap: 8px !important; }
 
     .sig { min-height: 72px !important; padding: 10px 10px 9px 10px !important; }
     .sig-img { height: 36px !important; margin-bottom: 6px !important; }
     .sig .line { margin-top: 8px !important; padding-top: 6px !important; font-size: 0.85rem !important; }
 
-    .qr { padding: 10px !important; gap: 8px !important; }
-    .qr-box { width: 120px !important; height: 120px !important; padding: 6px !important; }
-    .verify { font-size: 0.85rem !important; }
-
-    .cert, .cert-inner, .detail, .sig, .qr, .name-block {
+    .cert, .cert-inner, .detail, .sig, .name-block {
       break-inside: avoid !important;
       page-break-inside: avoid !important;
     }
@@ -482,7 +432,6 @@
           <div class="subtitle">
             International Invitational Math Optimization Challenge (IIMOC)<br />
             This document certifies the standing and distinction listed below.
-            This result can be verified at <a id="verifyTopLink" href="/leaderboard.html" style="color: cyan">iimoc.org</a>.
           </div>
         </div>
 
@@ -528,11 +477,11 @@
         </div>
         <div class="detail">
           <div class="k">DATE</div>
-          <div class="v" id="awardDate">Dec 30, 2025</div>
+          <div class="v" id="awardDate">Jun 1, 2026</div>
         </div>
         <div class="detail">
           <div class="k">CERTIFICATE ID</div>
-          <div class="v" id="certId">IIMOC-2025-XXXX</div>
+          <div class="v" id="certId">IIMOC-2026-XXXX</div>
         </div>
       </div>
 
@@ -543,19 +492,11 @@
             <div class="line">Edwin Chen — Contest Director</div>
           </div>
           <div class="sig">
-            <img class="sig-img sig-white" src="assets/shangzhou.png" alt="Shang Zhou signature" />
-            <div class="line">Shang Zhou — Contest Problemsetter</div>
+            <img class="sig-img sig-white" src="assets/frontierlogo-nobg.png" alt="FrontierCS logo" />
+            <div class="line">FrontierCS — Contest Partner</div>
           </div>
         </div>
 
-        <div class="qr">
-          <div class="qr-box" id="qrBox">
-            <img id="qrImg" alt="Verification QR" />
-          </div>
-          <div class="verify">
-            Verify: <a id="verifyLink" href="/leaderboard.html">iimoc.org</a>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -731,18 +672,21 @@
     return String(s || "").trim().toLowerCase();
   }
 
+  let _teamsCache = null;
+  async function loadTeamsJson() {
+    if (_teamsCache) return _teamsCache;
+    const res = await fetch("assets/teams.json", { cache: "no-store" });
+    if (!res.ok) throw new Error(`Could not load teams.json (HTTP ${res.status})`);
+    _teamsCache = await res.json();
+    return _teamsCache;
+  }
+
   async function fetchTeamMembers(team) {
-    const url = `https://contest.iimoc.org/team/${encodeURIComponent(team)}/members`;
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) {
-      // surface common status codes with useful messaging
-      const msg = (res.status === 401 || res.status === 403)
-        ? "Could not load team members: invalid team or password."
-        : `Could not load team members (HTTP ${res.status}).`;
-      throw new Error(msg);
-    }
-    const payload = await res.json();
-    return Array.isArray(payload?.members) ? payload.members : [];
+    const teams = await loadTeamsJson();
+    const key = String(team || "").trim().toLowerCase();
+    const entry = teams.find(t => String(t.team || "").trim().toLowerCase() === key);
+    if (!entry) throw new Error("Team not found in teams.json.");
+    return Array.isArray(entry.members) ? entry.members : [];
   }
 
   function showMemberPicker() {
@@ -846,14 +790,14 @@
   (async function populateCertificate() {
     const params = new URLSearchParams(window.location.search);
 
-    const pid = (params.get("pid") || "polypacksys").trim();
+    const pid = (params.get("pid") || "iimoc2026").trim();
     const team = params.get("team") || "Team Name";
     const name = params.get("name") || "Participant Name";
-    const date = params.get("date") || "Dec 30, 2025";
+    const date = params.get("date") || "Jun 1, 2026";
     const category = params.get("category") || "Overall";
 
     const cert = params.get("cert") || (
-      `IIMOC-2025-${team.toLowerCase().replace(/\s+/g, '-')}-${category}-${pid}`.toUpperCase()
+      `IIMOC-2026-${team.toLowerCase().replace(/\s+/g, '-')}-${category}-${pid}`.toUpperCase()
     );
 
     // Inject static values first
@@ -864,7 +808,6 @@
     document.getElementById("awardDate").textContent = date;
     document.getElementById("category").textContent = category;
 
-    // Member picker: show only when team+password present
     if (team && team !== "Team Name") {
       showMemberPicker();
       setPickerState({
@@ -877,7 +820,6 @@
       try {
         const members = await fetchTeamMembers(team);
 
-        // If no explicit name, default to first member (but still let them change)
         if ((!params.get("name") || !String(params.get("name")).trim()) && members.length) {
           const first = String(members[0]?.name || "").trim();
           if (first) {
@@ -894,32 +836,12 @@
         setPickerState({
           loading: false,
           error: e.message || "Unable to load team members.",
-          hint: "If you have not registered your members yet, add them on the Sign Up page and refresh.",
-          showSignup: true
+          hint: "",
+          showSignup: false
         });
       }
-    } else if (team && team !== "Team Name" && !password) {
-      // team present but no password: show message (still keep picker hidden to avoid confusion)
-      // If you WANT to show it anyway, call showMemberPicker() here and display an error.
-      // For now: do nothing.
     }
 
-    // Wire verify links using pid
-    const verifyHref = `/leaderboard.html?pid=${encodeURIComponent(pid)}`;
-    const verifyTopLink = document.getElementById("verifyTopLink");
-    const verifyLink = document.getElementById("verifyLink");
-    if (verifyTopLink) verifyTopLink.href = verifyHref;
-    if (verifyLink) verifyLink.href = verifyHref;
-
-    // Wire QR image using pid
-    const qrImg = document.getElementById("qrImg");
-    if (qrImg) {
-      qrImg.src = `assets/${encodeURIComponent(pid)}/results/QR.png`;
-      qrImg.onerror = () => {
-        const qrBox = document.getElementById("qrBox");
-        if (qrBox) qrBox.textContent = "QR Code unavailable";
-      };
-    }
 
     // Defaults while loading / if JSON fails
     const placementRankEl = document.getElementById("placementRank");
