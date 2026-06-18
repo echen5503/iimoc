@@ -449,19 +449,22 @@
 <body>
 <header>
   <nav class="nav">
-    <div class="brand-title" id="brandTitle" href="index.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <a href="/index.html" class="brand-title" id="brandTitle" >
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 4H6l7 8-7 8h12"/>
       </svg>
-      <a href="/index.html"><span id="scrambleText">
+      <!-- <a href="/index.html"> -->
+        <span id="scrambleText" aria-label="IIMOC">
         <span class="scramble-char">I</span>
         <span class="scramble-char">I</span>
         <span class="scramble-char">M</span>
         <span class="scramble-char">O</span>
         <span class="scramble-char">C</span>
       </span></a>
-      × <a href="https://frontier-cs.org"><img src="assets/frontierlogo.png" height="38" alt="FrontierCS logo"></a> 
-    </div>
+      <a href="https://frontier-cs.org" class="partner-link" target="_blank"
+   rel="noopener noreferrer" aria-label="FrontierCS partner site">
+  × <img src="assets/frontierlogo.png" height="38" alt="FrontierCS logo">
+</a>
     
     <div class="nav-links">
       <a class="nav-link" href="team2025.html">2025 Team</a>
@@ -554,8 +557,8 @@
     <div class="partners-track" id="partnersTrack">
       <!-- ORIGINAL SET -->
       <div class="partner-pill">
-        <img src="assets/cascadelogo.png"
-             alt="CascadeX CXL logo" width="200px" />
+       <img src="assets/cascadelogo.png" alt="CascadeX CXL logo" width="200"
+     loading="lazy" decoding="async" />
       </div>
 
       <div class="partner-pill">
