@@ -422,7 +422,7 @@
   /* Timeline */
   .timeline {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: 0;
     margin: 22px 0 4px 0;
@@ -433,6 +433,7 @@
     align-items: center;
     gap: 6px;
     min-width: 90px;
+    padding: 0 8px;
   }
   .tl-dot {
     width: 14px;
@@ -451,13 +452,14 @@
     background: linear-gradient(90deg, #444, #555);
     min-width: 40px;
     max-width: 80px;
-    margin-bottom: 30px;
+    margin-top: 8px; /* centers on the 18px-tall dots at the top of each item */
   }
   .tl-label {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: bold;
     color: #f0f0f0;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
   }
   .tl-desc {
     font-size: 0.82rem;
@@ -465,8 +467,8 @@
     letter-spacing: 0.5px;
     text-align: center;
   }
-  @media (max-width: 600px) {
-    .timeline { flex-direction: column; gap: 16px; }
+  @media (max-width: 760px) {
+    .timeline { flex-direction: column; align-items: center; gap: 16px; }
     .tl-line { display: none; }
   }
 
