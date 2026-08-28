@@ -21,7 +21,7 @@
     body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
     header { width:100%; background:#181818; border-bottom:1px solid #333; }
     .nav { display:flex; align-items:center; justify-content:space-between; max-width:740px; margin:0 auto; padding:16px 20px 8px; }
-    .nav-links { display:flex; gap:18px; }
+    .nav-links { display:flex; flex-wrap:wrap; gap:18px; }
     .nav-link, .btn {
       background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
       padding:10px 20px; font-family:inherit; font-size:1.09rem; cursor:pointer;
@@ -62,6 +62,12 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4H6l7 8-7 8h12"/></svg>
       <span>IIMOC</span>
     </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/rules.html">Rules</a>
+      <a class="nav-link" href="/team2025.html">2025 Team</a>
+      <a class="nav-link" href="/team2026.html">2026 Team</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
+    </div>
   </nav>
 </header>
 

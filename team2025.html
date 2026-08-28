@@ -37,7 +37,7 @@
     padding: 16px 20px 8px 20px;
   }
   .nav-links {
-    display: flex;
+    display: flex; flex-wrap:wrap;
     gap: 18px;
   }
   .brand-title {
@@ -174,12 +174,10 @@
       </span>
     </a>
     <div class="nav-links">
-      <a class="nav-link" href="sponsor.html">Sponsors</a>
-      <span class="nav-link active">Our Team</span>
-      <a class="nav-link" href="contact.html">Contact</a>
-      <a class="btn" href="https://docs.google.com/forms/d/1dH9oRff1Keqln8tVHDsGspRrDxFG_V3B-k6BU7P63_4/edit?usp=forms_home&ouid=116326193225924467042&ths=true" target="_blank" rel="noopener noreferrer">
-        Sign Up
-      </a>
+      <a class="nav-link" href="/rules.html">Rules</a>
+      <span class="nav-link active">2025 Team</span>
+      <a class="nav-link" href="/team2026.html">2026 Team</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
     </div>
   </nav>
 </header>
@@ -435,6 +433,5 @@
     brandTitle.addEventListener('blur', endScramble);
   })();
 </script>
-  <script src="assets/js/markdown-renderer.js" defer></script>
 </body>
 </html>

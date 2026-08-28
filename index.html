@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>International Invitational Math Optimization Challenge</title>
-<meta name="description" content="IIMOC - The High School Optimization Challenge" />
+<meta name="description" content="IIMOC — The International Invitational Math Optimization Challenge, a global optimization contest for high school and college students." />
 
 <style>
   body {
@@ -71,7 +71,7 @@
     font-family: inherit;
   }
   .nav-links {
-    display: flex;
+    display: flex; flex-wrap:wrap;
     gap: 10px;
   }
   .btn, .btn-lg, .nav-link {
@@ -294,6 +294,37 @@
   }
   .notice-banner strong { color: #facc15; }
 
+  /* Past prizes */
+  .prize-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 14px;
+  }
+  .prize-card {
+    margin: 0;
+    flex: 1 1 280px;
+    max-width: 340px;
+    background: #fff;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 10px 10px 8px 10px;
+  }
+  .prize-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+  .prize-card figcaption {
+    margin-top: 8px;
+    color: #222;
+    font-size: 0.97rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
   /* Partners */
   .partners-title {
     text-align: center;
@@ -434,6 +465,10 @@
     letter-spacing: 0.5px;
     text-align: center;
   }
+  @media (max-width: 600px) {
+    .timeline { flex-direction: column; gap: 16px; }
+    .tl-line { display: none; }
+  }
 
   @media (max-width: 900px) {
     .container, .nav { max-width: 99vw; padding-left: 5vw; padding-right: 5vw; }
@@ -449,7 +484,7 @@
 <body>
 <header>
   <nav class="nav">
-    <div class="brand-title" id="brandTitle" href="index.html">
+    <div class="brand-title" id="brandTitle">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 4H6l7 8-7 8h12"/>
       </svg>
@@ -464,9 +499,10 @@
     </div>
     
     <div class="nav-links">
-      <a class="nav-link" href="team2025.html">2025 Team</a>
-      <a class="nav-link" href="team2026.html">2026 Team</a>
-      <a class="nav-link" href="contact.html">Contact</a>
+      <a class="nav-link" href="/rules.html">Rules</a>
+      <a class="nav-link" href="/team2025.html">2025 Team</a>
+      <a class="nav-link" href="/team2026.html">2026 Team</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
     </div>
   </nav>
 </header>
@@ -474,7 +510,7 @@
 <main>
   <div class="container">
     <h1>IIMOC × FrontierCS 2026</h1>
-    <span class="iimoc-full">International Math Optimization Challenge</span>
+    <span class="iimoc-full">International Invitational Math Optimization Challenge</span>
 
     <div class="about-section">
       IIMOC is a global Math/CS competition centered around hard optimization problems — accessible to motivated high school and college students, but deep enough for weeks of research. For 2026, teams compete across a <strong>frontier of algorithmic tasks</strong> from FrontierCS. Points are awarded by <strong>final placement</strong> on each task's leaderboard — the higher you rank when submissions close, the more points your team earns.
@@ -483,25 +519,25 @@
     <div class="timeline">
       <div class="tl-item">
         <div class="tl-dot tl-dot-blue"></div>
-        <div class="tl-label">Apr 15</div>
+        <div class="tl-label">Apr 15, 2026</div>
         <div class="tl-desc">Practice problems released</div>
       </div>
       <div class="tl-line"></div>
       <div class="tl-item">
         <div class="tl-dot tl-dot-green"></div>
-        <div class="tl-label">May 1</div>
+        <div class="tl-label">May 1, 2026</div>
         <div class="tl-desc">Competition opens at 4 PM PST</div>
       </div>
       <div class="tl-line"></div>
       <div class="tl-item">
         <div class="tl-dot tl-dot-yellow"></div>
-        <div class="tl-label">June 1</div>
+        <div class="tl-label">June 1, 2026</div>
         <div class="tl-desc">Submissions close</div>
       </div>
       <div class="tl-line"></div>
       <div class="tl-item">
         <div class="tl-dot tl-dot-purple"></div>
-        <div class="tl-label">June 10</div>
+        <div class="tl-label">June 10, 2026</div>
         <div class="tl-desc">Results released</div>
       </div>
     </div>
@@ -512,6 +548,18 @@
       <a href="/getcertificate.html" style="color: #e5e7eb; text-decoration: underline;">Get Your Certificate</a>
       &nbsp;&middot;&nbsp;
       <a href="/leaderboard2026.html" style="color: #e5e7eb; text-decoration: underline;">View Final Leaderboard</a>
+    </div>
+
+    <div class="notice-banner" style="margin-top: 16px; border: 2px solid #60a5fa; background: linear-gradient(135deg, #101c30, #0b1424); padding: 22px 26px; text-align: center; box-shadow: 0 0 18px rgba(96, 165, 250, 0.25);">
+      <div style="font-size: 1.5rem; letter-spacing: 2px; color: #60a5fa; font-weight: bold;">IIMOC 2027 &mdash; March 2027</div>
+      <div style="font-size: 1.08rem; margin-top: 10px; color: #e5e7eb;">
+        <strong>IIMOC 2027</strong> will be held in <strong>March 2027</strong>.
+        We received feedback that having two problems that saturated faster made the contest more about <strong>breadth</strong> than <strong>depth</strong>.
+        We will return to one problem only in IIMOC 2027.
+
+
+      </div>
+      <div class="muted-2" style="margin-top: 8px;">Details and registration will be announced here.</div>
     </div>
 
     <h2 style="text-align:center; margin-top: 28px;">2026 by the Numbers</h2>
@@ -540,6 +588,23 @@
         </div>
         <p style="font-weight: bold; letter-spacing: 1px;">Submissions</p>
         <p class="muted-2">Total iterative optimizations across the 4-week window.</p>
+      </div>
+    </div>
+
+    <div class="section" id="prizes" style="text-align: center;">
+      <h2>Past Prizes</h2>
+      <div class="about-section" style="margin-bottom: 0;">
+        Every year, top teams take home custom IIMOC apparel.
+      </div>
+      <div class="prize-cards">
+        <figure class="prize-card">
+          <img src="/assets/prize2025.webp" alt="IIMOC 2025 Champion T-shirt, front and back: black tee with pixel-art IIMOC 2025 lettering, champion score, sponsors, and problem setters" loading="lazy" />
+          <figcaption>2025 &mdash; Champion Tee</figcaption>
+        </figure>
+        <figure class="prize-card">
+          <img src="/assets/prize2026.webp" alt="IIMOC 2026 prize hoodie, front and back: black hoodie with IIMOC × FrontierCS logo and a large ⟨Σ⟩ mark" loading="lazy" />
+          <figcaption>2026 &mdash; IIMOC &times; FrontierCS Hoodie</figcaption>
+        </figure>
       </div>
     </div>
 
@@ -598,7 +663,7 @@
 
 
     <div class="section" id="frontiercs" style="text-align: center;">
-      <div class="how-it-works-title">How It Works</div>
+      <div class="how-it-works-title">How IIMOC 2026 Worked</div>
 
       <div class="features" style="justify-content:center;">
         <div class="card">
@@ -612,7 +677,7 @@
             </svg>
             <h3>Many Problems</h3>
           </div>
-          <p>A curated set of FrontierCS tasks (not just one problem). Teams can specialize, explore, and iterate.</p>
+          <p>For 2026, a curated set of FrontierCS tasks (not just one problem). Teams could specialize, explore, and iterate.</p>
         </div>
 
         <div class="card">
@@ -636,7 +701,7 @@
             </svg>
             <h3>Reproducibility</h3>
           </div>
-          <p>We’ll encourage standardized evaluation via FrontierCS’s tooling (so results are comparable and auditable).</p>
+          <p>Standardized evaluation via FrontierCS’s tooling, so results are comparable and auditable.</p>
         </div>
 
         <div class="card">
@@ -655,8 +720,8 @@
         </div>
       </div>
 
-      <div class="about-section" style="margin-top: 18px; text-align: left;">
-        We will release complete rules nearer to contest start date.
+      <div class="about-section" style="margin-top: 18px;">
+        Read the complete <a href="/rules.html" style="color: #b89bfa;">Rules &amp; Code of Conduct</a>.
       </div>
 
       <div style="display:flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;">

@@ -10,7 +10,7 @@
     body { background:#181818; color:#f0f0f0; font-family:Consolas,'Courier New',monospace; margin:0; }
     header { width:100%; background:#181818; border-bottom:1px solid #333; }
     .nav { display:flex; align-items:center; justify-content:space-between; max-width:900px; margin:0 auto; padding:16px 20px 8px; }
-    .nav-links { display:flex; gap:18px; }
+    .nav-links { display:flex; flex-wrap:wrap; gap:18px; }
     .nav-link, .btn {
       background:#282828; color:#f0f0f0; border:1px solid #444; border-radius:4px;
       padding:10px 20px; font-family:inherit; font-size:1.09rem; cursor:pointer;
@@ -54,8 +54,10 @@
       <span>IIMOC</span>
     </a>
     <div class="nav-links">
-      <a class="nav-link" href="/leaderboard2026.html">Leaderboard</a>
-      <a class="nav-link" href="/problems.html">Problems</a>
+      <a class="nav-link" href="/rules.html">Rules</a>
+      <a class="nav-link" href="/team2025.html">2025 Team</a>
+      <a class="nav-link" href="/team2026.html">2026 Team</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
     </div>
   </nav>
 </header>
@@ -166,7 +168,7 @@ async function fetchLeaderboard(page = 1) {
       tr.innerHTML = `
         <td>${row.rank}</td>
         <td style="font-weight:bold; color:cyan;">${row.team}</td>
-        <td class="score-high">${row.finalScore}</td>
+        <td class="score-high">${row.finalScore.toFixed(4)}</td>
         <td>${row.baseScore.toFixed(2)}</td>
         <td class="score-bonus">+${row.bonus}</td>
       `;
@@ -203,7 +205,7 @@ async function showTeamBreakdown(teamName) {
           headers: {'ngrok-skip-browser-warning': 'true'}
         }).then(r => r.json());
 
-    document.getElementById('breakdownTeamScore').textContent = `Total Score: ${data.finalScore} (Base: ${data.baseScore.toFixed(2)}, Bonus: ${data.bonus})`;
+    document.getElementById('breakdownTeamScore').textContent = `Total Score: ${data.finalScore.toFixed(4)} (Base: ${data.baseScore.toFixed(2)}, Bonus: ${data.bonus})`;
 
     // Render Problems
     let problemHtml = '';
